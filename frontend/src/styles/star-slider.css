@@ -21,7 +21,6 @@
 .star-slider-container {
   width: 80%;
   margin: 0 auto;
-  padding: 20px 0;
 }
 
 /* Swiper */
@@ -131,11 +130,7 @@
   animation: monsterWiggle 4s ease-in-out infinite;
 }
 
-/* 
-@keyframes monsterWiggle {
-  0%, 100% { transform: rotate(-8deg) translateY(0); }
-  50% { transform: rotate(-12deg) translateY(-10px); }
-} */
+
 .monster-right {
   right: 1px;
   transform: scaleX(-1);
@@ -180,4 +175,114 @@
 .star-slider-title {
   margin-top: 20px;
   font-family: "Poppins";
+}
+
+/* Responsive: stack animation and slider on tablet and smaller */
+@media (max-width: 1024px) {
+  .adventure-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 0 16px;
+  }
+
+  .adventure-animation {
+    order: 1;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    right: 0 !important;
+  }
+
+  .star-slider-wrap {
+    order: 2;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 24px;
+    padding: 32px 16px;
+  }
+
+  .star-slider-container {
+    width: 100%;
+    padding: 12px 0;
+  }
+
+
+  .star-swiper-slide {
+    transform: none;
+  }
+
+  .monster-peek {
+    display: none; /* hide decorative monsters on smaller screens */
+  }
+}
+
+/* Optional: tighter layout for small phones */
+@media (max-width: 480px) {
+  .adventure-animation {
+    max-width: 320px;
+  }
+
+  .star-slider-wrap {
+    padding: 20px 12px;
+    border-radius: 16px;
+  }
+
+  .star-card {
+    width: 260px;
+    height: 420px;
+  }
+}
+
+/* Responsive: stack animation and slider on tablet and smaller */
+@media (max-width: 1024px) {
+  .adventure-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 0 16px;
+  }
+
+  .adventure-animation {
+    order: 1;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    right: 0 !important;
+  }
+
+  .star-slider-wrap {
+    order: 2;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 24px;
+    padding: 32px 16px;
+  }
+
+  .star-swiper-slide {
+    transform: none;
+  }
+
+  .monster-peek {
+    display: none; /* hide decorative monsters on smaller screens */
+  }
+}
+
+/* Optional: tighter layout for small phones */
+@media (max-width: 480px) {
+  .adventure-animation {
+    max-width: 320px;
+  }
+
+  .star-slider-wrap {
+    padding: 20px 12px;
+    border-radius: 16px;
+  }
+
+  .star-card {
+    width: 260px;
+    height: 420px;
+  }
 }

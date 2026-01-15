@@ -101,6 +101,7 @@ export default function HomeHero() {
         </div>
       </div>
       {/* Adventures Heading with Animation */}
+      <section className="center-section">
       <div className="adventure-header-wrap">
         <h2 className="star-slider-title">More Adventures Await</h2>
       </div>
@@ -183,6 +184,7 @@ export default function HomeHero() {
           </div>
         </section>
       </div>
+      </section>
       {/* Features grid / game launcher */}
       <section
         id="features"

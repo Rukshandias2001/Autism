@@ -560,4 +560,9 @@ align-items: center;
   align-items: center;
 }
 
+.center-section {
+  margin: 0;
+  min-height: 100vh;
+}
+
 
