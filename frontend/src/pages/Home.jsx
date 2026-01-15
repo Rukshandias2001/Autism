@@ -89,7 +89,7 @@ export default function HomeHero() {
             </button>
           </div>
           {/* Optional: cute floating elements like planets or icons */}
-          <div className="ls-floating-icons">
+          {/* <div className="ls-floating-icons">
             <img src={b4} alt="Planet" className="floating-icon" />
             <img
               src={b4}
@@ -97,7 +97,7 @@ export default function HomeHero() {
               className="floating-icon floating-delay"
             />
             <img src={b4} alt="Planet" className="floating-icon" />
-          </div>
+          </div> */}
         </div>
       </div>
       {/* Adventures Heading with Animation */}
@@ -106,7 +106,7 @@ export default function HomeHero() {
       </div>
       <div className="adventure-section">
         <div className="adventure-animation">
-         <img src={b4} alt="Planet" className="floating-icon"/>
+         {/* <img src={b4} alt="Planet" className="floating-icon"/> */}
           <Lottie
             animationData={adventureAnim}
             loop={true}
@@ -117,12 +117,12 @@ export default function HomeHero() {
               right: "20%",
             }}
           />
-           <img src={b4} alt="Planet" className="floating-icon" />
+           {/* <img src={b4} alt="Planet" className="floating-icon" /> */}
         </div>
-        <img src={b3} alt="Planet" className="floating-icon" />
+        {/* <img src={b3} alt="Planet" className="floating-icon" /> */}
         {/* 🌟 Learning Carousel */}
         <section
-          className="star-slider-wrap "
+          className="star-slider-wrap"
           aria-label="Featured Learning Games"
         >
           <div className="star-slider-frame">

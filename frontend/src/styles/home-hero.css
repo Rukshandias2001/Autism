@@ -457,7 +457,7 @@
 }
 
 .ls-hero-main {
-  min-height: 90vh;
+  min-height: 92vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -542,25 +542,22 @@
   }
 }
 
-.adventure-header-wrap {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  justify-content: flex-start;
-}
+
 
 .adventure-animation {
   width: 400px; /* adjust size of animation */
 }
 
-/* .star-slider-title {
+.star-slider-title {
   font-size: clamp(28px, 4vw, 36px);
   font-weight: 800;
   color: var(--ink);
-
-} */
+align-items: center;
+}
 .adventure-section {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+
