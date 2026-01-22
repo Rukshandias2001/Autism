@@ -22,7 +22,8 @@ import ParallaxMagic from "./pages/emotionSimulator/ParallaxMagic";
 import HappyLesson from "./pages/emotionSimulator/HappyLesson";
 import EmotionActivity from "./pages/emotionSimulator/EmotionActivity";
 import ExpressionPractice from "./pages/emotionSimulator/ExpressionPractice";
-import MonsterAuth from "./pages/authentication/MonsterAuth";
+import Login from "./pages/authentication/Login";
+import Signup from "./pages/authentication/SignUp";
 import ContentManager from "./pages/emotionSimulator/ContentManager";
 import ContentGrid from "./pages/emotionSimulator/ContentGrid";
 import RequireAuth from "./auth/RequireAuth";
@@ -46,7 +47,7 @@ import AlphabetLearn from "./pages/virtualNursery/learn/AlphabetLearn"
 
 //RoutineBuilder
 import RoutineHome from "./pages/routineBuilder/RoutineHome";
-  
+
 //Interactive Games
 import AdminGames from './pages/games/AdminGames.jsx';
 
@@ -93,7 +94,8 @@ export default function App() {
       <Routes>
         {/* Public */}
         <Route path="/" element={<HomeHero />} />
-        <Route path="/login" element={<MonsterAuth />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
 
         {/* Speech Therapy Tool */}
@@ -111,11 +113,11 @@ export default function App() {
         <Route path="/contents" element={<ContentManager />} />
 
         <Route path="/mentor" element={<MentorDashboard />}>
-            <Route index element={<Navigate to="reports" replace />} />
-            <Route path="reports" element={<ReportsIndex />} />
-            <Route path="progress/:childId" element={<MentorChildProgress />} />
-            <Route path="scenarios" element={<ScenariosPage />} />
-            <Route path="content" element={<ContentManager />} />
+          <Route index element={<Navigate to="reports" replace />} />
+          <Route path="reports" element={<ReportsIndex />} />
+          <Route path="progress/:childId" element={<MentorChildProgress />} />
+          <Route path="scenarios" element={<ScenariosPage />} />
+          <Route path="content" element={<ContentManager />} />
         </Route>
 
         {/* Practice (guarded) */}
@@ -124,8 +126,8 @@ export default function App() {
         </Route>
 
         {/* Mentor-only area */}
-        <Route element={<RequireAuth/>}>
-        {/* <Route element={<RequireAuth roles={["mentor"]} />}> */}
+        <Route element={<RequireAuth />}>
+          {/* <Route element={<RequireAuth roles={["mentor"]} />}> */}
           <Route path="/mentor" element={<MentorDashboard />}>
             <Route index element={<Navigate to="reports" replace />} />
             <Route path="reports" element={<ReportsIndex />} />
@@ -140,7 +142,7 @@ export default function App() {
         <Route path="/blogs/list" element={<BlogList />} />
         <Route path="/blogs/new" element={<AddBlogs />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
-         <Route path="/blogs/edit/:id" element={<EditBlogs />} />
+        <Route path="/blogs/edit/:id" element={<EditBlogs />} />
 
         {/* Virtual Nursery */}
         <Route path="/virtualNursery" element={<VirtualNursery />} />
@@ -154,16 +156,16 @@ export default function App() {
           path="/nursery/:category/activity-mode"
           element={<ActivitySwitch />}
         />
-        <Route path="/alphabets" element={<AlphabetLearn  />} />
-        <Route path="/numbers" element={<NumbersLearn  />} />
-        <Route path="/shapes" element={<ShapesLearn  />} />
-        <Route path="/colors" element={<ColoursLearn  />} />
+        <Route path="/alphabets" element={<AlphabetLearn />} />
+        <Route path="/numbers" element={<NumbersLearn />} />
+        <Route path="/shapes" element={<ShapesLearn />} />
+        <Route path="/colors" element={<ColoursLearn />} />
         <Route path="/animals" element={<AnimalsLearn isMentor={true} />} />
         <Route path="/fruits" element={<FruitsLearn isMentor={true} />} />
 
         {/* Routine Navigation */}
         <Route path="/routines" element={<RoutineNavigation />} />
-        
+
         {/* Routine Builder */}
         <Route path="/routine" element={<RoutineHome />} />
         <Route path="/games" element={<AdminGames />} />
