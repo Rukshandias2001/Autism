@@ -113,7 +113,7 @@ export default function ShapesLearn({ topic: topicProp }) {
   }, [videos, currentId]);
 
   function openAdd() {
-    if (!isMentor) return;
+    // if (!isMentor) return;
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
       return;
@@ -128,7 +128,7 @@ export default function ShapesLearn({ topic: topicProp }) {
 
   async function onAdd(e) {
     e?.preventDefault?.();
-    if (!isMentor) return;
+    // if (!isMentor) return;
 
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
@@ -182,7 +182,8 @@ export default function ShapesLearn({ topic: topicProp }) {
   console.log("ReactPlayer URL:", current?.url);
 
   async function onDelete(id) {
-    if (!isMentor || !id) return;
+    // if (!isMentor || !id) return;
+    if (!id) return;
     try {
       await axios.delete(
         `http://localhost:5050/api/learn/${topic}/videos/${id}`
@@ -279,7 +280,7 @@ export default function ShapesLearn({ topic: topicProp }) {
                   </span>
                 </button>
 
-                {isMentor && vid && (
+                {vid && (
                   <button
                     className="al-thumb-delete"
                     onClick={() => onDelete(vid)}
@@ -293,7 +294,9 @@ export default function ShapesLearn({ topic: topicProp }) {
             );
           })}
 
-          {isMentor && videos.length < MAX_VIDEOS && (
+         {/* isMentor && videos.length < MAX_VIDEOS && */}
+
+          {videos.length < MAX_VIDEOS && (
             <button
               className="al-thumb al-add"
               onClick={openAdd}
@@ -305,7 +308,9 @@ export default function ShapesLearn({ topic: topicProp }) {
           )}
         </div>
 
-        {isMentor && showForm && (
+        {/* {isMentor && showForm && */}
+
+        {showForm && (
           <div className="al-modal" role="dialog" aria-modal="true">
             <div className="al-modal-card">
               <h3>
