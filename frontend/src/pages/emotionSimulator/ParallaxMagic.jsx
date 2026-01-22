@@ -29,8 +29,8 @@ export default function ParallaxMagic() {
   const bgARef = useRef(null);
   const bgBRef = useRef(null);
   const navigate = useNavigate();
-  
-//timer for auto-navigation
+
+  //timer for auto-navigation
   const navTimerRef = useRef(null);
   const [eta, setEta] = useState(null);
 
@@ -106,9 +106,8 @@ export default function ParallaxMagic() {
     const cy = rect.top + rect.height / 2;
     const dx = (e.clientX - cx) / rect.width;
     const dy = (e.clientY - cy) / rect.height;
-    el.style.transform = `perspective(800px) rotateY(${dx * 6}deg) rotateX(${
-      -dy * 6
-    }deg) translateX(${dx * 6}px) translateY(${dy * 6}px)`;
+    el.style.transform = `perspective(800px) rotateY(${dx * 6}deg) rotateX(${-dy * 6
+      }deg) translateX(${dx * 6}px) translateY(${dy * 6}px)`;
   };
   const handleLeave = () => {
     const el = sceneRef.current;
@@ -331,130 +330,166 @@ export default function ParallaxMagic() {
 
   return (
     <div className="em-main">
-      <div
-        className={`em-hero${idle ? " em-autopan" : ""}`}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-      >
+      <div className="em-hero-container">
+        {/* LEFT PANEL */}
+        <aside className="em-side em-left-panel">
+          <div className="em-left-card">
+            <h3>Emotion stimulator</h3>
+            <p>
+              The Emotion Stimulator helps children recognize emotions. Pick a
+              puddle to jump and see how feelings change in the scene.
+            </p>
+            <div className="em-emotion1">
+              <img src={emotion} className="em-emotion" />
+            </div>
+          </div>
+
+        </aside>
+        {/* Right Panel */}
         <div
-          className="em-scene"
-          ref={sceneRef}
-          style={{ "--gust": `${gust}px` }}
+          className={`em-hero${idle ? " em-autopan" : ""}`}
+          onMouseMove={handleMove}
+          onMouseLeave={handleLeave}
         >
-          <div className="em-bg" ref={bgARef} />
-          <div className="em-bg" ref={bgBRef} />
-
-          {/* Wind streaks */}
-          <div className="em-wind">
-            {streams.map((s, i) => (
-              <span
-                key={i}
-                className="em-stream"
-                style={{
-                  "--y": `${s.y}vh`,
-                  "--len": `${s.len}vw`,
-                  "--thick": `${s.thick}px`,
-                  "--dur": `${s.dur}s`,
-                  "--delay": `${s.delay}s`,
-                  "--glow": s.glow,
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Swirls */}
-          <svg
-            className="em-swirls"
-            viewBox="0 0 1200 700"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            {swirls.map((s, i) => (
-              <g
-                key={i}
-                className="em-swirl"
-                style={{
-                  "--y": `${s.y}vh`,
-                  "--scale": s.scale,
-                  "--dur": `${s.dur}s`,
-                  "--delay": `${s.delay}s`,
-                }}
-              >
-                <path d="M -150 350 C  50 250, 150 450, 300 350 S 550 250, 700 350 S 900 450, 1050 350 S 1200 250, 1350 350" />
-                <path
-                  className="em-swirl-alt"
-                  d="M -150 360 C  20 310, 200 420, 340 360 S 600 300, 760 360 S 940 420, 1120 360"
-                />
-              </g>
-            ))}
-          </svg>
-
-          {/* Grass */}
-          <div className="em-grass">
-            {blades.map((b, i) => (
-              <span
-                key={i}
-                className="em-blade"
-                style={{
-                  "--x": b.x,
-                  "--h": `${b.h}px`,
-                  "--w": `${b.w}px`,
-                  "--dur": `${b.dur}s`,
-                  "--delay": `${b.delay}s`,
-                  "--bend": `${b.bend}deg`,
-                  "--lean": `${b.lean}px`,
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Particle layer */}
           <div
-            className="em-leaves"
-            ref={leavesRef}
-            style={{ "--gustX": `${gust * 0.05}px` }}
-          />
+            className="em-scene"
+            ref={sceneRef}
+            style={{ "--gust": `${gust}px` }}
+          >
+            <div className="em-bg" ref={bgARef} />
+            <div className="em-bg" ref={bgBRef} />
 
-          {/* Girl */}
-          <img
-            ref={girlRef}
-            className="em-girl"
-            src={spriteForMood[mood]}
-            alt="girl"
-            draggable="false"
-          />
+            {/* Wind streaks */}
+            <div className="em-wind">
+              {streams.map((s, i) => (
+                <span
+                  key={i}
+                  className="em-stream"
+                  style={{
+                    "--y": `${s.y}vh`,
+                    "--len": `${s.len}vw`,
+                    "--thick": `${s.thick}px`,
+                    "--dur": `${s.dur}s`,
+                    "--delay": `${s.delay}s`,
+                    "--glow": s.glow,
+                  }}
+                />
+              ))}
+            </div>
 
-          {/* Puddles (buttons) */}
-          <div className="em-puddles">
-            <button
-              type="button"
-              ref={puddleRefs.happy}
-              className="em-puddle em-happy"
-              data-label="😊 Happy"
-              onClick={() => hopToPuddle("happy")}
+            {/* Swirls */}
+            <svg
+              className="em-swirls"
+              viewBox="0 0 1200 700"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              {swirls.map((s, i) => (
+                <g
+                  key={i}
+                  className="em-swirl"
+                  style={{
+                    "--y": `${s.y}vh`,
+                    "--scale": s.scale,
+                    "--dur": `${s.dur}s`,
+                    "--delay": `${s.delay}s`,
+                  }}
+                >
+                  <path d="M -150 350 C  50 250, 150 450, 300 350 S 550 250, 700 350 S 900 450, 1050 350 S 1200 250, 1350 350" />
+                  <path
+                    className="em-swirl-alt"
+                    d="M -150 360 C  20 310, 200 420, 340 360 S 600 300, 760 360 S 940 420, 1120 360"
+                  />
+                </g>
+              ))}
+            </svg>
+
+            {/* Grass */}
+            <div className="em-grass">
+              {blades.map((b, i) => (
+                <span
+                  key={i}
+                  className="em-blade"
+                  style={{
+                    "--x": b.x,
+                    "--h": `${b.h}px`,
+                    "--w": `${b.w}px`,
+                    "--dur": `${b.dur}s`,
+                    "--delay": `${b.delay}s`,
+                    "--bend": `${b.bend}deg`,
+                    "--lean": `${b.lean}px`,
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Particle layer */}
+            <div
+              className="em-leaves"
+              ref={leavesRef}
+              style={{ "--gustX": `${gust * 0.05}px` }}
             />
-            <button
-              type="button"
-              ref={puddleRefs.sad}
-              className="em-puddle em-sad"
-              data-label="🥲 Sad"
-              onClick={() => hopToPuddle("sad")}
+
+            {/* Girl */}
+            <img
+              ref={girlRef}
+              className="em-girl"
+              src={spriteForMood[mood]}
+              alt="girl"
+              draggable="false"
             />
-            <button
-              type="button"
-              ref={puddleRefs.angry}
-              className="em-puddle em-angry"
-              data-label="😠 Angry"
-              onClick={() => hopToPuddle("angry")}
-            />
+
+            {/* Puddles (buttons) */}
+            <div className="em-puddles">
+              <button
+                type="button"
+                ref={puddleRefs.happy}
+                className="em-puddle em-happy"
+                data-label="😊 Happy"
+                onClick={() => hopToPuddle("happy")}
+              />
+              <button
+                type="button"
+                ref={puddleRefs.sad}
+                className="em-puddle em-sad"
+                data-label="🥲 Sad"
+                onClick={() => hopToPuddle("sad")}
+              />
+              <button
+                type="button"
+                ref={puddleRefs.angry}
+                className="em-puddle em-angry"
+                data-label="😠 Angry"
+                onClick={() => hopToPuddle("angry")}
+              />
+            </div>
+
+            {/* Butterflies */}
+            {/* <img src={b1} className="em-butterfly em-b10" alt="" />
+          <img src={b2} className="em-butterfly em-b20" alt="" />
+          <img src={b1} className="em-butterfly em-b30" alt="" /> */}
           </div>
 
-          {/* Butterflies */}
-          <img src={b1} className="em-butterfly em-b10" alt="" />
-          <img src={b2} className="em-butterfly em-b20" alt="" />
-          <img src={b1} className="em-butterfly em-b30" alt="" />
         </div>
 
+
+
+        {/* RIGHT HERO STACK + BUBBLE */}
+        {/* <aside className="em-side em-right-stack">
+        <div
+          className={`em-speech-cloud ${mood !== "neutral" ? "em-hide" : ""}`}
+        >
+          select emotion
+        </div>
+
+      </aside> */}
+      </div>
+
+
+      <div className="image-content">
+        <div className="em-gate">
+          <img src={bg} alt="" className="em-gate-bg" />
+        </div>
         {/* Road inside the scene */}
         <img
           src={road}
@@ -462,37 +497,11 @@ export default function ParallaxMagic() {
           className="em-road em-road-inner"
           aria-hidden="true"
         />
-      </div>
 
-      {/* LEFT PANEL */}
-      <aside className="em-side em-left-panel">
-        <div className="em-left-card">
-          <h3>Emotion stimulator</h3>
-          <p>
-            The Emotion Stimulator helps children recognize emotions. Pick a
-            puddle to jump and see how feelings change in the scene.
-          </p>
-          <div className="em-emotion1">
-            <img src={emotion} className="em-emotion" />
-          </div>
-        </div>
-        <div className="em-gate">
-          <img src={bg} alt="" className="em-gate-bg" />
-        </div>
-      </aside>
-
-      {/* RIGHT HERO STACK + BUBBLE */}
-      <aside className="em-side em-right-stack">
-        <div
-          className={`em-speech-cloud ${mood !== "neutral" ? "em-hide" : ""}`}
-        >
-          select emotion
-        </div>
         <div className="em-gate">
           <img src={bg} alt="" className="em-gate-bg em-heroes-pack" />
         </div>
-      </aside>
-
+      </div>
       {/* Optional: tiny auto-nav toast */}
       {eta != null && (
         <div className="em-autonav">
