@@ -62,6 +62,11 @@ import ChildRegistration from "./pages/parent/ChildRegistration";
 import RoutineNavigation from "./pages/RoutineNavigation";
 
 import Example from "./Example";
+import NumbersLearn from "./pages/virtualNursery/learn/NumbersLearn.jsx";
+import ShapesLearn from "./pages/virtualNursery/learn/ShapesLearn.jsx";
+import ColoursLearn from "./pages/virtualNursery/learn/ColoursLearn.jsx";
+import AnimalsLearn from "./pages/virtualNursery/learn/AnimalsLearn.jsx";
+import FruitsLearn from "./pages/virtualNursery/learn/FruitsLearn.jsx";
 
 // Simple stubs
 function Routine() {
@@ -149,7 +154,12 @@ export default function App() {
           path="/nursery/:category/activity-mode"
           element={<ActivitySwitch />}
         />
-        <Route path="/alphabets" element={<AlphabetLearn isMentor={true} />} />
+        <Route path="/alphabets" element={<AlphabetLearn  />} />
+        <Route path="/numbers" element={<NumbersLearn  />} />
+        <Route path="/shapes" element={<ShapesLearn  />} />
+        <Route path="/colors" element={<ColoursLearn  />} />
+        <Route path="/animals" element={<AnimalsLearn isMentor={true} />} />
+        <Route path="/fruits" element={<FruitsLearn isMentor={true} />} />
 
         {/* Routine Navigation */}
         <Route path="/routines" element={<RoutineNavigation />} />

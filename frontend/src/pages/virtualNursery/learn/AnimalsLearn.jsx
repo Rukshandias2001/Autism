@@ -100,7 +100,7 @@ export default function AnimalsLearn({ topic: topicProp }) {
   }, [videos, currentId]);
 
   function openAdd() {
-    if (!isMentor) return;
+    // if (!isMentor) return;
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
       return;
@@ -115,7 +115,7 @@ export default function AnimalsLearn({ topic: topicProp }) {
 
   async function onAdd(e) {
     e?.preventDefault?.();
-    if (!isMentor) return;
+    // if (!isMentor) return;
 
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
@@ -276,7 +276,17 @@ export default function AnimalsLearn({ topic: topicProp }) {
             );
           })}
 
-          {isMentor && videos.length < MAX_VIDEOS && (
+          {/* {videos.length < MAX_VIDEOS && (
+            <button
+              className="al-thumb al-add"
+              onClick={openAdd}
+              aria-label="Add new video"
+            >
+              <div className="al-add-plus">＋</div>
+              <span className="al-thumb-title">Add video</span>
+            </button>
+          )} */}
+           {videos.length < MAX_VIDEOS && (
             <button
               className="al-thumb al-add"
               onClick={openAdd}
@@ -288,7 +298,7 @@ export default function AnimalsLearn({ topic: topicProp }) {
           )}
         </div>
 
-        {isMentor && showForm && (
+        {showForm && (
           <div className="al-modal" role="dialog" aria-modal="true">
             <div className="al-modal-card">
               <h3>
