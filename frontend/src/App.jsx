@@ -105,13 +105,22 @@ export default function App() {
         <Route path="/lesson/:emotion/content" element={<ContentGrid />} />
         <Route path="/contents" element={<ContentManager />} />
 
+        <Route path="/mentor" element={<MentorDashboard />}>
+            <Route index element={<Navigate to="reports" replace />} />
+            <Route path="reports" element={<ReportsIndex />} />
+            <Route path="progress/:childId" element={<MentorChildProgress />} />
+            <Route path="scenarios" element={<ScenariosPage />} />
+            <Route path="content" element={<ContentManager />} />
+        </Route>
+
         {/* Practice (guarded) */}
         <Route element={<RequireAuth roles={["parent", "mentor"]} />}>
           <Route path="/practice/:emotion" element={<ExpressionPractice />} />
         </Route>
 
         {/* Mentor-only area */}
-        <Route element={<RequireAuth roles={["mentor"]} />}>
+        <Route element={<RequireAuth/>}>
+        {/* <Route element={<RequireAuth roles={["mentor"]} />}> */}
           <Route path="/mentor" element={<MentorDashboard />}>
             <Route index element={<Navigate to="reports" replace />} />
             <Route path="reports" element={<ReportsIndex />} />
