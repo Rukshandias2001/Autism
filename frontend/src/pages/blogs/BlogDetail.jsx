@@ -250,12 +250,13 @@ export default function BlogDetail() {
             </div>
 
             <div className="nm-ctas">
-              <button className="nm-btn buy" onClick={speak}>
+              <button type="button" className="nm-btn buy" onClick={speak}>
                 READ ALOUD
               </button>
-              <Link to="#" className="nm-btn ghost" onClick={stopSpeak}>
+
+              <button type="button" className="nm-btn ghost" onClick={stopSpeak}>
                 STOP
-              </Link>
+              </button>
             </div>
           </div>
         </section>

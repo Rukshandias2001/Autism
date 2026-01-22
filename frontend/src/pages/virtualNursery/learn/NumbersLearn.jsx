@@ -100,7 +100,7 @@ export default function NumbersLearn({ topic: topicProp }) {
   }, [videos, currentId]);
 
   function openAdd() {
-    if (!isMentor) return;
+    // if (!isMentor) return;
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
       return;
@@ -115,7 +115,7 @@ export default function NumbersLearn({ topic: topicProp }) {
 
   async function onAdd(e) {
     e?.preventDefault?.();
-    if (!isMentor) return;
+    // if (!isMentor) return;
 
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
@@ -169,7 +169,8 @@ export default function NumbersLearn({ topic: topicProp }) {
   console.log("ReactPlayer URL:", current?.url);
 
   async function onDelete(id) {
-    if (!isMentor || !id) return;
+    //!isMentor ||
+    if (!id) return;
     try {
       await axios.delete(
         `http://localhost:5050/api/learn/${topic}/videos/${id}`
@@ -261,8 +262,8 @@ export default function NumbersLearn({ topic: topicProp }) {
                     {v.title || "Untitled"}
                   </span>
                 </button>
-
-                {isMentor && vid && (
+                {/* // {isMentor && vid &&  */}
+                {vid && (
                   <button
                     className="al-thumb-delete"
                     onClick={() => onDelete(vid)}
@@ -275,8 +276,9 @@ export default function NumbersLearn({ topic: topicProp }) {
               </div>
             );
           })}
+          {/* {isMentor && videos.length < MAX_VIDEOS && */}
 
-          {isMentor && videos.length < MAX_VIDEOS && (
+          {videos.length < MAX_VIDEOS && (
             <button
               className="al-thumb al-add"
               onClick={openAdd}
@@ -288,7 +290,9 @@ export default function NumbersLearn({ topic: topicProp }) {
           )}
         </div>
 
-        {isMentor && showForm && (
+        {/* //isMentor && showForm && */}
+
+        { showForm && (
           <div className="al-modal" role="dialog" aria-modal="true">
             <div className="al-modal-card">
               <h3>
