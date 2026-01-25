@@ -156,12 +156,13 @@ export default function App() {
           path="/nursery/:category/activity-mode"
           element={<ActivitySwitch />}
         />
-        <Route path="/alphabets" element={<AlphabetLearn />} />
-        <Route path="/numbers" element={<NumbersLearn />} />
-        <Route path="/shapes" element={<ShapesLearn />} />
+            
+        <Route path="/alphabets" element={<AlphabetLearn  />} />
+        <Route path="/numbers" element={<NumbersLearn  />} />
+        <Route path="/shapes" element={<ShapesLearn  />} />
         <Route path="/colors" element={<ColoursLearn />} />
-        <Route path="/animals" element={<AnimalsLearn isMentor={true} />} />
-        <Route path="/fruits" element={<FruitsLearn isMentor={true} />} />
+        <Route path="/animals" element={<AnimalsLearn  />} />
+        <Route path="/fruits" element={<FruitsLearn  />} />
 
         {/* Routine Navigation */}
         <Route path="/routines" element={<RoutineNavigation />} />
