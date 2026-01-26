@@ -17,85 +17,85 @@ export default function BlogDetail() {
   const [body, setBody] = useState("");
 
   // --- ADD: load comments when blog/id changes ---
-  useEffect(() => {
-    if (!id) return;
-    let on = true;
-    (async () => {
-      try {
-        setCLoading(true);
-        setCErr("");
-        const res = await fetch(
-          `http://localhost:5050/api/blogs/${id}/comments`
-        );
-        if (!res.ok) throw new Error(`Error: ${res.status}`);
-        const data = await res.json();
-        if (on) setComments(Array.isArray(data) ? data : []);
-      } catch (e) {
-        if (on) setCErr("Failed to load comments");
-      } finally {
-        if (on) setCLoading(false);
-      }
-    })();
-    return () => {
-      on = false;
-    };
-  }, [id]);
+  // useEffect(() => {
+  //   if (!id) return;
+  //   let on = true;
+  //   (async () => {
+  //     try {
+  //       setCLoading(true);
+  //       setCErr("");
+  //       const res = await fetch(
+  //         `http://localhost:5050/api/blogs/${id}/comments`
+  //       );
+  //       if (!res.ok) throw new Error(`Error: ${res.status}`);
+  //       const data = await res.json();
+  //       if (on) setComments(Array.isArray(data) ? data : []);
+  //     } catch (e) {
+  //       if (on) setCErr("Failed to load comments");
+  //     } finally {
+  //       if (on) setCLoading(false);
+  //     }
+  //   })();
+  //   return () => {
+  //     on = false;
+  //   };
+  // }, [id]);
 
   // --- ADD: create comment ---
-  const submitComment = async (e) => {
-    e.preventDefault();
-    if (!body.trim()) return;
-    try {
-      const payload = {
-        author: author.trim() || "Anonymous",
-        body: body.trim(),
-      };
-      // optimistic add
-      const temp = {
-        id: `temp-${Date.now()}`,
-        ...payload,
-        createdAt: new Date().toISOString(),
-        _optimistic: true,
-      };
-      setComments((prev) => [temp, ...prev]);
-      setBody("");
+  // const submitComment = async (e) => {
+  //   e.preventDefault();
+  //   if (!body.trim()) return;
+  //   try {
+  //     const payload = {
+  //       author: author.trim() || "Anonymous",
+  //       body: body.trim(),
+  //     };
+  //     // optimistic add
+  //     const temp = {
+  //       id: `temp-${Date.now()}`,
+  //       ...payload,
+  //       createdAt: new Date().toISOString(),
+  //       _optimistic: true,
+  //     };
+  //     setComments((prev) => [temp, ...prev]);
+  //     setBody("");
 
-      const res = await fetch(
-        `http://localhost:5050/api/blogs/${id}/comments`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-      if (!res.ok) throw new Error("Post failed");
-      const saved = await res.json();
-      // swap optimistic with saved
-      setComments((prev) => [saved, ...prev.filter((c) => c.id !== temp.id)]);
-    } catch (e) {
-      setCErr("Could not post comment");
-      // rollback optimistic
-      setComments((prev) => prev.filter((c) => !c._optimistic));
-    }
-  };
+  //     const res = await fetch(
+  //       `http://localhost:5050/api/blogs/${id}/comments`,
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(payload),
+  //       }
+  //     );
+  //     if (!res.ok) throw new Error("Post failed");
+  //     const saved = await res.json();
+  //     // swap optimistic with saved
+  //     setComments((prev) => [saved, ...prev.filter((c) => c.id !== temp.id)]);
+  //   } catch (e) {
+  //     setCErr("Could not post comment");
+  //     // rollback optimistic
+  //     setComments((prev) => prev.filter((c) => !c._optimistic));
+  //   }
+  // };
 
   // --- ADD: delete comment (optional) ---
-  const deleteComment = async (commentId) => {
-    const old = comments;
-    setComments((prev) => prev.filter((c) => c.id !== commentId));
-    try {
-      const res = await fetch(
-        `http://localhost:5050/api/blogs/${id}/comments/${commentId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!res.ok) throw new Error("Delete failed");
-    } catch {
-      setComments(old); // rollback
-      alert("Delete failed.");
-    }
-  };
+  // const deleteComment = async (commentId) => {
+  //   const old = comments;
+  //   setComments((prev) => prev.filter((c) => c.id !== commentId));
+  //   try {
+  //     const res = await fetch(
+  //       `http://localhost:5050/api/blogs/${id}/comments/${commentId}`,
+  //       {
+  //         method: "DELETE",
+  //       }
+  //     );
+  //     if (!res.ok) throw new Error("Delete failed");
+  //   } catch {
+  //     setComments(old); // rollback
+  //     alert("Delete failed.");
+  //   }
+  // };
 
   useEffect(() => {
     let alive = true;
@@ -286,7 +286,7 @@ export default function BlogDetail() {
         </article>
 
         {/* ----- Comments Section ----- */}
-        <section className="nm-comments">
+        {/* <section className="nm-comments">
           <div className="nm-comments-top">
             <h2>Comments</h2>
             <span className="nm-count">{comments.length}</span>
@@ -348,7 +348,7 @@ export default function BlogDetail() {
               </li>
             ))}
           </ul>
-        </section>
+        </section> */}
       </div>
     </div>
   );
