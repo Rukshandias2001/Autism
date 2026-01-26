@@ -1,5 +1,5 @@
-import React, { useState, useEffect} from "react";
-
+import React, {useEffect} from "react";
+import "./InteractiveGames.css";
 
 export default function InteractiveGames() {
 
@@ -7,10 +7,24 @@ export default function InteractiveGames() {
         document.title = "Interactive Games - KidzConnect";
     }, []);
   return (
-    <div style={{ padding: 20 }}>
-      <h1>🎮 Interactive Games</h1>
-      <p>Welcome to the Interactive Games page! Here you can find a variety of fun and educational games designed to engage and entertain.</p>
-      {/* Add more content and components related to interactive games here */}
+    <div className="container">
+      <div className="leftContainer">
+        <div className="menu">
+            <button className="menu-btn">Alphabet</button>
+            <button className="menu-btn">Colours</button>
+            <button className="menu-btn">Shapes</button>
+            <button className="menu-btn">Numbers</button>    
+            <button className="menu-btn">Body Parts</button>    
+        </div>
+      </div>
+      <div className="rightContainer">
+        <div className="rightTopContainer">
+
+        </div>
+        <div className="rightBottomContainer">
+
+        </div>
+      </div>
     </div>
   );
 }
