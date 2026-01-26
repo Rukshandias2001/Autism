@@ -48,6 +48,7 @@ import AlphabetLearn from "./pages/virtualNursery/learn/AlphabetLearn"
 import RoutineHome from "./pages/routineBuilder/RoutineHome";
   
 //Interactive Games
+import InteractiveGames from "./pages/games/InteractiveGames.jsx";
 import AdminGames from './pages/games/AdminGames.jsx';
 
 // Child Interface
@@ -147,7 +148,7 @@ export default function App() {
         
         {/* Routine Builder */}
         <Route path="/routine" element={<RoutineHome />} />
-        <Route path="/games" element={<AdminGames />} />
+        <Route path="/games" element={<InteractiveGames />} />
 
         {/* Child Interface */}
         <Route path="/child/login" element={<ChildAuth />} />
