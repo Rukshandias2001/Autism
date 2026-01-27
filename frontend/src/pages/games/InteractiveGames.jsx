@@ -1,115 +1,44 @@
 import React, { useState, useEffect } from "react";
 import "./InteractiveGames.css";
 
-// --- GAME COMPONENTS ---
-
-// 1.1 Routine Simulation
-const RoutineSimulation = () => {
-  const [step, setStep] = useState(0);
-  const steps = [
-    { task: "Turn off the alarm", img: "https://placehold.co/150/f39c12/white?text=Alarm+Clock" },
-    { task: "Brush your teeth", img: "https://placehold.co/150/3498db/white?text=Toothbrush" },
-    { task: "Put on your shirt", img: "https://placehold.co/150/2ecc71/white?text=Shirt" }
-  ];
-  return (
-    <div className="game-box">
-      <h3>Morning Routine</h3>
-      <img src={steps[step].img} alt="task" />
-      <p>Can you {steps[step].task}?</p>
-      <button onClick={() => setStep((step + 1) % steps.length)}>Done! Next Step</button>
-    </div>
-  );
-};
-
-// 1.2.1 Canteen Scenario
-const CanteenGame = () => {
-  const [balance, setBalance] = useState(10);
-  const buy = (price) => balance >= price ? setBalance(balance - price) : alert("Not enough money!");
-  return (
-    <div className="game-box">
-      <h3>Canteen: Budgeting</h3>
-      <p>Your Balance: ${balance}</p>
-      <div className="items">
-        <button onClick={() => buy(2)}>🍎 Apple ($2)</button>
-        <button onClick={() => buy(5)}>🥪 Sandwich ($5)</button>
-      </div>
-    </div>
-  );
-};
-
-// 2.1 Emotion Recognition
-const EmotionGame = () => {
-  const [target] = useState("Happy");
-  const options = ["Happy", "Sad", "Angry"];
-  const check = (opt) => opt === target ? alert("Correct!") : alert("Try again!");
-  return (
-    <div className="game-box">
-      <h3>Emotion Detective</h3>
-      <img src="https://placehold.co/150/f1c40f/333?text=:D" alt="emotion" />
-      <p>How is this person feeling?</p>
-      {options.map(opt => <button key={opt} onClick={() => check(opt)}>{opt}</button>)}
-    </div>
-  );
-};
-
-// 3.1 Train Game (Sorting)
-const TrainGame = () => {
-  const [wagons, setWagons] = useState([]);
-  const addWagon = (color) => setWagons([...wagons, color]);
-  return (
-    <div className="game-box">
-      <h3>The Color Train</h3>
-      <div className="train-track">
-        <div className="engine">🚂</div>
-        {wagons.map((c, i) => <div key={i} className="wagon" style={{background: c}}></div>)}
-      </div>
-      <p>Add a wagon to the train:</p>
-      <button onClick={() => addWagon("red")}>🔴 Red</button>
-      <button onClick={() => addWagon("blue")}>🔵 Blue</button>
-      <button onClick={() => setWagons([])}>Reset</button>
-    </div>
-  );
-};
-
-// --- MAIN COMPONENT ---
-
 export default function InteractiveGames() {
-  const [activeGame, setActiveGame] = useState("intro");
+  const [activeGame, setActiveGame] = useState("Routine");
 
   useEffect(() => {
-    document.title = "Interactive Games - KidzConnect";
+    document.title = "Interactive Games";
   }, []);
 
   const renderGame = () => {
     switch (activeGame) {
-      case "1.1": return <RoutineSimulation />;
-      case "1.2.1": return <CanteenGame />;
-      case "2.1": return <EmotionGame />;
-      case "3.1": return <TrainGame />;
-      default: return <div className="intro">Select a game from the menu to start playing!</div>;
+      case "Routine": return <RoutineGame />;
+      case "Transport": return <TransportGame />;
+      case "Social": return <SocialScripting />;
+      case "Spatial": return <SpatialSequence />;
+      default: return <div className="placeholder">Select a game from the menu</div>;
     }
   };
 
   return (
-    <div className="container">
+    <div className="game-wrapper">
       <div className="leftContainer">
         <div className="menu">
-          <h4 className="category-title">1. Daily Living</h4>
-          <button className="menu-btn" onClick={() => setActiveGame("1.1")}>1.1 Routine Simulation</button>
-          <button className="menu-btn" onClick={() => setActiveGame("1.2.1")}>1.2.1 Canteen</button>
-          
-          <h4 className="category-title">2. Social/Emotional</h4>
-          <button className="menu-btn" onClick={() => setActiveGame("2.1")}>2.1 Emotion Recognition</button>
-          <button className="menu-btn">2.2 Eye Gaze</button>
-          
-          <h4 className="category-title">3. Cognitive</h4>
-          <button className="menu-btn" onClick={() => setActiveGame("3.1")}>3.1 Train Game</button>
-          <button className="menu-btn">3.2 Spatial Sequences</button>
+          {["Routine", "Transport", "Social", "Spatial"].map((game) => (
+            <button 
+              key={game} 
+              className={`menu-btn ${activeGame === game ? "active" : ""}`}
+              onClick={() => setActiveGame(game)}
+            >
+              {game === "Routine" && "Daily Routine"}
+              {game === "Transport" && "Bus Catching"}
+              {game === "Social" && "Social Choices"}
+              {game === "Spatial" && "Memory Match"}
+            </button>
+          ))}
         </div>
       </div>
       <div className="rightContainer">
         <div className="rightTopContainer">
-          <h2>Game Zone</h2>
+          <h2>{activeGame} Simulation</h2>
         </div>
         <div className="rightBottomContainer">
           {renderGame()}
@@ -118,3 +47,152 @@ export default function InteractiveGames() {
     </div>
   );
 }
+
+// --- GAME 1: ROUTINE SIMULATION ---
+const RoutineGame = () => {
+  const initial = ["Alarm Off", "Wash Face", "Get Dressed", "Eat Breakfast"];
+  const [items, setItems] = useState(["Wash Face", "Alarm Off", "Eat Breakfast", "Get Dressed"]);
+  const [feedback, setFeedback] = useState("");
+
+  const moveItem = (idx, direction) => {
+    const newItems = [...items];
+    const targetIdx = idx + direction;
+    if (targetIdx < 0 || targetIdx >= items.length) return;
+    [newItems[idx], newItems[targetIdx]] = [newItems[targetIdx], newItems[idx]];
+    setItems(newItems);
+  };
+
+  const checkOrder = () => {
+    const isCorrect = JSON.stringify(items) === JSON.stringify(initial);
+    setFeedback(isCorrect ? "✅ Great job! Correct order." : "❌ Not quite, try again!");
+  };
+
+  return (
+    <div className="game-box">
+      <p>Drag buttons or use arrows to order your morning:</p>
+      {items.map((item, i) => (
+        <div key={item} className="routine-item">
+          <span>{item}</span>
+          <div>
+            <button onClick={() => moveItem(i, -1)}>↑</button>
+            <button onClick={() => moveItem(i, 1)}>↓</button>
+          </div>
+        </div>
+      ))}
+      <button className="confirm-btn" onClick={checkOrder}>Confirm Order</button>
+      <p className="feedback">{feedback}</p>
+    </div>
+  );
+};
+
+// --- GAME 2: TRANSPORTATION ---
+const TransportGame = () => {
+  const steps = [
+    { color: "blue", number: "223", action: "ignore", msg: "Look! A Blue 223 bus. Is it ours?" },
+    { color: "yellow", number: "118", action: "ignore", msg: "Look! A Yellow 118 bus. Is it ours?" },
+    { color: "red", number: "118", action: "getIn", msg: "Look! A Red 118 bus. Is it ours?" }
+  ];
+  const [step, setStep] = useState(0);
+  const [status, setStatus] = useState("Goal: Get on Red Bus #118");
+
+  const handleChoice = (choice) => {
+    if (choice === steps[step].action) {
+      if (step === 2) {
+        setStatus("🎉 Well done! You're on the right bus!");
+      } else {
+        setStep(step + 1);
+      }
+    } else {
+      setStatus("Oops! That's not the right bus. Try again!");
+      setStep(0);
+    }
+  };
+
+  return (
+    <div className="game-box">
+      <p>{status}</p>
+      {step <= 2 && (
+        <div className="bus-scene">
+          <div className="bus" style={{ backgroundColor: steps[step].color }}>
+            <span>{steps[step].number}</span>
+          </div>
+          <p>{steps[step].msg}</p>
+          <button onClick={() => handleChoice("ignore")}>Ignore</button>
+          <button onClick={() => handleChoice("getIn")}>Get In</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- GAME 3: SOCIAL SCRIPTING ---
+const SocialScripting = () => {
+  const [choice, setChoice] = useState(null);
+  const scenarios = {
+    aggressive: "The friend feels sad and goes away. 😢",
+    passive: "You feel a bit sad because you wanted to play too. 😐",
+    prosocial: "You both have fun playing together! 🌟"
+  };
+
+  return (
+    <div className="game-box">
+      <p>"Can I play with your toy?"</p>
+      {!choice ? (
+        <div className="choice-list">
+          <button onClick={() => setChoice("aggressive")}>"No! Go away!"</button>
+          <button onClick={() => setChoice("passive")}>"Okay... (give it up)"</button>
+          <button onClick={() => setChoice("prosocial")}>"Sure, let's share!"</button>
+        </div>
+      ) : (
+        <div className="outcome">
+          <p>{scenarios[choice]}</p>
+          <button onClick={() => setChoice(null)}>Try Again</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- GAME 4: SPATIAL SEQUENCES ---
+const SpatialSequence = () => {
+  const colors = ["red", "blue", "green"];
+  const [sequence, setSequence] = useState([]);
+  const [userSeq, setUserSeq] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [msg, setMsg] = useState("Click Start to watch the sequence");
+
+  const startLevel = () => {
+    const newSeq = [...sequence, colors[Math.floor(Math.random() * 3)]];
+    setSequence(newSeq);
+    setUserSeq([]);
+    setIsPlaying(true);
+    setMsg("Watch carefully...");
+    // Sequence playback logic would go here
+  };
+
+  const handleColorClick = (color) => {
+    const nextUserSeq = [...userSeq, color];
+    setUserSeq(nextUserSeq);
+    if (color !== sequence[nextUserSeq.length - 1]) {
+      setMsg("Wrong sequence! Game Reset.");
+      setSequence([]);
+      return;
+    }
+    if (nextUserSeq.length === sequence.length) {
+      setMsg("Correct! Get ready for the next level.");
+      setTimeout(startLevel, 1000);
+    }
+  };
+
+  return (
+    <div className="game-box">
+      <p>{msg}</p>
+      <div className="simon-grid">
+        {colors.map(c => (
+          <div key={c} className={`color-btn ${c}`} onClick={() => handleColorClick(c)} />
+        ))}
+      </div>
+      {sequence.length === 0 && <button onClick={startLevel}>Start Game</button>}
+    </div>
+  );
+};

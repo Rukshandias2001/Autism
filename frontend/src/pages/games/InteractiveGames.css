@@ -1,16 +1,24 @@
-.container {
+/* Layout Container */
+.game-wrapper {
   display: flex;
-  height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f2f5;
+  flex-direction: row;
+  min-height: 80vh;
+  padding: 20px;
+  gap: 20px;
+  font-family: sans-serif;
 }
 
 .leftContainer {
-  width: 300px;
-  background-color: #ffffff;
-  border-right: 2px solid #ddd;
+  flex: 1;
+  max-width: 200px;
+}
+
+.rightContainer {
+  flex: 3;
+  background: #f9f9f9;
+  border-radius: 12px;
   padding: 20px;
-  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .menu {
@@ -19,86 +27,93 @@
   gap: 10px;
 }
 
-.category-title {
-  margin-top: 20px;
-  color: #2c3e50;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 5px;
-  font-size: 14px;
-  text-transform: uppercase;
-}
-
 .menu-btn {
-  padding: 12px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  background: #fff;
+  border: 2px solid #ddd;
+  padding: 15px;
   text-align: left;
-  transition: background 0.3s;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+  font-weight: bold;
 }
 
-.menu-btn:hover {
-  background-color: #2980b9;
+.menu-btn.active {
+  border-color: #007bff;
+  background: #e7f1ff;
 }
 
-.rightContainer {
-  flex: 1;
+/* Game Elements */
+.game-box {
   display: flex;
   flex-direction: column;
-}
-
-.rightTopContainer {
-  height: 80px;
-  background-color: #fff;
-  display: flex;
   align-items: center;
-  padding: 0 40px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  gap: 15px;
 }
 
-.rightBottomContainer {
-  flex: 1;
-  padding: 40px;
+.routine-item {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Game Specific Styles */
-.game-box {
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  text-align: center;
+  justify-content: space-between;
   width: 100%;
-  max-width: 500px;
+  max-width: 300px;
+  padding: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.game-box img {
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-.train-track {
+.bus {
+  width: 150px;
+  height: 80px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 10px;
   margin: 20px 0;
-  padding: 20px;
-  background: #eee;
-  min-height: 80px;
-  overflow-x: auto;
 }
 
-.wagon {
-  width: 50px;
-  height: 40px;
-  border-radius: 4px;
+.simon-grid {
+  display: flex;
+  gap: 15px;
 }
 
-.engine {
-  font-size: 40px;
+.color-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.red { background: #ff4d4d; }
+.blue { background: #4d94ff; }
+.green { background: #4dff88; }
+
+.confirm-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .game-wrapper {
+    flex-direction: column;
+  }
+  .leftContainer {
+    max-width: 100%;
+  }
+  .menu {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  .menu-btn {
+    white-space: nowrap;
+  }
 }
