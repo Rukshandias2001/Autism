@@ -29,6 +29,7 @@ import ContentGrid from "./pages/emotionSimulator/ContentGrid";
 import RequireAuth from "./auth/RequireAuth";
 import MentorDashboard from "./pages/mentor/MentorDashboard";
 import ReportsIndex from "./pages/mentor/ReportsIndex";
+import ChildReport from "./pages/mentor/ChildReport";
 import MentorChildProgress from "./pages/mentor/MentorChildProgress";
 import ScenariosPage from "./pages/mentor/ScenariosPage";
 
@@ -115,6 +116,7 @@ export default function App() {
         <Route path="/mentor" element={<MentorDashboard />}>
           <Route index element={<Navigate to="reports" replace />} />
           <Route path="reports" element={<ReportsIndex />} />
+          <Route path="reports/:childId" element={<ChildReport />} />
           <Route path="progress/:childId" element={<MentorChildProgress />} />
           <Route path="scenarios" element={<ScenariosPage />} />
           <Route path="content" element={<ContentManager />} />
@@ -131,6 +133,7 @@ export default function App() {
           <Route path="/mentor" element={<MentorDashboard />}>
             <Route index element={<Navigate to="reports" replace />} />
             <Route path="reports" element={<ReportsIndex />} />
+            <Route path="reports/:childId" element={<ChildReport />} />
             <Route path="progress/:childId" element={<MentorChildProgress />} />
             <Route path="scenarios" element={<ScenariosPage />} />
             <Route path="content" element={<ContentManager />} />

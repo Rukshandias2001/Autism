@@ -7,9 +7,12 @@ export async function canViewChild(req, res, next) {
   const child = await Child.findById(childId).lean();
   if (!child) return res.status(404).json({ message: "Child not found" });
 
-  const isParent = role === "parent" && String(child.parentId) === sub;
-  const isMentor = role === "mentor" && (child.mentorIds || []).some(id => String(id) === sub);
+  // Mentors can view ALL children
+  if (role === "mentor") return next();
 
-  if (isParent || isMentor) return next();
+  const isParent = role === "parent" && String(child.parentId) === sub;
+  const isAssignedMentor = (child.mentorIds || []).some(id => String(id) === sub);
+
+  if (isParent || isAssignedMentor) return next();
   return res.status(403).json({ message: "Forbidden" });
 }

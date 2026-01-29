@@ -109,6 +109,10 @@ app.use("/api/learn", NurseryVideos);
 app.use("/api/cards", cardRoutes);
 app.use("/api/speech/attempts", speechAttemptsRouter);
 
+// Reports
+import reportsRouter from "./routes/reports.js";
+app.use("/api/reports", reportsRouter);
+
 // Routine Builder
 import activityRoutes from "./routes/activityRoutes.js";
 import routineRoutes from "./routes/routineRoutes.js";

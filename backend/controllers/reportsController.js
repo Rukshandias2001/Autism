@@ -1,4 +1,5 @@
 // controllers/reportsController.js
+import mongoose from "mongoose";
 import PracticeAttempt from "../models/PracticeAttempt.js";
 const asyncH = fn => (req,res,next)=>Promise.resolve(fn(req,res,next)).catch(next);
 
@@ -6,7 +7,7 @@ export const getChildReport = asyncH(async (req,res)=>{
   const { childId } = req.params;
 
   const byEmotion = await PracticeAttempt.aggregate([
-    { $match: { childId: new (require("mongoose").Types.ObjectId)(childId) } },
+    { $match: { childId: new mongoose.Types.ObjectId(childId) } },
     { $group: {
       _id: "$emotionName",
       attempts: { $sum: 1 },
@@ -30,7 +31,7 @@ export const getChildReport = asyncH(async (req,res)=>{
     .lean();
 
   const overallAgg = await PracticeAttempt.aggregate([
-    { $match: { childId: new (require("mongoose").Types.ObjectId)(childId) } },
+    { $match: { childId: new mongoose.Types.ObjectId(childId) } },
     { $group: {
       _id: null,
       attempts: { $sum: 1 },

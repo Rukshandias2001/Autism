@@ -1,5 +1,5 @@
 // src/pages/mentor/ReportsIndex.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ChildrenAPI } from "../../api/http";
 import { Link } from "react-router-dom";
 import "../../styles/mentor/ReportsIndex.css";
@@ -9,33 +9,44 @@ const ITEMS_PER_PAGE = 10;
 export default function ReportsIndex() {
   const [kids, setKids] = useState([]);
   const [q, setQ] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchChildren = useCallback(async (page, search) => {
     setLoading(true);
-    ChildrenAPI.list()
-      .then(setKids)
-      .catch(() => setKids([]))
-      .finally(() => setLoading(false));
+    try {
+      const result = await ChildrenAPI.list({ page, limit: ITEMS_PER_PAGE, search });
+      setKids(result.children || []);
+      setTotalPages(result.pagination?.totalPages || 1);
+      setTotal(result.pagination?.total || 0);
+      setCurrentPage(result.pagination?.page || 1);
+    } catch (err) {
+      console.error(err);
+      setKids([]);
+      setTotalPages(1);
+      setTotal(0);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  // Filter children based on search query
-  const filteredKids = kids.filter(
-    (k) =>
-      k.name?.toLowerCase().includes(q.toLowerCase()) ||
-      k.account?.username?.toLowerCase().includes(q.toLowerCase())
-  );
-
-  // Pagination logic
-  const totalPages = Math.ceil(filteredKids.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedKids = filteredKids.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  // Reset to page 1 when search query changes
   useEffect(() => {
-    setCurrentPage(1);
-  }, [q]);
+    fetchChildren(currentPage, q);
+  }, [currentPage, q, fetchChildren]);
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchInput !== q) {
+        setQ(searchInput);
+        setCurrentPage(1);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchInput, q]);
 
   const getInitials = (name) => {
     if (!name) return "?";
@@ -87,19 +98,19 @@ export default function ReportsIndex() {
           <input
             type="text"
             placeholder="Search by name or username..."
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
             className="search-input"
           />
-          {q && (
-            <button onClick={() => setQ("")} className="clear-btn">×</button>
+          {searchInput && (
+            <button onClick={() => { setSearchInput(""); setQ(""); }} className="clear-btn">×</button>
           )}
         </div>
       </div>
 
       {/* Results Info */}
       <div className="results-info">
-        Showing {paginatedKids.length} of {filteredKids.length} children
+        Showing {kids.length} of {total} children
         {q && ` matching "${q}"`}
       </div>
 
@@ -111,7 +122,7 @@ export default function ReportsIndex() {
       )}
 
       {/* Empty State */}
-      {!loading && filteredKids.length === 0 && (
+      {!loading && kids.length === 0 && (
         <div className="empty-state">
           <div className="empty-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,9 +135,9 @@ export default function ReportsIndex() {
       )}
 
       {/* Children Grid */}
-      {!loading && paginatedKids.length > 0 && (
+      {!loading && kids.length > 0 && (
         <div className="children-grid">
-          {paginatedKids.map((child) => (
+          {kids.map((child) => (
             <Link key={child._id} to={`/mentor/reports/${child._id}`} className="child-card">
               <div className="card-header">
                 <div className="avatar" style={{ background: getAvatarColor(child.name) }}>
@@ -182,9 +193,11 @@ export default function ReportsIndex() {
       )}
 
       {/* Pagination */}
-      {!loading && totalPages > 1 && (
+      {!loading && (
         <div className="pagination">
-          <span className="page-info">Page {currentPage} of {totalPages}</span>
+          <span className="page-info">
+            Page {currentPage} of {totalPages} ({total} total children)
+          </span>
           <div className="page-controls">
             <button
               onClick={() => setCurrentPage(1)}
@@ -201,21 +214,23 @@ export default function ReportsIndex() {
               Previous
             </button>
             
-            <div className="page-numbers">
-              {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter((page) => page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1)
-                .map((page, index, arr) => (
-                  <span key={page} style={{ display: "flex", alignItems: "center" }}>
-                    {index > 0 && arr[index - 1] !== page - 1 && <span className="ellipsis">...</span>}
-                    <button
-                      onClick={() => setCurrentPage(page)}
-                      className={`page-num ${currentPage === page ? "active" : ""}`}
-                    >
-                      {page}
-                    </button>
-                  </span>
-                ))}
-            </div>
+            {totalPages > 1 && (
+              <div className="page-numbers">
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((page) => page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1)
+                  .map((page, index, arr) => (
+                    <span key={page} style={{ display: "flex", alignItems: "center" }}>
+                      {index > 0 && arr[index - 1] !== page - 1 && <span className="ellipsis">...</span>}
+                      <button
+                        onClick={() => setCurrentPage(page)}
+                        className={`page-num ${currentPage === page ? "active" : ""}`}
+                      >
+                        {page}
+                      </button>
+                    </span>
+                  ))}
+              </div>
+            )}
 
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
