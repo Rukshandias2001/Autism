@@ -3,27 +3,71 @@ import "./InteractiveGames.css";
 import redbus from "../../assets/redbus.png";
 import bluebus from "../../assets/bluebus.png";
 import yellowbus from "../../assets/yellowbus.png";
+// You can reuse existing bus images for the new steps or import new ones
+// For this code, I will reuse blue/yellow for the extra steps to keep it simple
 import socialChoice1 from "../../assets/socialChoice1.png";
 import socialChoice2 from "../../assets/socialChoice2.png";
 import socialChoice3 from "../../assets/socialChoice3.png";
 import socialChoice4 from "../../assets/socialChoice4.png";
 import socialChoice5 from "../../assets/socialChoice5.png";
 
-
 export default function InteractiveGames() {
   const [activeGame, setActiveGame] = useState("Routine");
+  
+  // State to store scores for all games
+  const [scores, setScores] = useState({
+    routine: 0,
+    transport: 0,
+    social: 0,
+    spatial: 0
+  });
 
   useEffect(() => {
     document.title = "Interactive Games";
   }, []);
 
+  // Function to handle moving to the next game and saving the score
+  const handleGameComplete = (gameName, score) => {
+    // 1. Save Score
+    const newScores = { ...scores, [gameName]: score };
+    setScores(newScores);
+    console.log(`Finished ${gameName}. Score: ${score}/5`);
+
+    // 2. Navigate to Next Game
+    if (gameName === "routine") {
+      alert(`Routine Complete! Score: ${score}/5. \nNext: Bus Catching`);
+      setActiveGame("Transport");
+    } else if (gameName === "transport") {
+      alert(`Bus Game Complete! Score: ${score}/5. \nNext: Social Choices`);
+      setActiveGame("Social");
+    } else if (gameName === "social") {
+      alert(`Social Game Complete! Score: ${score}/5. \nNext: Memory Match`);
+      setActiveGame("Spatial");
+    } else if (gameName === "spatial") {
+      // 3. Final Submission
+      alert(`All Games Finished!\nFinal Scores:\nRoutine: ${newScores.routine}\nTransport: ${newScores.transport}\nSocial: ${newScores.social}\nMemory: ${score}`);
+      submitToBackend(newScores);
+    }
+  };
+
+  const submitToBackend = async (finalScores) => {
+    console.log("Submitting to backend:", finalScores);
+    // This is where you will eventually add the fetch() call to your Node API
+    // Example: await fetch('/api/games/save', { method: 'POST', body: JSON.stringify(finalScores) ... })
+  };
+
   const renderGame = () => {
     switch (activeGame) {
-      case "Routine": return <RoutineGame />;
-      case "Transport": return <TransportGame />;
-      case "Social": return <SocialScripting />;
-      case "Spatial": return <SpatialSequence />;
-      default: return <div className="placeholder">Select a game from the menu</div>;
+      case "Routine": 
+        return <RoutineGame onComplete={(score) => handleGameComplete("routine", score)} />;
+      case "Transport": 
+        return <TransportGame onComplete={(score) => handleGameComplete("transport", score)} />;
+      case "Social": 
+        return <SocialScripting onComplete={(score) => handleGameComplete("social", score)} />;
+      case "Spatial": 
+        return <SpatialSequence onComplete={(score) => handleGameComplete("spatial", score)} />;
+      default: 
+        return <div className="placeholder">Select a game from the menu</div>;
     }
   };
 
@@ -35,12 +79,17 @@ export default function InteractiveGames() {
             <button 
               key={game} 
               className={`menu-btn ${activeGame === game ? "active" : ""}`}
+              // We disable manual clicking if you want to force the flow, 
+              // but keeping it enabled is good for testing.
               onClick={() => setActiveGame(game)}
             >
               {game === "Routine" && "Daily Routine"}
               {game === "Transport" && "Bus Catching"}
               {game === "Social" && "Social Choices"}
               {game === "Spatial" && "Memory Match"}
+              
+              {/* Optional: Show score if available */}
+              {scores[game.toLowerCase()] > 0 && <span className="score-badge"> ({scores[game.toLowerCase()]}/5)</span>}
             </button>
           ))}
         </div>
@@ -58,9 +107,9 @@ export default function InteractiveGames() {
 }
 
 // --- GAME 1: ROUTINE SIMULATION ---
-const RoutineGame = () => {
-  const initial = ["Alarm Off", "Wash Face", "Get Dressed", "Eat Breakfast"];
-  const [items, setItems] = useState(["Wash Face", "Alarm Off", "Eat Breakfast", "Get Dressed"]);
+const RoutineGame = ({ onComplete }) => {
+  const initial = ["Alarm Off","Brush Teeth", "Wash Face", "Get Dressed", "Eat Breakfast"];
+  const [items, setItems] = useState(["Brush Teeth","Wash Face", "Alarm Off", "Eat Breakfast", "Get Dressed"]);
   const [feedback, setFeedback] = useState("");
 
   const moveItem = (idx, direction) => {
@@ -72,8 +121,21 @@ const RoutineGame = () => {
   };
 
   const checkOrder = () => {
-    const isCorrect = JSON.stringify(items) === JSON.stringify(initial);
-    setFeedback(isCorrect ? "Great job! Correct order." : "try again!");
+    // Calculate Score: 1 point for every item in the correct index
+    let score = 0;
+    items.forEach((item, index) => {
+      if (item === initial[index]) {
+        score++;
+      }
+    });
+
+    const isPerfect = score === 5;
+    setFeedback(isPerfect ? "Great job! Perfect order." : `You got ${score}/5 correct.`);
+    
+    // Complete the game and pass score
+    setTimeout(() => {
+      onComplete(score);
+    }, 1500); // Small delay so they can see the feedback text
   };
 
   return (
@@ -94,46 +156,48 @@ const RoutineGame = () => {
   );
 };
 
-//GAME 2: TRANSPORTATION
-const TransportGame = () => {
+// --- GAME 2: TRANSPORTATION (Modified for 5 Steps) ---
+const TransportGame = ({ onComplete }) => {
+  // Added 2 more steps to make it out of 5
   const steps = [
-    { 
-      img: bluebus, 
-      action: "ignore", 
-      msg: "Look! A Blue 223 bus. Is it ours?" 
-    },
-    { 
-      img: yellowbus, 
-      action: "ignore", 
-      msg: "Look! A Yellow 118 bus. Is it ours?" 
-    },
-    { 
-      img: redbus, 
-      action: "getIn", 
-      msg: "Look! A Red 118 bus. Is it ours?" 
-    }
+    { img: bluebus, action: "ignore", msg: "1. Look! A Blue 223 bus. Is it ours?" },
+    { img: yellowbus, action: "ignore", msg: "2. Look! A Yellow 118 bus. Is it ours?" },
+    { img: bluebus, action: "ignore", msg: "3. Look! A Green 550 bus. Is it ours?" }, // Reusing image for demo
+    { img: yellowbus, action: "ignore", msg: "4. Look! A Purple 990 bus. Is it ours?" }, // Reusing image for demo
+    { img: redbus, action: "getIn", msg: "5. Look! A Red 118 bus. Is it ours?" }
   ];
 
   const [step, setStep] = useState(0);
+  const [currentScore, setCurrentScore] = useState(0);
   const [status, setStatus] = useState("Goal: Get on Red Bus #118");
 
   const handleChoice = (choice) => {
-    if (choice === steps[step].action) {
-      if (step === steps.length - 1) {
-        setStatus("Well done! You're on the right bus!");
-      } else {
-        setStep(step + 1);
-        setStatus("Waiting for the next bus...");
-      }
+    const isCorrect = choice === steps[step].action;
+    
+    // Update local score variable (React state update is async, so we use a temp var)
+    let newScore = currentScore;
+    if (isCorrect) {
+      newScore = currentScore + 1;
+      setCurrentScore(newScore);
+    }
+
+    if (step === steps.length - 1) {
+      // Game Over
+      setStatus(isCorrect ? "Well done! You got on the bus!" : "Oops, wrong bus!");
+      setTimeout(() => {
+        onComplete(newScore);
+      }, 1000);
     } else {
-      setStatus("Oops! That's not the right bus. Try again!");
-      setStep(0);
+      // Next Step
+      setStep(step + 1);
+      setStatus(isCorrect ? "Correct! Waiting..." : "Wrong choice! Waiting...");
     }
   };
 
   return (
     <div className="game-box">
       <h3 className="game-status">{status}</h3>
+      <p>Current Score: {currentScore}</p>
       
       {step < steps.length && (
         <div className="bus-scene">
@@ -142,9 +206,7 @@ const TransportGame = () => {
             alt="Bus approaching" 
             className="bus-image"
           />
-          
           <p className="instruction-text">{steps[step].msg}</p>
-          
           <div className="button-group">
             <button className="action-btn ignore" onClick={() => handleChoice("ignore")}>Ignore</button>
             <button className="action-btn get-in" onClick={() => handleChoice("getIn")}>Get In</button>
@@ -155,125 +217,103 @@ const TransportGame = () => {
   );
 };
 
-// --- GAME 3: SOCIAL SCRIPTING (UPDATED) ---
-const SocialScripting = () => {
-  // 1. Define all scenarios, images, and outcomes in an array
+// --- GAME 3: SOCIAL SCRIPTING ---
+const SocialScripting = ({ onComplete }) => {
   const scenarios = [
     {
-      id: 1,
-      image: socialChoice1,
+      id: 1, image: socialChoice1,
       situation: "A friend comes over wanting to play with your toy. what do you do?",
       options: [
-        { label: '"No! Go away!"', type: "aggressive", result: "The friend feels sad and goes away." },
-        { label: '"Okay... (give it up)"', type: "passive", result: "You feel a bit sad because you wanted to play too." },
-        { label: '"Can I play with your toy?"', type: "prosocial", result: "You both have fun playing together!" }
+        { label: '"No! Go away!"', type: "aggressive" },
+        { label: '"Okay... (give it up)"', type: "passive" },
+        { label: '"Can I play with your toy?"', type: "prosocial" }
       ]
     },
     {
-      id: 2,
-      image: socialChoice2,
-      situation: "A group of kids is playing tag in the park. You want to join them. How doo you join?",
+      id: 2, image: socialChoice2,
+      situation: "A group of kids is playing tag in the park. You want to join them.",
       options: [
-        { label: "Run in and push someone", type: "aggressive", result: "The kids get upset and stop playing. 'Hey, that wasn't nice!'" },
-        { label: "Stand silently and watch", type: "passive", result: "The kids don't see you and keep playing without you. You feel lonely." },
-        { label: 'Ask, "Can I play too?"', type: "prosocial", result: "The kids smile and say, 'Sure! You're It!' Everyone has fun running." }
+        { label: "Run in and push someone", type: "aggressive" },
+        { label: "Stand silently and watch", type: "passive" },
+        { label: 'Ask, "Can I play too?"', type: "prosocial" }
       ]
     },
     {
-      id: 3,
-      image: socialChoice3,
-      situation: "You and your friend are racing. Your friend runs faster and wins. How do you respond?",
+      id: 3, image: socialChoice3,
+      situation: "You and your friend are racing. Your friend runs faster and wins.",
       options: [
-        { label: 'Scream "You cheated!"', type: "aggressive", result: "Your friend feels hurt and doesn't want to race anymore." },
-        { label: "Sit down and refuse to move", type: "passive", result: "The game is over, and you both feel bored and annoyed." },
-        { label: 'Say "Good job! You are fast!"', type: "prosocial", result: "Your friend feels proud and says, 'Thanks! Let's race again!'" }
+        { label: 'Scream "You cheated!"', type: "aggressive" },
+        { label: "Sit down and refuse to move", type: "passive" },
+        { label: 'Say "Good job! You are fast!"', type: "prosocial" }
       ]
     },
     {
-      id: 4,
-      image: socialChoice4,
-      situation: "You accidentally knock over a tower of blocks your classmate built. What do you do?",
+      id: 4, image: socialChoice4,
+      situation: "You accidentally knock over a tower of blocks your classmate built.",
       options: [
-        { label: "Run away quickly", type: "passive", result: "Your classmate cries because they don't know who did it." },
-        { label: 'Laugh and say "It fell!"', type: "aggressive", result: "Your classmate gets angry because they think you did it on purpose." },
-        { label: 'Say "Oops, sorry! I will help fix it."', type: "prosocial", result: "Your classmate feels better because you are helping them rebuild." }
+        { label: "Run away quickly", type: "passive" },
+        { label: 'Laugh and say "It fell!"', type: "aggressive" },
+        { label: 'Say "Oops, sorry! I will help fix it."', type: "prosocial" }
       ]
     },
     {
-      id: 5,
-      image: socialChoice5,
-      situation: "Your friend is excitedly showing you a drawing they made of a dragon. How do you respond?",
+      id: 5, image: socialChoice5,
+      situation: "Your friend is excitedly showing you a drawing of a dragon.",
       options: [
-        { label: "Look away and talk about your toy", type: "passive", result: "Your friend puts the drawing away sadly because you didn't look." },
-        { label: 'Say "That looks weird."', type: "aggressive", result: "Your friend feels embarrassed and hurt." },
-        { label: 'Ask "Wow! Is that fire?"', type: "prosocial", result: "Your friend lights up and happily tells you a story about the dragon." }
+        { label: "Look away", type: "passive" },
+        { label: 'Say "That looks weird."', type: "aggressive" },
+        { label: 'Ask "Wow! Is that fire?"', type: "prosocial" }
       ]
     }
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0); // Tracks which scenario we are on
-  const [selectedResult, setSelectedResult] = useState(null); // Tracks if user has clicked an option
-  const [isFinished, setIsFinished] = useState(false); // Tracks if all scenarios are done
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedResult, setSelectedResult] = useState(null);
+  const [score, setScore] = useState(0);
 
-  // Handle user selection
-  const handleOptionClick = (result) => {
-    setSelectedResult(result);
+  const handleOptionClick = (type) => {
+    let point = 0;
+    let resultMsg = "";
+
+    if (type === "prosocial") {
+      point = 1;
+      resultMsg = "Great choice! (+1 Point) 🌟";
+    } else if (type === "aggressive") {
+      resultMsg = "That might hurt feelings. (0 Points) 😐";
+    } else {
+      resultMsg = "You might feel sad later. (0 Points) 😐";
+    }
+
+    setScore(score + point);
+    setSelectedResult(resultMsg);
   };
 
-  // Move to next scenario
   const handleNext = () => {
     if (currentIndex < scenarios.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setSelectedResult(null);
     } else {
-      setIsFinished(true);
+      // Finished all 5
+      onComplete(score); // Pass final score
     }
   };
 
-  // Reset Game
-  const restartGame = () => {
-    setCurrentIndex(0);
-    setSelectedResult(null);
-    setIsFinished(false);
-  };
-
-  
-  // 1. If Game is Finished
-  if (isFinished) {
-    return (
-      <div className="game-box">
-        <h3>🎉 Amazing Job! 🎉</h3>
-        <p>You have completed all the social scenarios.</p>
-        <button className="confirm-btn" onClick={restartGame}>Play Again</button>
-      </div>
-    );
-  }
-
-  // 2. Get current scenario data
   const currentScenario = scenarios[currentIndex];
 
   return (
     <div className="game-box">
-      {/* Image */}
-      <img 
-        src={currentScenario.image} 
-        alt="Social Situation" 
-        className="scenario-image" 
-      />
-
-      {/* Situation Description */}
+      <img src={currentScenario.image} alt="Social Situation" className="scenario-image" />
       <div className="situation-box">
         <p className="situation-text">{currentScenario.situation}</p>
       </div>
 
-      {/* Logic: Show Options OR Show Result */}
       {!selectedResult ? (
         <div className="choice-list">
           {currentScenario.options.map((option, index) => (
             <button 
               key={index} 
               className={`social-btn ${option.type}`} 
-              onClick={() => handleOptionClick(option.result)}
+              onClick={() => handleOptionClick(option.type)}
             >
               {option.label}
             </button>
@@ -287,63 +327,65 @@ const SocialScripting = () => {
           </button>
         </div>
       )}
+      <p>Score: {score}</p>
     </div>
   );
 };
+
 // --- GAME 4: SPATIAL SEQUENCE (MEMORY MATCH) ---
-const SpatialSequence = () => {
+const SpatialSequence = ({ onComplete }) => {
   const colors = ["red", "blue", "green"];
   const [sequence, setSequence] = useState([]);
-  const [isShowing, setIsShowing] = useState(false); // True when showing the pattern
-  const [activeColor, setActiveColor] = useState(null); // The specific color currently flashing
-  const [userIndex, setUserIndex] = useState(0); // Track which step the user is on
-  const [gameStatus, setGameStatus] = useState("idle"); // idle, playing, won, lost
+  const [isShowing, setIsShowing] = useState(false);
+  const [activeColor, setActiveColor] = useState(null);
+  const [userIndex, setUserIndex] = useState(0);
+  const [gameStatus, setGameStatus] = useState("idle");
   const [msg, setMsg] = useState("Click Start to play Memory Match");
+  
+  // Track score based on levels passed (Level 1 passed = 1 point, etc)
+  const [currentLevel, setCurrentLevel] = useState(0); 
 
-  // Start the game
   const startGame = () => {
     const startColor = colors[Math.floor(Math.random() * 3)];
     const newSeq = [startColor];
     setSequence(newSeq);
     setGameStatus("playing");
+    setCurrentLevel(0); // Reset score on new game
     playSequence(newSeq);
   };
 
-  // Logic to flash the colors one by one
   const playSequence = async (seq) => {
     setIsShowing(true);
-    setMsg("Watch the colors...");
-    setUserIndex(0); // Reset user progress for this turn
+    setMsg(`Level ${seq.length}/5 - Watch carefully...`);
+    setUserIndex(0);
 
     for (let i = 0; i < seq.length; i++) {
-      // 1. Show color
       setActiveColor(seq[i]);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Show for 1 second
-
-      // 2. Hide color (white/blank)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setActiveColor(null);
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Wait 0.5s before next
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
 
     setIsShowing(false);
-    setMsg("Now it's your turn! Tap the colors.");
+    setMsg("Your turn!");
   };
 
-  // Handle User Click
   const handleColorClick = (color) => {
-    // Prevent clicking if we are showing the sequence or game is over
     if (isShowing || gameStatus !== "playing") return;
 
-    // Check if correct
     if (color === sequence[userIndex]) {
       // Correct click
       if (userIndex + 1 === sequence.length) {
-        // Round Complete!
-        if (sequence.length === 5) {
+        // Level Complete
+        const newLevel = sequence.length; // If seq length was 1, we passed level 1
+        setCurrentLevel(newLevel);
+
+        if (newLevel === 5) {
           setGameStatus("won");
-          setMsg("🎉 YOU WON! You remembered all 5 colors!");
+          setMsg("🎉 YOU WON! Perfect Score!");
+          setTimeout(() => onComplete(5), 1500); // Pass 5 points
         } else {
-          setMsg("Correct! Get ready for the next color...");
+          setMsg("Correct! Next level...");
           setTimeout(() => {
             const nextColor = colors[Math.floor(Math.random() * 3)];
             const newSeq = [...sequence, nextColor];
@@ -352,49 +394,31 @@ const SpatialSequence = () => {
           }, 1000);
         }
       } else {
-        // Correct, but more colors left in the sequence
         setUserIndex(userIndex + 1);
       }
     } else {
-      // Wrong click
+      // Wrong click - Game Over immediately
       setGameStatus("lost");
-      setMsg("Oops! That was the wrong color.");
+      setMsg("Wrong color! Game Over.");
+      // Pass the current level as the score (e.g. passed level 2 = 2 points)
+      setTimeout(() => onComplete(currentLevel), 1500); 
     }
   };
 
   return (
     <div className="game-box">
       <h3 className="memory-msg">{msg}</h3>
-
-      {/* The Display Box (Shows the color to memorize) */}
-      <div 
-        className={`display-box ${activeColor ? activeColor : ""}`}
-      >
+      <div className={`display-box ${activeColor ? activeColor : ""}`}>
         {activeColor ? "" : "?"}
       </div>
-
-      {/* The Input Buttons (Hidden or Disabled while watching) */}
       <div className={`simon-grid ${isShowing ? "disabled" : ""}`}>
         {colors.map((c) => (
-          <div
-            key={c}
-            className={`color-btn ${c}`}
-            onClick={() => handleColorClick(c)}
-          />
+          <div key={c} className={`color-btn ${c}`} onClick={() => handleColorClick(c)} />
         ))}
       </div>
-
-      {/* Controls */}
-      {gameStatus === "idle" && (
-        <button className="confirm-btn" onClick={startGame}>Start Game</button>
-      )}
-      {(gameStatus === "won" || gameStatus === "lost") && (
-        <button className="confirm-btn" onClick={startGame}>Try Again</button>
-      )}
-      
-      {gameStatus === "playing" && (
-        <p>Level: {sequence.length} / 5</p>
-      )}
+      {gameStatus === "idle" && <button className="confirm-btn" onClick={startGame}>Start Game</button>}
+      {/* If lost/won, the parent handles navigation, so we might not need a restart button, 
+          but keeping it for UI stability if needed. */}
     </div>
   );
 };
