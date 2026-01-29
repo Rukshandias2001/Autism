@@ -35,17 +35,13 @@ export default function InteractiveGames() {
 
     // 2. Navigate to Next Game
     if (gameName === "routine") {
-      alert(`Routine Complete! Score: ${score}/5. \nNext: Bus Catching`);
       setActiveGame("Transport");
     } else if (gameName === "transport") {
-      alert(`Bus Game Complete! Score: ${score}/5. \nNext: Social Choices`);
       setActiveGame("Social");
     } else if (gameName === "social") {
-      alert(`Social Game Complete! Score: ${score}/5. \nNext: Memory Match`);
       setActiveGame("Spatial");
     } else if (gameName === "spatial") {
       // 3. Final Submission
-      alert(`All Games Finished!\nFinal Scores:\nRoutine: ${newScores.routine}\nTransport: ${newScores.transport}\nSocial: ${newScores.social}\nMemory: ${score}`);
       submitToBackend(newScores);
     }
   };

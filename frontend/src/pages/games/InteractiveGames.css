@@ -43,6 +43,12 @@
   background: #e7f1ff;
 }
 
+.score-badge {
+  font-size: 0.8rem;
+  color: #28a745;
+  font-weight: bold;
+}
+
 /* Game Elements */
 .game-box {
   display: flex;
@@ -61,35 +67,6 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
-.bus {
-  width: 150px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  border-radius: 10px;
-  margin: 20px 0;
-}
-
-.simon-grid {
-  display: flex;
-  gap: 15px;
-}
-
-.color-btn {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.red { background: #ff4d4d; }
-.blue { background: #4d94ff; }
-.green { background: #4dff88; }
 
 .confirm-btn {
   background: #28a745;
@@ -118,16 +95,14 @@
   }
 }
 
-/* --- New Styles for Transport Game --- */
-
+/* --- Transport Game --- */
 .bus-image {
   max-width: 100%;
   height: auto;
-  max-height: 250px; /* Keeps the bus from getting too huge */
+  max-height: 250px;
   margin-bottom: 20px;
   border-radius: 8px;
   object-fit: contain;
-  /* Optional: Add a subtle drop shadow to make it pop */
   filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.2)); 
 }
 
@@ -153,7 +128,7 @@
   padding: 12px 25px;
   font-size: 1rem;
   border: none;
-  border-radius: 50px; /* Rounded buttons are friendlier */
+  border-radius: 50px;
   cursor: pointer;
   font-weight: bold;
   transition: transform 0.1s;
@@ -163,23 +138,15 @@
   transform: scale(0.95);
 }
 
-.ignore {
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-.get-in {
-  background-color: #28a745;
-  color: white;
-}
+.ignore { background-color: #e0e0e0; color: #333; }
+.get-in { background-color: #28a745; color: white; }
 
 .game-status {
   margin-bottom: 15px;
   color: #0056b3;
 }
 
-/* --- New Styles for Social Game --- */
-
+/* --- Social Game --- */
 .scenario-image {
   max-width: 100%;
   height: auto;
@@ -214,9 +181,9 @@
   transform: translateY(-2px);
 }
 
-.social-btn.aggressive { border-left: 5px solid #4dffb2; }
-.social-btn.passive { border-left: 5px solid #4dffb2; }
-.social-btn.prosocial { border-left: 5px solid #4dffb2; }
+.social-btn.aggressive { border-left: 5px solid #ff4d4d; }
+.social-btn.passive { border-left: 5px solid #ffcc00; }
+.social-btn.prosocial { border-left: 5px solid #28a745; }
 
 .outcome {
   text-align: center;
@@ -232,18 +199,6 @@
   margin-bottom: 15px;
 }
 
-.reset-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* --- Updates for Social Game --- */
-
 .situation-box {
   background-color: #f0f4f8;
   padding: 15px;
@@ -258,13 +213,12 @@
   font-size: 1.1rem;
   font-weight: bold;
   color: #333;
-  white-space: pre-line; /* This allows the \n to create new lines */
   margin: 0;
   text-align: left;
 }
 
 .next-btn {
-  background-color: #ff9800; /* Orange for 'Next' action */
+  background-color: #ff9800;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -273,36 +227,18 @@
   font-weight: bold;
   font-size: 1rem;
   margin-top: 10px;
-  transition: transform 0.2s;
 }
 
-.next-btn:hover {
-  background-color: #e68900;
-  transform: scale(1.05);
-}
-
-/* Ensure the image container stays consistent */
-.scenario-image {
-  max-width: 100%;
-  height: auto;
-  max-height: 250px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  object-fit: contain;
-}
-/* --- New Styles for Spatial Memory Game --- */
-
+/* --- Memory Game --- */
 .memory-msg {
   color: #333;
-  min-height: 30px; /* Prevents jumping text */
+  min-height: 30px;
 }
 
-/* The big box that flashes the color to remember */
 .display-box {
   width: 150px;
   height: 150px;
-  background-color: #e0e0e0; /* Gray when empty */
+  background-color: #e0e0e0;
   border-radius: 15px;
   margin: 20px 0;
   display: flex;
@@ -315,12 +251,10 @@
   box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
 }
 
-/* Colors for the display box */
 .display-box.red { background-color: #ff4d4d; border-color: #cc0000; box-shadow: 0 0 20px #ff4d4d; color: transparent; }
 .display-box.blue { background-color: #4d94ff; border-color: #0047b3; box-shadow: 0 0 20px #4d94ff; color: transparent; }
 .display-box.green { background-color: #4dff88; border-color: #009933; box-shadow: 0 0 20px #4dff88; color: transparent; }
 
-/* Grid of buttons for user input */
 .simon-grid {
   display: flex;
   gap: 20px;
@@ -328,10 +262,9 @@
   transition: opacity 0.3s;
 }
 
-/* Hide/Dim buttons when the computer is showing the sequence */
 .simon-grid.disabled {
   opacity: 0.3;
-  pointer-events: none; /* Prevents clicking */
+  pointer-events: none;
 }
 
 .color-btn {
@@ -347,7 +280,6 @@
   transform: scale(0.9);
 }
 
-/* Ensure button colors remain vivid */
 .red { background: #ff4d4d; }
 .blue { background: #4d94ff; }
 .green { background: #4dff88; }
