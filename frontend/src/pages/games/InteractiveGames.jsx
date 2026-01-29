@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./InteractiveGames.css";
+import redbus from "../assets/redbus.png";
+import bluebus from "../assets/bluebus.png";
+import yellowbus from "../assets/yellowbus.png";
 
 export default function InteractiveGames() {
   const [activeGame, setActiveGame] = useState("Routine");
