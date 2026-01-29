@@ -162,51 +162,51 @@ const SocialScripting = () => {
     {
       id: 1,
       image: socialChoice1,
-      situation: "A friend comes over wanting to play with your toy.",
+      situation: "A friend comes over wanting to play with your toy. what do you do?",
       options: [
-        { label: '"No! Go away!"', type: "aggressive", result: "The friend feels sad and goes away. 😢" },
-        { label: '"Okay... (give it up)"', type: "passive", result: "You feel a bit sad because you wanted to play too. 😐" },
-        { label: '"Can I play with your toy?"', type: "prosocial", result: "You both have fun playing together! 🌟" }
+        { label: '"No! Go away!"', type: "aggressive", result: "The friend feels sad and goes away." },
+        { label: '"Okay... (give it up)"', type: "passive", result: "You feel a bit sad because you wanted to play too." },
+        { label: '"Can I play with your toy?"', type: "prosocial", result: "You both have fun playing together!" }
       ]
     },
     {
       id: 2,
       image: socialChoice2,
-      situation: "Scenario 2: Joining a Game\nA group of kids is playing tag in the park. You want to join them.",
+      situation: "A group of kids is playing tag in the park. You want to join them. How doo you join?",
       options: [
-        { label: "Run in and push someone", type: "aggressive", result: "The kids get upset and stop playing. 'Hey, that wasn't nice!' 😠" },
-        { label: "Stand silently and watch", type: "passive", result: "The kids don't see you and keep playing without you. You feel lonely. 😔" },
-        { label: 'Ask, "Can I play too?"', type: "prosocial", result: "The kids smile and say, 'Sure! You're It!' Everyone has fun running. 🏃‍♂️" }
+        { label: "Run in and push someone", type: "aggressive", result: "The kids get upset and stop playing. 'Hey, that wasn't nice!'" },
+        { label: "Stand silently and watch", type: "passive", result: "The kids don't see you and keep playing without you. You feel lonely." },
+        { label: 'Ask, "Can I play too?"', type: "prosocial", result: "The kids smile and say, 'Sure! You're It!' Everyone has fun running." }
       ]
     },
     {
       id: 3,
       image: socialChoice3,
-      situation: "Scenario 3: Dealing with Losing\nYou and your friend are racing. Your friend runs faster and wins.",
+      situation: "You and your friend are racing. Your friend runs faster and wins. How do you respond?",
       options: [
-        { label: 'Scream "You cheated!"', type: "aggressive", result: "Your friend feels hurt and doesn't want to race anymore. 🚫" },
-        { label: "Sit down and refuse to move", type: "passive", result: "The game is over, and you both feel bored and annoyed. 😒" },
-        { label: 'Say "Good job! You are fast!"', type: "prosocial", result: "Your friend feels proud and says, 'Thanks! Let's race again!' 🏆" }
+        { label: 'Scream "You cheated!"', type: "aggressive", result: "Your friend feels hurt and doesn't want to race anymore." },
+        { label: "Sit down and refuse to move", type: "passive", result: "The game is over, and you both feel bored and annoyed." },
+        { label: 'Say "Good job! You are fast!"', type: "prosocial", result: "Your friend feels proud and says, 'Thanks! Let's race again!'" }
       ]
     },
     {
       id: 4,
       image: socialChoice4,
-      situation: "Scenario 4: Accidental Damage\nYou accidentally knock over a tower of blocks your classmate built.",
+      situation: "You accidentally knock over a tower of blocks your classmate built. What do you do?",
       options: [
-        { label: "Run away quickly", type: "passive", result: "Your classmate cries because they don't know who did it. 😭" },
-        { label: 'Laugh and say "It fell!"', type: "aggressive", result: "Your classmate gets angry because they think you did it on purpose. 😡" },
-        { label: 'Say "Oops, sorry! I will help fix it."', type: "prosocial", result: "Your classmate feels better because you are helping them rebuild. 🧱" }
+        { label: "Run away quickly", type: "passive", result: "Your classmate cries because they don't know who did it." },
+        { label: 'Laugh and say "It fell!"', type: "aggressive", result: "Your classmate gets angry because they think you did it on purpose." },
+        { label: 'Say "Oops, sorry! I will help fix it."', type: "prosocial", result: "Your classmate feels better because you are helping them rebuild." }
       ]
     },
     {
       id: 5,
       image: socialChoice5,
-      situation: "Scenario 5: Listening to a Friend\nYour friend is excitedly showing you a drawing they made of a dragon.",
+      situation: "Your friend is excitedly showing you a drawing they made of a dragon. How do you respond?",
       options: [
-        { label: "Look away and talk about your toy", type: "passive", result: "Your friend puts the drawing away sadly because you didn't look. 😞" },
-        { label: 'Say "That looks weird."', type: "aggressive", result: "Your friend feels embarrassed and hurt. 💔" },
-        { label: 'Ask "Wow! Is that fire?"', type: "prosocial", result: "Your friend lights up and happily tells you a story about the dragon. 🐉" }
+        { label: "Look away and talk about your toy", type: "passive", result: "Your friend puts the drawing away sadly because you didn't look." },
+        { label: 'Say "That looks weird."', type: "aggressive", result: "Your friend feels embarrassed and hurt." },
+        { label: 'Ask "Wow! Is that fire?"', type: "prosocial", result: "Your friend lights up and happily tells you a story about the dragon." }
       ]
     }
   ];
@@ -237,7 +237,6 @@ const SocialScripting = () => {
     setIsFinished(false);
   };
 
-  // --- RENDER COMPONENT ---
   
   // 1. If Game is Finished
   if (isFinished) {
@@ -291,46 +290,111 @@ const SocialScripting = () => {
     </div>
   );
 };
-// --- GAME 4: SPATIAL SEQUENCES ---
+// --- GAME 4: SPATIAL SEQUENCE (MEMORY MATCH) ---
 const SpatialSequence = () => {
   const colors = ["red", "blue", "green"];
   const [sequence, setSequence] = useState([]);
-  const [userSeq, setUserSeq] = useState([]);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [msg, setMsg] = useState("Click Start to watch the sequence");
+  const [isShowing, setIsShowing] = useState(false); // True when showing the pattern
+  const [activeColor, setActiveColor] = useState(null); // The specific color currently flashing
+  const [userIndex, setUserIndex] = useState(0); // Track which step the user is on
+  const [gameStatus, setGameStatus] = useState("idle"); // idle, playing, won, lost
+  const [msg, setMsg] = useState("Click Start to play Memory Match");
 
-  const startLevel = () => {
-    const newSeq = [...sequence, colors[Math.floor(Math.random() * 3)]];
+  // Start the game
+  const startGame = () => {
+    const startColor = colors[Math.floor(Math.random() * 3)];
+    const newSeq = [startColor];
     setSequence(newSeq);
-    setUserSeq([]);
-    setIsPlaying(true);
-    setMsg("Watch carefully...");
-    // Sequence playback logic would go here
+    setGameStatus("playing");
+    playSequence(newSeq);
   };
 
-  const handleColorClick = (color) => {
-    const nextUserSeq = [...userSeq, color];
-    setUserSeq(nextUserSeq);
-    if (color !== sequence[nextUserSeq.length - 1]) {
-      setMsg("Wrong sequence! Game Reset.");
-      setSequence([]);
-      return;
+  // Logic to flash the colors one by one
+  const playSequence = async (seq) => {
+    setIsShowing(true);
+    setMsg("Watch the colors...");
+    setUserIndex(0); // Reset user progress for this turn
+
+    for (let i = 0; i < seq.length; i++) {
+      // 1. Show color
+      setActiveColor(seq[i]);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Show for 1 second
+
+      // 2. Hide color (white/blank)
+      setActiveColor(null);
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Wait 0.5s before next
     }
-    if (nextUserSeq.length === sequence.length) {
-      setMsg("Correct! Get ready for the next level.");
-      setTimeout(startLevel, 1000);
+
+    setIsShowing(false);
+    setMsg("Now it's your turn! Tap the colors.");
+  };
+
+  // Handle User Click
+  const handleColorClick = (color) => {
+    // Prevent clicking if we are showing the sequence or game is over
+    if (isShowing || gameStatus !== "playing") return;
+
+    // Check if correct
+    if (color === sequence[userIndex]) {
+      // Correct click
+      if (userIndex + 1 === sequence.length) {
+        // Round Complete!
+        if (sequence.length === 5) {
+          setGameStatus("won");
+          setMsg("🎉 YOU WON! You remembered all 5 colors!");
+        } else {
+          setMsg("Correct! Get ready for the next color...");
+          setTimeout(() => {
+            const nextColor = colors[Math.floor(Math.random() * 3)];
+            const newSeq = [...sequence, nextColor];
+            setSequence(newSeq);
+            playSequence(newSeq);
+          }, 1000);
+        }
+      } else {
+        // Correct, but more colors left in the sequence
+        setUserIndex(userIndex + 1);
+      }
+    } else {
+      // Wrong click
+      setGameStatus("lost");
+      setMsg("Oops! That was the wrong color.");
     }
   };
 
   return (
     <div className="game-box">
-      <p>{msg}</p>
-      <div className="simon-grid">
-        {colors.map(c => (
-          <div key={c} className={`color-btn ${c}`} onClick={() => handleColorClick(c)} />
+      <h3 className="memory-msg">{msg}</h3>
+
+      {/* The Display Box (Shows the color to memorize) */}
+      <div 
+        className={`display-box ${activeColor ? activeColor : ""}`}
+      >
+        {activeColor ? "" : "?"}
+      </div>
+
+      {/* The Input Buttons (Hidden or Disabled while watching) */}
+      <div className={`simon-grid ${isShowing ? "disabled" : ""}`}>
+        {colors.map((c) => (
+          <div
+            key={c}
+            className={`color-btn ${c}`}
+            onClick={() => handleColorClick(c)}
+          />
         ))}
       </div>
-      {sequence.length === 0 && <button onClick={startLevel}>Start Game</button>}
+
+      {/* Controls */}
+      {gameStatus === "idle" && (
+        <button className="confirm-btn" onClick={startGame}>Start Game</button>
+      )}
+      {(gameStatus === "won" || gameStatus === "lost") && (
+        <button className="confirm-btn" onClick={startGame}>Try Again</button>
+      )}
+      
+      {gameStatus === "playing" && (
+        <p>Level: {sequence.length} / 5</p>
+      )}
     </div>
   );
 };
