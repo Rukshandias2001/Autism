@@ -140,9 +140,11 @@ export const createChild = async (req, res, next) => {
 
 export const listForMentor = async (req, res, next) => {
   try {
-    const children = await Child.find({ mentorIds: toObjectId(req.user.sub) })
+    // Mentors can view all children in the system
+    const children = await Child.find({})
       .sort({ createdAt: -1 })
-      .populate({ path: "account", select: "username theme lastLoginAt updatedAt" });
+      .populate({ path: "account", select: "username theme lastLoginAt updatedAt" })
+      .populate({ path: "parentId", select: "name email" });
     res.json(children.map(childToResponse));
   } catch (error) {
     next(error);
