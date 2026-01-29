@@ -117,3 +117,177 @@
     white-space: nowrap;
   }
 }
+
+/* --- New Styles for Transport Game --- */
+
+.bus-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 250px; /* Keeps the bus from getting too huge */
+  margin-bottom: 20px;
+  border-radius: 8px;
+  object-fit: contain;
+  /* Optional: Add a subtle drop shadow to make it pop */
+  filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.2)); 
+}
+
+.bus-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.instruction-text {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.button-group {
+  display: flex;
+  gap: 20px;
+}
+
+.action-btn {
+  padding: 12px 25px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 50px; /* Rounded buttons are friendlier */
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.1s;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.ignore {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.get-in {
+  background-color: #28a745;
+  color: white;
+}
+
+.game-status {
+  margin-bottom: 15px;
+  color: #0056b3;
+}
+
+/* --- New Styles for Social Game --- */
+
+.scenario-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.social-btn {
+  padding: 15px;
+  font-size: 1.1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.social-btn:hover {
+  background-color: #f0f8ff;
+  border-color: #007bff;
+  transform: translateY(-2px);
+}
+
+.social-btn.aggressive { border-left: 5px solid #4dffb2; }
+.social-btn.passive { border-left: 5px solid #4dffb2; }
+.social-btn.prosocial { border-left: 5px solid #4dffb2; }
+
+.outcome {
+  text-align: center;
+  background: #e8f5e9;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #c8e6c9;
+}
+
+.outcome-text {
+  font-size: 1.2rem;
+  color: #2e7d32;
+  margin-bottom: 15px;
+}
+
+.reset-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* --- Updates for Social Game --- */
+
+.situation-box {
+  background-color: #f0f4f8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 5px solid #007bff;
+  width: 100%;
+  max-width: 400px;
+}
+
+.situation-text {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  white-space: pre-line; /* This allows the \n to create new lines */
+  margin: 0;
+  text-align: left;
+}
+
+.next-btn {
+  background-color: #ff9800; /* Orange for 'Next' action */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: transform 0.2s;
+}
+
+.next-btn:hover {
+  background-color: #e68900;
+  transform: scale(1.05);
+}
+
+/* Ensure the image container stays consistent */
+.scenario-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  object-fit: contain;
+}
