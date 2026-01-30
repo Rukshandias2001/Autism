@@ -48,8 +48,34 @@ export default function InteractiveGames() {
 
   const submitToBackend = async (finalScores) => {
     console.log("Submitting to backend:", finalScores);
-    // This is where you will eventually add the fetch() call to your Node API
-    // Example: await fetch('/api/games/save', { method: 'POST', body: JSON.stringify(finalScores) ... })
+    const payload = {
+      routine: finalScores.routine,
+      transport: finalScores.transport,
+      social: finalScores.social,
+      spatial: finalScores.spatial // This comes from the 'score' argument in handleGameComplete
+    };
+
+    try {
+      // Make sure your backend is running on port 5000!
+      const response = await fetch('http://localhost:5000/api/games/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        alert("Scores successfully saved to the database! ✅");
+      } else {
+        alert("Failed to save scores. ❌");
+      }
+    } catch (error) {
+      console.error("Error submitting scores:", error);
+      alert("Error connecting to server. Is the backend running?");
+    }
   };
 
   const renderGame = () => {
