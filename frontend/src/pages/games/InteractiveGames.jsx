@@ -57,7 +57,7 @@ export default function InteractiveGames() {
 
     try {
       // Make sure your backend is running on port 5000!
-      const response = await fetch('http://localhost:5000/api/games/submit', {
+      const response = await fetch('http://localhost:5050/api/games/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
