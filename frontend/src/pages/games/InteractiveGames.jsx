@@ -57,7 +57,7 @@ export default function InteractiveGames() {
 
     try {
       // Make sure your backend is running on port 5000!
-      const response = await fetch('http://localhost:5050/api/games/submit', {
+      const response = await fetch('http://localhost:5050/api/scores/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,6 +66,7 @@ export default function InteractiveGames() {
       });
 
       const data = await response.json();
+      console.log("Backend Response:", data);
       
       if (data.success) {
         alert("Scores successfully saved to the database! ✅");
