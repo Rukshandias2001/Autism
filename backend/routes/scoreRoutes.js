@@ -1,5 +1,6 @@
 import express from 'express';
 import { submitGameResults, getGameHistory } from '../controllers/gameController.js';
+import { requireAuth, requireRole } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -13,10 +14,11 @@ router.use((req, res, next) => {
   next();
 });
 
-// Path matches: /api/games/submit
-router.post('/submit', submitGameResults);
+// All routes require child authentication
+// Path matches: /api/scores/submit
+router.post('/submit', requireAuth, requireRole('child'), submitGameResults);
 
-// Path matches: /api/games/history
-router.get('/history', getGameHistory);
+// Path matches: /api/scores/history
+router.get('/history', requireAuth, requireRole('child'), getGameHistory);
 
 export default router;

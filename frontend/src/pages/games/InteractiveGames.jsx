@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/games/InteractiveGames.css";
 import redbus from "../../assets/redbus.png";
 import bluebus from "../../assets/bluebus.png";
@@ -11,8 +12,14 @@ import socialChoice3 from "../../assets/socialChoice3.png";
 import socialChoice4 from "../../assets/socialChoice4.png";
 import socialChoice5 from "../../assets/socialChoice5.png";
 
+// Define game order for enforcement
+const GAME_ORDER = ["Routine", "Transport", "Social", "Spatial"];
+
 export default function InteractiveGames() {
+  const navigate = useNavigate();
   const [activeGame, setActiveGame] = useState("Routine");
+  const [childData, setChildData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // State to store scores for all games
   const [scores, setScores] = useState({
@@ -22,18 +29,88 @@ export default function InteractiveGames() {
     spatial: 0
   });
 
+  // Track which games have been completed (to prevent going back)
+  const [completedGames, setCompletedGames] = useState({
+    routine: false,
+    transport: false,
+    social: false,
+    spatial: false
+  });
+
   useEffect(() => {
     document.title = "Interactive Games";
-  }, []);
+    
+    // Check if child is authenticated
+    const childAuth = localStorage.getItem("childAuth");
+    if (!childAuth) {
+      // Not logged in as a child, redirect to login
+      alert("Please log in as a child to play these games.");
+      navigate("/child/login");
+      return;
+    }
+
+    try {
+      const authData = JSON.parse(childAuth);
+      // Verify it's a child role (not mentor/parent)
+      if (!authData.token || !authData.child) {
+        alert("Please log in as a child to play these games.");
+        navigate("/child/login");
+        return;
+      }
+      setChildData(authData);
+      setIsLoading(false);
+    } catch (err) {
+      console.error("Error parsing child auth data:", err);
+      navigate("/child/login");
+    }
+  }, [navigate]);
+
+  // Function to check if a game can be accessed
+  const canAccessGame = (gameName) => {
+    const gameIndex = GAME_ORDER.indexOf(gameName);
+    if (gameIndex === 0) return true; // First game is always accessible
+    
+    // Check if all previous games are completed
+    for (let i = 0; i < gameIndex; i++) {
+      const prevGame = GAME_ORDER[i].toLowerCase();
+      if (!completedGames[prevGame]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Function to check if a game is already completed (can't go back)
+  const isGameCompleted = (gameName) => {
+    return completedGames[gameName.toLowerCase()];
+  };
+
+  // Handle game selection with order enforcement
+  const handleGameSelect = (gameName) => {
+    if (isGameCompleted(gameName)) {
+      alert(`You've already completed ${gameName}. Keep moving forward! 🚀`);
+      return;
+    }
+    if (!canAccessGame(gameName)) {
+      alert("Please complete the previous games first!");
+      return;
+    }
+    setActiveGame(gameName);
+  };
 
   // Function to handle moving to the next game and saving the score
   const handleGameComplete = (gameName, score) => {
     // 1. Save Score
     const newScores = { ...scores, [gameName]: score };
     setScores(newScores);
+    
+    // 2. Mark game as completed
+    const newCompleted = { ...completedGames, [gameName]: true };
+    setCompletedGames(newCompleted);
+    
     console.log(`Finished ${gameName}. Score: ${score}/5`);
 
-    // 2. Navigate to Next Game
+    // 3. Navigate to Next Game
     if (gameName === "routine") {
       setActiveGame("Transport");
     } else if (gameName === "transport") {
@@ -41,7 +118,7 @@ export default function InteractiveGames() {
     } else if (gameName === "social") {
       setActiveGame("Spatial");
     } else if (gameName === "spatial") {
-      // 3. Final Submission
+      // 4. Final Submission
       submitToBackend(newScores);
     }
   };
@@ -52,15 +129,25 @@ export default function InteractiveGames() {
       routine: finalScores.routine,
       transport: finalScores.transport,
       social: finalScores.social,
-      spatial: finalScores.spatial // This comes from the 'score' argument in handleGameComplete
+      spatial: finalScores.spatial
     };
 
     try {
-      // Make sure your backend is running on port 5000!
+      // Get the child's token from localStorage
+      const childAuth = JSON.parse(localStorage.getItem("childAuth") || "{}");
+      const token = childAuth.token;
+
+      if (!token) {
+        alert("Authentication error. Please log in again.");
+        navigate("/child/login");
+        return;
+      }
+
       const response = await fetch('http://localhost:5050/api/scores/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(payload),
       });
@@ -71,7 +158,7 @@ export default function InteractiveGames() {
       if (data.success) {
         alert("Scores successfully saved to the database! ✅");
       } else {
-        alert("Failed to save scores. ❌");
+        alert("Failed to save scores. ❌ " + (data.message || ""));
       }
     } catch (error) {
       console.error("Error submitting scores:", error);
@@ -94,28 +181,53 @@ export default function InteractiveGames() {
     }
   };
 
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="game-wrapper">
+        <div className="loading-container">
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="game-wrapper">
       <div className="leftContainer">
         <div className="menu">
-          {["Routine", "Transport", "Social", "Spatial"].map((game) => (
-            <button 
-              key={game} 
-              className={`menu-btn ${activeGame === game ? "active" : ""}`}
-              // We disable manual clicking if you want to force the flow, 
-              // but keeping it enabled is good for testing.
-              onClick={() => setActiveGame(game)}
-            >
-              {game === "Routine" && "Daily Routine"}
-              {game === "Transport" && "Bus Catching"}
-              {game === "Social" && "Social Choices"}
-              {game === "Spatial" && "Memory Match"}
+          {["Routine", "Transport", "Social", "Spatial"].map((game) => {
+            const isCompleted = isGameCompleted(game);
+            const canAccess = canAccessGame(game);
+            const isActive = activeGame === game;
+            
+            return (
+              <button 
+                key={game} 
+                className={`menu-btn ${isActive ? "active" : ""} ${isCompleted ? "completed" : ""} ${!canAccess ? "locked" : ""}`}
+                onClick={() => handleGameSelect(game)}
+                disabled={isCompleted || !canAccess}
+              >
+                {game === "Routine" && "Daily Routine"}
+                {game === "Transport" && "Bus Catching"}
+                {game === "Social" && "Social Choices"}
+                {game === "Spatial" && "Memory Match"}
 
-              {/* Optional: Show score if available */}
-              {scores[game.toLowerCase()] > 0 && <span className="score-badge"> ({scores[game.toLowerCase()]}/5)</span>}
-            </button>
-          ))}
+                {/* Show status icons */}
+                {isCompleted && <span className="status-icon"> ✅</span>}
+                {!canAccess && !isCompleted && <span className="status-icon"> 🔒</span>}
+                
+                {/* Show score if available */}
+                {scores[game.toLowerCase()] > 0 && <span className="score-badge"> ({scores[game.toLowerCase()]}/5)</span>}
+              </button>
+            );
+          })}
         </div>
+        {childData && (
+          <div className="child-info">
+            <p>Playing as: <strong>{childData.child?.name}</strong></p>
+          </div>
+        )}
       </div>
       <div className="rightContainer">
         <div className="rightTopContainer">
@@ -134,8 +246,10 @@ const RoutineGame = ({ onComplete }) => {
   const initial = ["Alarm Off","Brush Teeth", "Wash Face", "Get Dressed", "Eat Breakfast"];
   const [items, setItems] = useState(["Brush Teeth","Wash Face", "Alarm Off", "Eat Breakfast", "Get Dressed"]);
   const [feedback, setFeedback] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false); // Prevent double submission
 
   const moveItem = (idx, direction) => {
+    if (isSubmitted) return; // Prevent moves after submission
     const newItems = [...items];
     const targetIdx = idx + direction;
     if (targetIdx < 0 || targetIdx >= items.length) return;
@@ -144,6 +258,9 @@ const RoutineGame = ({ onComplete }) => {
   };
 
   const checkOrder = () => {
+    if (isSubmitted) return; // Prevent double submission
+    setIsSubmitted(true);
+    
     // Calculate Score: 1 point for every item in the correct index
     let score = 0;
     items.forEach((item, index) => {
@@ -168,12 +285,14 @@ const RoutineGame = ({ onComplete }) => {
         <div key={item} className="routine-item">
           <span>{item}</span>
           <div>
-            <button onClick={() => moveItem(i, -1)}>↑</button>
-            <button onClick={() => moveItem(i, 1)}>↓</button>
+            <button onClick={() => moveItem(i, -1)} disabled={isSubmitted}>↑</button>
+            <button onClick={() => moveItem(i, 1)} disabled={isSubmitted}>↓</button>
           </div>
         </div>
       ))}
-      <button className="confirm-btn" onClick={checkOrder}>Confirm Order</button>
+      <button className="confirm-btn" onClick={checkOrder} disabled={isSubmitted}>
+        {isSubmitted ? "Submitted..." : "Confirm Order"}
+      </button>
       <p className="feedback">{feedback}</p>
     </div>
   );
@@ -193,8 +312,20 @@ const TransportGame = ({ onComplete }) => {
   const [step, setStep] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
   const [status, setStatus] = useState("Goal: Get on Red Bus #118");
+  const [isProcessing, setIsProcessing] = useState(false); // Prevent rapid clicks
+  const [isReady, setIsReady] = useState(false); // Prevent clicks before game loads
+
+  // Mark game as ready after initial render
+  useEffect(() => {
+    const timer = setTimeout(() => setIsReady(true), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleChoice = (choice) => {
+    // Prevent clicks if not ready or already processing
+    if (!isReady || isProcessing) return;
+    setIsProcessing(true);
+
     const isCorrect = choice === steps[step].action;
 
     // Update local score variable (React state update is async, so we use a temp var)
@@ -214,6 +345,8 @@ const TransportGame = ({ onComplete }) => {
       // Next Step
       setStep(step + 1);
       setStatus(isCorrect ? "Correct! Waiting..." : "Wrong choice! Waiting...");
+      // Allow next click after a short delay
+      setTimeout(() => setIsProcessing(false), 300);
     }
   };
 
@@ -222,7 +355,11 @@ const TransportGame = ({ onComplete }) => {
       <h3 className="game-status">{status}</h3>
       <p>Current Score: {currentScore}</p>
 
-      {step < steps.length && (
+      {!isReady ? (
+        <div className="loading-game">
+          <p>Loading bus game...</p>
+        </div>
+      ) : step < steps.length && (
         <div className="bus-scene">
           <img 
             src={steps[step].img} 
@@ -231,8 +368,20 @@ const TransportGame = ({ onComplete }) => {
           />
           <p className="instruction-text">{steps[step].msg}</p>
           <div className="button-group">
-            <button className="action-btn ignore" onClick={() => handleChoice("ignore")}>Ignore</button>
-            <button className="action-btn get-in" onClick={() => handleChoice("getIn")}>Get In</button>
+            <button 
+              className="action-btn ignore" 
+              onClick={() => handleChoice("ignore")}
+              disabled={isProcessing}
+            >
+              Ignore
+            </button>
+            <button 
+              className="action-btn get-in" 
+              onClick={() => handleChoice("getIn")}
+              disabled={isProcessing}
+            >
+              Get In
+            </button>
           </div>
         </div>
       )}
@@ -293,8 +442,12 @@ const SocialScripting = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedResult, setSelectedResult] = useState(null);
   const [score, setScore] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false); // Prevent rapid clicks
 
   const handleOptionClick = (type) => {
+    if (isProcessing || selectedResult) return; // Prevent double clicks
+    setIsProcessing(true);
+
     let point = 0;
     let resultMsg = "";
 
@@ -309,12 +462,17 @@ const SocialScripting = ({ onComplete }) => {
 
     setScore(score + point);
     setSelectedResult(resultMsg);
+    setIsProcessing(false);
   };
 
   const handleNext = () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     if (currentIndex < scenarios.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setSelectedResult(null);
+      setIsProcessing(false);
     } else {
       // Finished all 5
       onComplete(score); // Pass final score
@@ -337,6 +495,7 @@ const SocialScripting = ({ onComplete }) => {
               key={index} 
               className={`social-btn ${option.type}`} 
               onClick={() => handleOptionClick(option.type)}
+              disabled={isProcessing}
             >
               {option.label}
             </button>
@@ -345,7 +504,7 @@ const SocialScripting = ({ onComplete }) => {
       ) : (
         <div className="outcome">
           <p className="outcome-text">{selectedResult}</p>
-          <button className="next-btn" onClick={handleNext}>
+          <button className="next-btn" onClick={handleNext} disabled={isProcessing}>
             {currentIndex === scenarios.length - 1 ? "Finish Game" : "Next Scenario ➡"}
           </button>
         </div>
@@ -364,11 +523,15 @@ const SpatialSequence = ({ onComplete }) => {
   const [userIndex, setUserIndex] = useState(0);
   const [gameStatus, setGameStatus] = useState("idle");
   const [msg, setMsg] = useState("Click Start to play Memory Match");
+  const [isProcessing, setIsProcessing] = useState(false); // Prevent rapid clicks
 
   // Track score based on levels passed (Level 1 passed = 1 point, etc)
   const [currentLevel, setCurrentLevel] = useState(0); 
 
   const startGame = () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+    
     const startColor = colors[Math.floor(Math.random() * 3)];
     const newSeq = [startColor];
     setSequence(newSeq);
@@ -379,6 +542,7 @@ const SpatialSequence = ({ onComplete }) => {
 
   const playSequence = async (seq) => {
     setIsShowing(true);
+    setIsProcessing(true);
     setMsg(`Level ${seq.length}/5 - Watch carefully...`);
     setUserIndex(0);
 
@@ -390,11 +554,14 @@ const SpatialSequence = ({ onComplete }) => {
     }
 
     setIsShowing(false);
+    setIsProcessing(false);
     setMsg("Your turn!");
   };
 
   const handleColorClick = (color) => {
-    if (isShowing || gameStatus !== "playing") return;
+    // Prevent clicks during showing sequence, not playing, or already processing
+    if (isShowing || gameStatus !== "playing" || isProcessing) return;
+    setIsProcessing(true);
 
     if (color === sequence[userIndex]) {
       // Correct click
@@ -418,6 +585,7 @@ const SpatialSequence = ({ onComplete }) => {
         }
       } else {
         setUserIndex(userIndex + 1);
+        setIsProcessing(false); // Allow next click
       }
     } else {
       // Wrong click - Game Over immediately
@@ -434,12 +602,16 @@ const SpatialSequence = ({ onComplete }) => {
       <div className={`display-box ${activeColor ? activeColor : ""}`}>
         {activeColor ? "" : "?"}
       </div>
-      <div className={`simon-grid ${isShowing ? "disabled" : ""}`}>
+      <div className={`simon-grid ${isShowing || isProcessing ? "disabled" : ""}`}>
         {colors.map((c) => (
           <div key={c} className={`color-btn ${c}`} onClick={() => handleColorClick(c)} />
         ))}
       </div>
-      {gameStatus === "idle" && <button className="confirm-btn" onClick={startGame}>Start Game</button>}
+      {gameStatus === "idle" && (
+        <button className="confirm-btn" onClick={startGame} disabled={isProcessing}>
+          Start Game
+        </button>
+      )}
       {/* If lost/won, the parent handles navigation, so we might not need a restart button, 
           but keeping it for UI stability if needed. */}
     </div>
