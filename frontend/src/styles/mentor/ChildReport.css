@@ -324,6 +324,31 @@
   border-radius: 12px;
 }
 
+/* Games card: ensure score tiles wrap and only 2 per row */
+.games-card .stat-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.games-card .stat-item.small {
+  flex: 0 0 calc(50% - 8px);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.games-card .stat-item {
+  /* make sure general items don't force overflow */
+  min-width: 0;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .games-card .stat-item.small {
+    flex: 0 0 100%;
+  }
+}
+
 .coming-soon-icon {
   font-size: 32px;
   margin-bottom: 8px;
