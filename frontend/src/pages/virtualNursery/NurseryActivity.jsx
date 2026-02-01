@@ -1,4 +1,5 @@
 import { Link , useParams } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
 import "../../styles/virtualNurseyStyles/NurseryActivity.css";
 
 import learnBG from "../../assets/nbg5.png";
@@ -7,6 +8,10 @@ import activityBG from "../../assets/nbg4.png";
 export default function NurseryActivity() {
   const { category } = useParams(); 
   const handleBack = () => window.history.back();
+  const { user } = useAuth();
+  const childAuthRaw = typeof window !== "undefined" ? localStorage.getItem("childAuth") : null;
+  const hasChildAuth = !!childAuthRaw;
+  const isChild = (user && user.role === "child") || hasChildAuth;
 
   return (
     <main className="nursery-activity-page">
@@ -40,18 +45,33 @@ export default function NurseryActivity() {
           </Link>
 
           {/* ACTIVITY */}
-          <Link
-            to={`/nursery/${category}/activity-mode`}
-            className="tile"
-            style={{ "--tile-bg": `url(${activityBG})` }}
-            aria-label="Go to Activity"
-          >
-            <span className="tile-icon" aria-hidden>
-              🎮
-            </span>
-            <span className="tile-title">Activity</span>
-            <span className="tile-desc">Play & explore</span>
-          </Link>
+          {isChild ? (
+            <Link
+              to={`/nursery/${category}/activity-mode`}
+              className="tile"
+              style={{ "--tile-bg": `url(${activityBG})` }}
+              aria-label="Go to Activity"
+            >
+              <span className="tile-icon" aria-hidden>
+                🎮
+              </span>
+              <span className="tile-title">Activity</span>
+              <span className="tile-desc">Play & explore</span>
+            </Link>
+          ) : (
+            <div
+              className="tile disabled"
+              title="Only children can access activities"
+              aria-hidden
+              style={{ "--tile-bg": `url(${activityBG})` }}
+            >
+              <span className="tile-icon" aria-hidden>
+                🎮
+              </span>
+              <span className="tile-title">Activity</span>
+              <span className="tile-desc">Play & explore</span>
+            </div>
+          )}
         </div>
       </section>
 

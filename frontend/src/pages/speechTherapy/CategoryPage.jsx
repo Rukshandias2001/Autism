@@ -3,15 +3,60 @@ import SpeechCard from "./SpeechCard";
 import { useParams } from "react-router-dom";
 import "../../styles/speechTherapyStyles/CategoryPage.css";
 
+
+function getMyUserId() {
+  try {
+    const u = JSON.parse(localStorage.getItem("user") || "null");
+    const token = u?.token;
+    if (!token) return null;
+    const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
+    const json = JSON.parse(atob(padded));
+    return json?.sub || null;
+  } catch {
+    return null;
+  }
+}
+
+
 const CategoryPage = () => {
+
   const { category } = useParams(); // /cards/animals -> "animals"
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+
+
+
+  const myId = getMyUserId();
+
+  const [childId, setChildId] = useState(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("currentChild") || "null");
+      return stored?._id || null;
+    } catch { return null; }
+  });
+
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("currentChild") || "null");
+      
+      if (!childId) {
+        localStorage.removeItem("currentChild");
+        setChildId(null);
+      }
+    } catch {
+      localStorage.removeItem("currentChild");
+      setChildId(null);
+    }
+  }, [myId]);
+
   useEffect(() => { // Fetch cards for the given category in the background
     const fetchCards = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/cards/${category}`); // Fetch cards by category
+        const res = await fetch(`http://localhost:5050/api/cards/${category}`); // Fetch cards by category
         const json = await res.json();
         if (json.success) {
           setCards(json.data); // Set fetched cards to state
@@ -27,6 +72,10 @@ const CategoryPage = () => {
 
   if (loading) return <p className="speech-therapy-loading">Loading cards...</p>; // Show loading state
 
+  if (!childId) {
+    return <div style={{ padding: 20 }}>Please login through child credentials! …</div>;
+  }
+
   return (
     <div className="speech-therapy-category-page">
       <h1 className="speech-therapy-category-title">
@@ -41,6 +90,7 @@ const CategoryPage = () => {
             key={card._id}
             title={card.title}
             imageUrl={card.image}
+            childId={childId}
             category={card.category}
           />
         ))}

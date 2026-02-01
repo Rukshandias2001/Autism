@@ -26,6 +26,7 @@ import NurseryVideos from "./routes/NurseryRoute.js";
 // —— Routers from Speech Therapy tool ——
 import speechAttemptsRouter from "./routes/AttemptRoute.js";
 import cardRoutes from "./routes/SpeechTherapyRoute.js";
+import speechCardRoutes from "./routes/speechCardRoutes.js";
 
 // —— Routine Builder ——
 import { Activity } from "./models/Activity.js";
@@ -112,9 +113,12 @@ app.use("/api/blogs", BlogsRoutes);
 app.use("/api/learn", NurseryVideos);
 
 // Speech Therapy
+
 app.use("/api/cards", cardRoutes);
 app.use("/api/speech/attempts", speechAttemptsRouter);
 
+// NEW (for Mentor Speech CRUD used by your React API file)
+app.use("/api/speech-cards", speechCardRoutes);
 // Reports
 import reportsRouter from "./routes/reports.js";
 app.use("/api/reports", reportsRouter);
@@ -122,6 +126,7 @@ app.use("/api/reports", reportsRouter);
 // Routine Builder
 app.use("/api/activities", activityRoutes);
 app.use("/api/routines", routineRoutes);
+
 
 //Games
 app.use("/game", gameRouter); 

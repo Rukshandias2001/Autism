@@ -188,6 +188,14 @@
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
 }
 
+/* Disabled tile (visible to non-child users) */
+.tile.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+  filter: grayscale(20%);
+}
+
 /* Cute floating decor */
 .float-bubble {
   position: absolute;

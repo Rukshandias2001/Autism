@@ -26,6 +26,9 @@ export const createApp = () => {
   app.use("/api/routines", routineRoutes);
     app.use("/api/scores", scoreRoutes);
 
+
+  
+
   app.use(notFound);
   app.use(errorHandler);
 

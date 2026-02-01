@@ -71,6 +71,7 @@ import ShapesLearn from "./pages/virtualNursery/learn/ShapesLearn.jsx";
 import ColoursLearn from "./pages/virtualNursery/learn/ColoursLearn.jsx";
 import AnimalsLearn from "./pages/virtualNursery/learn/AnimalsLearn.jsx";
 import FruitsLearn from "./pages/virtualNursery/learn/FruitsLearn.jsx";
+import MentorSpeechTool from "./pages/speechTherapy/MentorSpeechTool.jsx";
 
 // Simple stubs
 function Routine() {
@@ -155,6 +156,7 @@ export default function App() {
             <Route path="progress/:childId" element={<MentorChildProgress />} />
             <Route path="scenarios" element={<ScenariosPage />} />
             <Route path="content" element={<ContentManager />} />
+            <Route path="/mentor/speech" element={<MentorSpeechTool/>} />
           </Route>
         </Route>
 
@@ -173,10 +175,12 @@ export default function App() {
           path="/nursery/:category/learn"
           element={<NurseryLearnActivity />}
         />
-        <Route
-          path="/nursery/:category/activity-mode"
-          element={<ActivitySwitch />}
-        />
+        <Route element={<RequireAuth roles={["child"]} />}>
+          <Route
+            path="/nursery/:category/activity-mode"
+            element={<ActivitySwitch />}
+          />
+        </Route>
             
         <Route path="/alphabets" element={<AlphabetLearn  />} />
         <Route path="/numbers" element={<NumbersLearn  />} />

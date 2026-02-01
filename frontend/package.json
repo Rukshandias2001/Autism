@@ -11,6 +11,7 @@
     "start": "vite"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-react": "^0.17.13",
     "@splinetool/react-spline": "^4.1.0",
     "axios": "^1.11.0",
     "canvas-confetti": "^1.9.3",
