@@ -10,7 +10,7 @@ let externalUseAuth;
 try {
   // adjust path if your AuthContext lives elsewhere
   externalUseAuth = require("../pages/authentication/MonsterAuth").useAuth;
-} catch (_) {}
+} catch (_) { }
 
 function useAuthSafe() {
   if (externalUseAuth) return externalUseAuth();
@@ -18,7 +18,7 @@ function useAuthSafe() {
     try { return JSON.parse(localStorage.getItem("user") || "null"); } catch { return null; }
   });
   const navigate = useNavigate();
-  
+
   // Listen for localStorage changes and update state
   useEffect(() => {
     const handleStorageChange = () => {
@@ -37,20 +37,20 @@ function useAuthSafe() {
 
     // Listen for storage events (from other tabs/windows)
     window.addEventListener('storage', handleStorageChange);
-    
+
     // Listen for custom auth change events (same tab)
     window.addEventListener('authChange', handleAuthChange);
-    
+
     // Fallback: check for changes periodically
     const interval = setInterval(handleStorageChange, 500);
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('authChange', handleAuthChange);
       clearInterval(interval);
     };
   }, []);
-  
+
   const logout = () => {
     localStorage.removeItem("user");
     setUser(null);
@@ -141,7 +141,7 @@ export default function NavBar() {
           {!user ? (
             <div className="ls-auth-cta">
               <Link className="ls-login" to="/login">Login</Link>
-              <Link className="ls-signup" to="/login" state={{ mode: "signup" }}>
+              <Link className="ls-signup" to="/signup">
                 Sign up
               </Link>
             </div>

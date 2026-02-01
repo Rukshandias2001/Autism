@@ -1,28 +1,26 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Margarine&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 .star-slider-wrap {
   padding: 60px 0;
   background: linear-gradient(180deg, #dafafc, #defbb3, #aee1f3);
-background-image: url(../assets/f1.jpg);
-background-size: cover;
+  background-image: url(../assets/f1.jpg);
+  background-size: cover;
   text-align: center;
-   margin:0px  0 0px 150px; 
+  margin: 0px 16px 0 60px;
 }
 
 .star-slider-title {
   font-size: 2rem;
   margin-bottom: 15px;
-  margin-left: 650px;
   color: #09090a;
   margin-top: 10;
+  text-align: center;
 
 }
 
 .star-slider-container {
   width: 80%;
   margin: 0 auto;
-  padding: 20px 0;
 }
 
 /* Swiper */
@@ -30,6 +28,7 @@ background-size: cover;
   width: 130%;
   height: 560px;
 }
+
 .star-swiper-slide {
   display: flex;
   justify-content: center;
@@ -38,6 +37,7 @@ background-size: cover;
   transform: scale(0.8);
   transition: all 0.3s ease;
 }
+
 .star-swiper-slide.swiper-slide-active {
   opacity: 1;
   transform: scale(1.05);
@@ -53,7 +53,7 @@ background-size: cover;
   background: linear-gradient(135deg, #f9d6f2, #d6e4ff, #ffeecf);
   background-size: 300% 300%;
   animation: starShimmer 8s infinite;
-  box-shadow: 0 12px 22px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -61,16 +61,24 @@ background-size: cover;
 }
 
 @keyframes starShimmer {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .star-card-img {
   flex: 1;
   width: 100%;
   background-size: contain;
- height: 150px;
+  height: 150px;
   border-radius: 14px;
 }
 
@@ -98,6 +106,7 @@ background-size: cover;
   cursor: pointer;
   transition: background-position 0.4s ease;
 }
+
 .star-card-btn:hover {
   background-position: 0 0;
 }
@@ -113,29 +122,28 @@ background-size: cover;
 
 .monster-peek {
   position: absolute;
-  bottom: 310px;  /* same height alignment */
+  bottom: 310px;
+  /* same height alignment */
   width: 180px;
   z-index: 5;
   pointer-events: none;
   animation: monsterWiggle 4s ease-in-out infinite;
 }
-/* 
-@keyframes monsterWiggle {
-  0%, 100% { transform: rotate(-8deg) translateY(0); }
-  50% { transform: rotate(-12deg) translateY(-10px); }
-} */
+
+
 .monster-right {
   right: 1px;
-  transform: scaleX(-1); 
+  transform: scaleX(-1);
 }
 
 .monster-left {
   left: -10px;
-  
+
 }
 
 .star-slider-wrap {
-  position: relative; /* make sure overlay positions correctly */
+  position: relative;
+  /* make sure overlay positions correctly */
   padding: 60px 0;
   background-image: url(../assets/f1.jpg);
   background-size: cover;
@@ -148,8 +156,10 @@ background-size: cover;
 .star-slider-wrap::before {
   content: "";
   position: absolute;
-  inset: 0; /* covers full section */
-  background: rgba(0, 0, 0, 0.5); /* adjust darkness here */
+  inset: 0;
+  /* covers full section */
+  background: rgba(0, 0, 0, 0.5);
+  /* adjust darkness here */
   z-index: 1;
 }
 
@@ -158,11 +168,121 @@ background-size: cover;
 .star-slider-title {
   position: relative;
   z-index: 2;
- font-weight: 900;
+  font-weight: 900;
 
 }
+
 .star-slider-title {
- left: -140px;
- margin-top: 20px;
- font-family: "Poppins";
+  margin-top: 20px;
+  font-family: "Poppins";
+}
+
+/* Responsive: stack animation and slider on tablet and smaller */
+@media (max-width: 1024px) {
+  .adventure-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 0 16px;
+  }
+
+  .adventure-animation {
+    order: 1;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    right: 0 !important;
+  }
+
+  .star-slider-wrap {
+    order: 2;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 24px;
+    padding: 32px 16px;
+  }
+
+  .star-slider-container {
+    width: 100%;
+    padding: 12px 0;
+  }
+
+
+  .star-swiper-slide {
+    transform: none;
+  }
+
+  .monster-peek {
+    display: none; /* hide decorative monsters on smaller screens */
+  }
+}
+
+/* Optional: tighter layout for small phones */
+@media (max-width: 480px) {
+  .adventure-animation {
+    max-width: 320px;
+  }
+
+  .star-slider-wrap {
+    padding: 20px 12px;
+    border-radius: 16px;
+  }
+
+  .star-card {
+    width: 260px;
+    height: 420px;
+  }
+}
+
+/* Responsive: stack animation and slider on tablet and smaller */
+@media (max-width: 1024px) {
+  .adventure-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 0 16px;
+  }
+
+  .adventure-animation {
+    order: 1;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    right: 0 !important;
+  }
+
+  .star-slider-wrap {
+    order: 2;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 24px;
+    padding: 32px 16px;
+  }
+
+  .star-swiper-slide {
+    transform: none;
+  }
+
+  .monster-peek {
+    display: none; /* hide decorative monsters on smaller screens */
+  }
+}
+
+/* Optional: tighter layout for small phones */
+@media (max-width: 480px) {
+  .adventure-animation {
+    max-width: 320px;
+  }
+
+  .star-slider-wrap {
+    padding: 20px 12px;
+    border-radius: 16px;
+  }
+
+  .star-card {
+    width: 260px;
+    height: 420px;
+  }
 }

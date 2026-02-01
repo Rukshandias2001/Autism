@@ -78,18 +78,15 @@ export default function HomeHero() {
             Discover a magical world of learning and play!
           </p>
           <div className="ls-hero-actions">
-            <button className="ls-cta" onClick={goFeatures}>
-              Explore Worlds
-            </button>
-            <button 
-              className="ls-child-login-btn"
-              onClick={() => window.location.href = '/child/login'}
+            <button
+              className="ls-cta"
+              onClick={() => navigate('/accounts')}
             >
-              👶 Kids Login
+              Accounts
             </button>
           </div>
           {/* Optional: cute floating elements like planets or icons */}
-          <div className="ls-floating-icons">
+          {/* <div className="ls-floating-icons">
             <img src={b4} alt="Planet" className="floating-icon" />
             <img
               src={b4}
@@ -97,16 +94,17 @@ export default function HomeHero() {
               className="floating-icon floating-delay"
             />
             <img src={b4} alt="Planet" className="floating-icon" />
-          </div>
+          </div> */}
         </div>
       </div>
       {/* Adventures Heading with Animation */}
+      <section className="center-section">
       <div className="adventure-header-wrap">
         <h2 className="star-slider-title">More Adventures Await</h2>
       </div>
       <div className="adventure-section">
         <div className="adventure-animation">
-         <img src={b4} alt="Planet" className="floating-icon"/>
+         {/* <img src={b4} alt="Planet" className="floating-icon"/> */}
           <Lottie
             animationData={adventureAnim}
             loop={true}
@@ -117,12 +115,12 @@ export default function HomeHero() {
               right: "20%",
             }}
           />
-           <img src={b4} alt="Planet" className="floating-icon" />
+           {/* <img src={b4} alt="Planet" className="floating-icon" /> */}
         </div>
-        <img src={b3} alt="Planet" className="floating-icon" />
+        {/* <img src={b3} alt="Planet" className="floating-icon" /> */}
         {/* 🌟 Learning Carousel */}
         <section
-          className="star-slider-wrap "
+          className="star-slider-wrap"
           aria-label="Featured Learning Games"
         >
           <div className="star-slider-frame">
@@ -183,6 +181,7 @@ export default function HomeHero() {
           </div>
         </section>
       </div>
+      </section>
       {/* Features grid / game launcher */}
       <section
         id="features"

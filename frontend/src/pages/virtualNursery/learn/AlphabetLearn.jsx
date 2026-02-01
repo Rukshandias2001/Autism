@@ -101,7 +101,7 @@ export default function AlphabetLearn({ topic: topicProp }) {
   }, [videos, currentId]);
 
   function openAdd() {
-    if (!isMentor) return;
+    // if (!isMentor) return;
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
       return;
@@ -115,8 +115,10 @@ export default function AlphabetLearn({ topic: topicProp }) {
   }
 
   async function onAdd(e) {
+    console.log(e)
+
     e?.preventDefault?.();
-    if (!isMentor) return;
+    // if (!isMentor) return;
 
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
@@ -284,7 +286,16 @@ console.log("ReactPlayer URL:", current?.url);
             );
           })}
 
-          {isMentor && videos.length < MAX_VIDEOS && (
+          <button
+                className="al-thumb al-add"
+                onClick={openAdd}
+                aria-label="Add new video"
+              >
+                <div className="al-add-plus">＋</div>
+                <span className="al-thumb-title">Add video</span>
+          </button>
+
+          {/* {isMentor && videos.length < MAX_VIDEOS && (
             <button
               className="al-thumb al-add"
               onClick={openAdd}
@@ -293,10 +304,10 @@ console.log("ReactPlayer URL:", current?.url);
               <div className="al-add-plus">＋</div>
               <span className="al-thumb-title">Add video</span>
             </button>
-          )}
+          )} */}
         </div>
 
-        {isMentor && showForm && (
+        { showForm && (
           <div className="al-modal" role="dialog" aria-modal="true">
             <div className="al-modal-card">
               <h3>

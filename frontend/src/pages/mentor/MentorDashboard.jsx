@@ -92,7 +92,16 @@ export default function MentorDashboard() {
                 {/* Nursery → Alphabet Learn (top-level /alphabets) */}
                 <FeatureCard item={FEATURES[2]}>
                   <div className="md-quick-col">
-                    <button onClick={() => nav("/alphabets")} className="md-linkbtn">Alphabet Learn ▸</button>
+                    {/* <button onClick={() => nav("/alphabets")} className="md-linkbtn">Alphabet Learn ▸</button> */}
+                    
+                  <button onClick={() => nav("/alphabets")} className="md-linkbtn">Nursery ▸ Alphabet</button>
+                  <button onClick={()=>nav("/numbers")} className="md-linkbtn">Nursery ▸ Numbers</button>
+                  <button onClick={()=>nav("/shapes")} className="md-linkbtn">Nursery ▸ Shapes</button>
+                  <button onClick={()=>nav("/colors")} className="md-linkbtn">Nursery ▸ Colors</button>
+                  <button onClick={()=>nav("/animals")} className="md-linkbtn">Nursery ▸ Animals</button>
+                  <button onClick={()=>nav("/fruits")} className="md-linkbtn">Nursery ▸ Fruits</button>
+                  <button onClick={()=>nav("/vegetables")} className="md-linkbtn">Nursery ▸ Vegetables</button>
+                  
                   </div>
                 </FeatureCard>
 
