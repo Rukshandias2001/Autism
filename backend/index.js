@@ -8,9 +8,9 @@ import { fileURLToPath } from "url";
 
 // —— Routers from EmotionSimulator branch ——
 import contentsRouter from "./routes/contents.js";
-import uploadLocalRouter from "./routes/upload1.js";       // local uploader
-import uploadRouter from "./routes/upload.js";             // cloud/unified uploader (if you keep it)
-import emotionAttemptsRouter from "./routes/attempts1.js"; // Emotion Simulator attempts (auth)
+import uploadLocalRouter from "./routes/upload1.js";       
+import uploadRouter from "./routes/upload.js";             
+import emotionAttemptsRouter from "./routes/attempts1.js";
 import thresholdsRouter from "./routes/thresholds.js";
 import authRouter from "./routes/auth.js";
 import childAuthRouter from "./routes/childAuth.js";
@@ -36,8 +36,12 @@ import { notFound, errorHandler } from "./middleware/errorHandler.js";
 //Games
 import gameRouter from "./routes/GameRoutes.js"; //import game routes
 
+// Score Routes
+import scoreRoutes from "./routes/scoreRoutes.js"; 
 
-
+// —— Routine Builder Imports ——
+import activityRoutes from "./routes/activityRoutes.js";
+import routineRoutes from "./routes/routineRoutes.js";
 
 dotenv.config();
 
@@ -46,23 +50,30 @@ const { MONGODB_URI, PORT: PORT_ENV } = process.env;
 const PORT = PORT_ENV ?? 5050;
 const MONGO_URL = MONGODB_URI || "mongodb://localhost:27017/littlestars";
 
-// —— CORS (adjust allowList as needed) ——
+// —— CORS
 const allowList = new Set([
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "http://localhost:5174",
   "http://127.0.0.1:5174",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
   "http://localhost:3001",
   "http://127.0.0.1:3001",
-
 ]);
 app.use(
   cors({
     origin(origin, cb) {
-      if (!origin || allowList.has(origin)) return cb(null, true);
+      // Allow requests with no origin (mobile apps, curl, Postman, etc.)
+      if (!origin) return cb(null, true);
+      // Allow all localhost origins in development
+      if (origin.includes("localhost") || origin.includes("127.0.0.1")) {
+        return cb(null, true);
+      }
+      if (allowList.has(origin)) return cb(null, true);
       return cb(new Error(`CORS blocked for origin: ${origin}`));
     },
-    credentials: false,
+    credentials: true,
   })
 );
 
@@ -94,7 +105,6 @@ app.use("/api/children", childrenRoutes);
 app.use("/api/child-routines", childRoutinesRouter);
 app.use("/api/scenarios", scenariosRoutes);
 
-// Uploads — keep both with different prefixes (or comment one out)
 app.use("/api/upload/local", uploadLocalRouter); // local-only
 app.use("/api/upload", uploadRouter);            // cloud/unified
 
@@ -109,16 +119,19 @@ app.use("/api/speech/attempts", speechAttemptsRouter);
 
 // NEW (for Mentor Speech CRUD used by your React API file)
 app.use("/api/speech-cards", speechCardRoutes);
+// Reports
+import reportsRouter from "./routes/reports.js";
+app.use("/api/reports", reportsRouter);
 
 // Routine Builder
-import activityRoutes from "./routes/activityRoutes.js";
-import routineRoutes from "./routes/routineRoutes.js";
 app.use("/api/activities", activityRoutes);
 app.use("/api/routines", routineRoutes);
 
 
 //Games
 app.use("/game", gameRouter); 
+
+app.use("/api/scores", scoreRoutes);
 
 // —— Error handlers (keep last) ——
 app.use(notFound);

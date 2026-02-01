@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import activityRoutes from "./routes/activityRoutes.js";
 import routineRoutes from "./routes/routineRoutes.js";
+import scoreRoutes from "./routes/scoreRoutes.js"; 
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 export const createApp = () => {
@@ -23,6 +24,7 @@ export const createApp = () => {
 
   app.use("/api/activities", activityRoutes);
   app.use("/api/routines", routineRoutes);
+    app.use("/api/scores", scoreRoutes);
 
 
   

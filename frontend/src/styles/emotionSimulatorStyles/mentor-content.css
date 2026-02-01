@@ -133,10 +133,13 @@
 }
 .cm-modal {
   background: #fff;
-  width: 760px;
+  width: min(760px, 96%);
   border-radius: 14px;
   padding: 16px;
   position: relative;
+  box-sizing: border-box;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
 }
 .cm-x {
   position: absolute;
@@ -200,7 +203,7 @@
   background: #e8f4ff;
   font-weight: 700;
   cursor: pointer;
-  margin-top: -200px;
+  margin-top: 0;
 }
 
 /* URL + File inputs side-by-side */

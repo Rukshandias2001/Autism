@@ -144,7 +144,10 @@ export const ChildrenAPI = {
     return http(`/api/children/default${qs ? `?${qs}` : ""}`);
   },
 
-  list:   () => http("/api/children"),            // mentor view
+  list: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return http(`/api/children${qs ? `?${qs}` : ""}`);
+  },
   mine:   () => http("/api/children/mine"),       // parent view
   create: (data) => http("/api/children", { method: "POST", body: data }),
   assign: (childId, mentorId) =>
@@ -169,6 +172,10 @@ export const ChildRoutinesAPI = {
   completeStep: (id, stepIndex) => 
     http(`/api/child-routines/${id}/step/${stepIndex}/complete`, { method: "POST" }),
   finish: (id) => http(`/api/child-routines/${id}/finish`, { method: "POST" }),
+};
+
+export const ReportsAPI = {
+  getChildReport: (childId) => http(`/api/reports/child/${childId}`),
 };
 
 
