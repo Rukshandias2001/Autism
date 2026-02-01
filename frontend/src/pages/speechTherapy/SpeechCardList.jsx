@@ -24,12 +24,12 @@ export default function SpeechCardList({ cards, onEdit, onDelete }) {
               {grouped[cat].map((card) => (
                 <div key={card._id} className="sl-card">
                  <div className="sl-thumb">
-  <MediaPreview
-    src={card.image}
-    alt={card.title}
-    className="sl-media"
-  />
-</div>
+                <MediaPreview
+                  src={card.image}
+                  alt={card.title}
+                  className="sl-media"
+                />
+              </div>
 
     
                   <div className="sl-body">

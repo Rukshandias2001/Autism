@@ -135,12 +135,12 @@ export default function SpeechPractice({ cards, categories }) {
         <div className="sp-stage">
           <div className="sp-card">
           <div className="sp-card-media">
-  <MediaPreview
-    src={current.image}
-    alt={current.title}
-    className="sp-media"
-  />
-</div>
+          <MediaPreview
+            src={current.image}
+            alt={current.title}
+            className="sp-media"
+          />
+        </div>
 
   
             <div className="sp-card-body">

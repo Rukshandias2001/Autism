@@ -3,11 +3,9 @@ import { getVoice } from "../../Utils/voiceHelper";
 import "../../styles/speechTherapyStyles/SpeechCard.css";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
-const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
+const SpeechCard = ({ title, imageUrl, childId, category }) => {
 
-  console.log("---------------------------------------")
-  console.log(imageUrl)
-  console.log("---------------------------------------")
+  
 
   const [recognizedText, setRecognizedText] = useState("");
   const [isListening, setIsListening] = useState(false);
