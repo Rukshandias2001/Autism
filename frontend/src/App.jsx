@@ -173,10 +173,12 @@ export default function App() {
           path="/nursery/:category/learn"
           element={<NurseryLearnActivity />}
         />
-        <Route
-          path="/nursery/:category/activity-mode"
-          element={<ActivitySwitch />}
-        />
+        <Route element={<RequireAuth roles={["child"]} />}>
+          <Route
+            path="/nursery/:category/activity-mode"
+            element={<ActivitySwitch />}
+          />
+        </Route>
             
         <Route path="/alphabets" element={<AlphabetLearn  />} />
         <Route path="/numbers" element={<NumbersLearn  />} />
