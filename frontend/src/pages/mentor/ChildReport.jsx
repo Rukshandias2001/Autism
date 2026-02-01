@@ -88,8 +88,35 @@ export default function ChildReport() {
   const hasNoData = !report || (
     (!report.overall || report.overall.attempts === 0) &&
     (!report.byEmotion || report.byEmotion.length === 0) &&
-    (!report.recent || report.recent.length === 0)
+    (!report.recent || report.recent.length === 0) &&
+    (!report.games || !report.games.recent || report.games.recent.length === 0)
   );
+
+  // Combine recent practice attempts and game sessions into one timeline
+  const combinedRecent = (() => {
+    if (!report) return [];
+    const practice = (report.recent || []).map(item => ({
+      _id: item._id,
+      type: "practice",
+      date: item.createdAt,
+      emotionName: item.emotionName,
+      scenario: item.scenario,
+      score: item.score,
+      stars: item.stars,
+      passed: item.passed
+    }));
+    const games = (report.games?.recent || []).map(s => ({
+      _id: s._id,
+      type: "game",
+      date: s.playedAt,
+      totalScore: s.totalScore,
+      routineScore: s.routineScore,
+      transportScore: s.transportScore,
+      socialScore: s.socialScore,
+      spatialScore: s.spatialScore
+    }));
+    return [...practice, ...games].sort((a, b) => new Date(b.date) - new Date(a.date));
+  })();
 
   if (hasNoData) {
     return (
@@ -237,10 +264,43 @@ export default function ChildReport() {
           <div className="card-icon">🎮</div>
           <h2>Interactive Games</h2>
           <p className="card-description">Educational game progress</p>
-          <div className="coming-soon">
-            <div className="coming-soon-icon">📊</div>
-            <p>Statistics coming soon</p>
-          </div>
+          {report?.games?.overall && report.games.overall.sessions > 0 ? (
+            <div className="stat-content">
+              <div className="stat-row">
+                <div className="stat-item">
+                  <span className="stat-value">{report.games.overall.sessions || 0}</span>
+                  <span className="stat-label">Total Sessions</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-value">{(report.games.overall.avgTotal || 0).toFixed(1)}</span>
+                  <span className="stat-label">Avg Total Score</span>
+                </div>
+              </div>
+              <div className="stat-row">
+                <div className="stat-item small">
+                  <span className="stat-value">{(report.games.overall.avgRoutine || 0).toFixed(1)}</span>
+                  <span className="stat-label">Routine</span>
+                </div>
+                <div className="stat-item small">
+                  <span className="stat-value">{(report.games.overall.avgTransport || 0).toFixed(1)}</span>
+                  <span className="stat-label">Transport</span>
+                </div>
+                <div className="stat-item small">
+                  <span className="stat-value">{(report.games.overall.avgSocial || 0).toFixed(1)}</span>
+                  <span className="stat-label">Social</span>
+                </div>
+                <div className="stat-item small">
+                  <span className="stat-value">{(report.games.overall.avgSpatial || 0).toFixed(1)}</span>
+                  <span className="stat-label">Spatial</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="coming-soon">
+              <div className="coming-soon-icon">📊</div>
+              <p>Statistics coming soon</p>
+            </div>
+          )}
         </div>
 
         {/* Overall Progress Card - Placeholder */}
@@ -255,39 +315,53 @@ export default function ChildReport() {
         </div>
       </div>
 
-      {/* Recent Activity */}
-      {report?.recent && report.recent.length > 0 && (
+      {/* Recent Activity (includes practice attempts and game sessions) */}
+      {combinedRecent && combinedRecent.length > 0 && (
         <div className="recent-activity">
           <h2>Recent Activity</h2>
           <div className="activity-list">
-            {report.recent.map((attempt, index) => (
-              <div key={attempt._id || index} className="activity-item">
+            {combinedRecent.map((item, idx) => (
+              <div key={item._id || idx} className="activity-item">
                 <div className="activity-icon">
-                  {getEmotionEmoji(attempt.emotionName)}
+                  {item.type === "practice" ? getEmotionEmoji(item.emotionName) : "🎮"}
                 </div>
                 <div className="activity-details">
                   <div className="activity-title">
-                    <span className="emotion">{attempt.emotionName}</span>
-                    {attempt.scenario && (
-                      <span className="scenario">— {attempt.scenario}</span>
+                    {item.type === "practice" ? (
+                      <>
+                        <span className="emotion">{item.emotionName}</span>
+                        {item.scenario && <span className="scenario">— {item.scenario}</span>}
+                      </>
+                    ) : (
+                      <span>Interactive Games</span>
                     )}
                   </div>
                   <div className="activity-meta">
-                    <span className="score">Score: {attempt.score}</span>
-                    <span className="stars">⭐ {attempt.stars}</span>
-                    <span className={`status ${attempt.passed ? "passed" : "failed"}`}>
-                      {attempt.passed ? "✅ Passed" : "❌ Failed"}
-                    </span>
+                    {item.type === "practice" ? (
+                      <>
+                        <span className="score">Score: {item.score}</span>
+                        <span className="stars">⭐ {item.stars}</span>
+                        <span className={`status ${item.passed ? "passed" : "failed"}`}>
+                          {item.passed ? "✅ Passed" : "❌ Failed"}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="score">Total: {item.totalScore}</span>
+                        <span className="stars">Routine: {item.routineScore}</span>
+                        <span className={`status`}>Spatial: {item.spatialScore}</span>
+                      </>
+                    )}
                   </div>
                 </div>
-                <div className="activity-time">
-                  {formatDate(attempt.createdAt)}
-                </div>
+                <div className="activity-time">{formatDate(item.date)}</div>
               </div>
             ))}
           </div>
         </div>
       )}
+
+     
     </div>
   );
 }
