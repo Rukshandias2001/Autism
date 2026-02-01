@@ -3,15 +3,17 @@ import cors from "cors";
 import morgan from "morgan";
 import activityRoutes from "./routes/activityRoutes.js";
 import routineRoutes from "./routes/routineRoutes.js";
-
-import scoreRoutes from "./routes/scoreRoutes.js"; 
-
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
+import scoreRoutes from "./routes/scoreRoutes.js"; 
 
 export const createApp = () => {
   const app = express();
 
-  app.use(cors({ origin: process.env.CLIENT_ORIGIN?.split(",") || "*" }));
+  app.use(
+    cors({
+      origin: process.env.CLIENT_ORIGIN?.split(",") || "*",
+    })
+  );
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(morgan("dev"));
@@ -29,4 +31,5 @@ export const createApp = () => {
 
   return app;
 };
+
 export default createApp;

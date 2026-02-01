@@ -2,11 +2,10 @@ import GameSession from '../models/GameSession.js';
 
 export const submitGameResults = async (req, res) => {
   try {
-    console.log("📥 Controller Hit! Body:", req.body);
+    console.log("Controller Hit! Body:", req.body);
     
     const { routine, transport, social, spatial } = req.body;
 
-    // Validate logic here...
     const newSession = new GameSession({
       routineScore: routine,
       transportScore: transport,

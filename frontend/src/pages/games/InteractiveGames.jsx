@@ -3,8 +3,6 @@ import "./InteractiveGames.css";
 import redbus from "../../assets/redbus.png";
 import bluebus from "../../assets/bluebus.png";
 import yellowbus from "../../assets/yellowbus.png";
-// You can reuse existing bus images for the new steps or import new ones
-// For this code, I will reuse blue/yellow for the extra steps to keep it simple
 import socialChoice1 from "../../assets/socialChoice1.png";
 import socialChoice2 from "../../assets/socialChoice2.png";
 import socialChoice3 from "../../assets/socialChoice3.png";
@@ -14,7 +12,6 @@ import socialChoice5 from "../../assets/socialChoice5.png";
 export default function InteractiveGames() {
   const [activeGame, setActiveGame] = useState("Routine");
   
-  // State to store scores for all games
   const [scores, setScores] = useState({
     routine: 0,
     transport: 0,
@@ -26,14 +23,10 @@ export default function InteractiveGames() {
     document.title = "Interactive Games";
   }, []);
 
-  // Function to handle moving to the next game and saving the score
   const handleGameComplete = (gameName, score) => {
-    // 1. Save Score
     const newScores = { ...scores, [gameName]: score };
     setScores(newScores);
-    console.log(`Finished ${gameName}. Score: ${score}/5`);
 
-    // 2. Navigate to Next Game
     if (gameName === "routine") {
       setActiveGame("Transport");
     } else if (gameName === "transport") {
@@ -41,22 +34,20 @@ export default function InteractiveGames() {
     } else if (gameName === "social") {
       setActiveGame("Spatial");
     } else if (gameName === "spatial") {
-      // 3. Final Submission
       submitToBackend(newScores);
     }
   };
 
   const submitToBackend = async (finalScores) => {
-    console.log("Submitting to backend:", finalScores);
+    console.log("Submitting to backend:", finalScores, finalScores.routine, finalScores.transport, finalScores.social, finalScores.spatial);
     const payload = {
       routine: finalScores.routine,
       transport: finalScores.transport,
       social: finalScores.social,
-      spatial: finalScores.spatial // This comes from the 'score' argument in handleGameComplete
+      spatial: finalScores.spatial
     };
 
     try {
-      // Make sure your backend is running on port 5000!
       const response = await fetch('http://localhost:5050/api/scores/submit', {
         method: 'POST',
         headers: {
@@ -69,13 +60,12 @@ export default function InteractiveGames() {
       console.log("Backend Response:", data);
       
       if (data.success) {
-        alert("Scores successfully saved to the database! ✅");
+        alert("Scores successfully saved to the database!");
       } else {
-        alert("Failed to save scores. ❌");
+        alert("Failed to save scores.");
       }
     } catch (error) {
       console.error("Error submitting scores:", error);
-      alert("Error connecting to server. Is the backend running?");
     }
   };
 
@@ -102,16 +92,12 @@ export default function InteractiveGames() {
             <button 
               key={game} 
               className={`menu-btn ${activeGame === game ? "active" : ""}`}
-              // We disable manual clicking if you want to force the flow, 
-              // but keeping it enabled is good for testing.
-              onClick={() => setActiveGame(game)}
             >
               {game === "Routine" && "Daily Routine"}
               {game === "Transport" && "Bus Catching"}
               {game === "Social" && "Social Choices"}
               {game === "Spatial" && "Memory Match"}
               
-              {/* Optional: Show score if available */}
               {scores[game.toLowerCase()] > 0 && <span className="score-badge"> ({scores[game.toLowerCase()]}/5)</span>}
             </button>
           ))}
@@ -128,8 +114,6 @@ export default function InteractiveGames() {
     </div>
   );
 }
-
-// --- GAME 1: ROUTINE SIMULATION ---
 const RoutineGame = ({ onComplete }) => {
   const initial = ["Alarm Off","Brush Teeth", "Wash Face", "Get Dressed", "Eat Breakfast"];
   const [items, setItems] = useState(["Brush Teeth","Wash Face", "Alarm Off", "Eat Breakfast", "Get Dressed"]);
@@ -144,7 +128,6 @@ const RoutineGame = ({ onComplete }) => {
   };
 
   const checkOrder = () => {
-    // Calculate Score: 1 point for every item in the correct index
     let score = 0;
     items.forEach((item, index) => {
       if (item === initial[index]) {
@@ -155,10 +138,9 @@ const RoutineGame = ({ onComplete }) => {
     const isPerfect = score === 5;
     setFeedback(isPerfect ? "Great job! Perfect order." : `You got ${score}/5 correct.`);
     
-    // Complete the game and pass score
     setTimeout(() => {
       onComplete(score);
-    }, 1500); // Small delay so they can see the feedback text
+    }, 1500); 
   };
 
   return (
@@ -178,26 +160,22 @@ const RoutineGame = ({ onComplete }) => {
     </div>
   );
 };
-
-// --- GAME 2: TRANSPORTATION (Modified for 5 Steps) ---
 const TransportGame = ({ onComplete }) => {
-  // Added 2 more steps to make it out of 5
   const steps = [
     { img: bluebus, action: "ignore", msg: "1. Look! A Blue 223 bus. Is it ours?" },
     { img: yellowbus, action: "ignore", msg: "2. Look! A Yellow 118 bus. Is it ours?" },
-    { img: bluebus, action: "ignore", msg: "3. Look! A Green 550 bus. Is it ours?" }, // Reusing image for demo
-    { img: yellowbus, action: "ignore", msg: "4. Look! A Purple 990 bus. Is it ours?" }, // Reusing image for demo
+    { img: bluebus, action: "ignore", msg: "3. Look! A Green 550 bus. Is it ours?" }, 
+    { img: yellowbus, action: "ignore", msg: "4. Look! A Purple 990 bus. Is it ours?" },
     { img: redbus, action: "getIn", msg: "5. Look! A Red 118 bus. Is it ours?" }
   ];
 
   const [step, setStep] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
-  const [status, setStatus] = useState("Goal: Get on Red Bus #118");
+  const [status, setStatus] = useState("Goal: Get on Red Bus with number 118");
 
   const handleChoice = (choice) => {
     const isCorrect = choice === steps[step].action;
     
-    // Update local score variable (React state update is async, so we use a temp var)
     let newScore = currentScore;
     if (isCorrect) {
       newScore = currentScore + 1;
@@ -205,13 +183,11 @@ const TransportGame = ({ onComplete }) => {
     }
 
     if (step === steps.length - 1) {
-      // Game Over
       setStatus(isCorrect ? "Well done! You got on the bus!" : "Oops, wrong bus!");
       setTimeout(() => {
         onComplete(newScore);
       }, 1000);
     } else {
-      // Next Step
       setStep(step + 1);
       setStatus(isCorrect ? "Correct! Waiting..." : "Wrong choice! Waiting...");
     }
@@ -239,8 +215,6 @@ const TransportGame = ({ onComplete }) => {
     </div>
   );
 };
-
-// --- GAME 3: SOCIAL SCRIPTING ---
 const SocialScripting = ({ onComplete }) => {
   const scenarios = [
     {
@@ -300,11 +274,11 @@ const SocialScripting = ({ onComplete }) => {
 
     if (type === "prosocial") {
       point = 1;
-      resultMsg = "Great choice! (+1 Point) 🌟";
+      resultMsg = "Great choice! (+1 Point)";
     } else if (type === "aggressive") {
-      resultMsg = "That might hurt feelings. (0 Points) 😐";
+      resultMsg = "That might hurt feelings. (0 Points)";
     } else {
-      resultMsg = "You might feel sad later. (0 Points) 😐";
+      resultMsg = "You might feel sad later. (0 Points)";
     }
 
     setScore(score + point);
@@ -316,8 +290,7 @@ const SocialScripting = ({ onComplete }) => {
       setCurrentIndex(currentIndex + 1);
       setSelectedResult(null);
     } else {
-      // Finished all 5
-      onComplete(score); // Pass final score
+      onComplete(score);
     }
   };
 
@@ -354,8 +327,6 @@ const SocialScripting = ({ onComplete }) => {
     </div>
   );
 };
-
-// --- GAME 4: SPATIAL SEQUENCE (MEMORY MATCH) ---
 const SpatialSequence = ({ onComplete }) => {
   const colors = ["red", "blue", "green"];
   const [sequence, setSequence] = useState([]);
@@ -365,7 +336,6 @@ const SpatialSequence = ({ onComplete }) => {
   const [gameStatus, setGameStatus] = useState("idle");
   const [msg, setMsg] = useState("Click Start to play Memory Match");
   
-  // Track score based on levels passed (Level 1 passed = 1 point, etc)
   const [currentLevel, setCurrentLevel] = useState(0); 
 
   const startGame = () => {
@@ -373,7 +343,7 @@ const SpatialSequence = ({ onComplete }) => {
     const newSeq = [startColor];
     setSequence(newSeq);
     setGameStatus("playing");
-    setCurrentLevel(0); // Reset score on new game
+    setCurrentLevel(0); 
     playSequence(newSeq);
   };
 
@@ -397,16 +367,14 @@ const SpatialSequence = ({ onComplete }) => {
     if (isShowing || gameStatus !== "playing") return;
 
     if (color === sequence[userIndex]) {
-      // Correct click
       if (userIndex + 1 === sequence.length) {
-        // Level Complete
-        const newLevel = sequence.length; // If seq length was 1, we passed level 1
+        const newLevel = sequence.length; 
         setCurrentLevel(newLevel);
 
         if (newLevel === 5) {
           setGameStatus("won");
           setMsg("🎉 YOU WON! Perfect Score!");
-          setTimeout(() => onComplete(5), 1500); // Pass 5 points
+          setTimeout(() => onComplete(5), 1500);
         } else {
           setMsg("Correct! Next level...");
           setTimeout(() => {
@@ -420,10 +388,8 @@ const SpatialSequence = ({ onComplete }) => {
         setUserIndex(userIndex + 1);
       }
     } else {
-      // Wrong click - Game Over immediately
       setGameStatus("lost");
       setMsg("Wrong color! Game Over.");
-      // Pass the current level as the score (e.g. passed level 2 = 2 points)
       setTimeout(() => onComplete(currentLevel), 1500); 
     }
   };
@@ -440,8 +406,6 @@ const SpatialSequence = ({ onComplete }) => {
         ))}
       </div>
       {gameStatus === "idle" && <button className="confirm-btn" onClick={startGame}>Start Game</button>}
-      {/* If lost/won, the parent handles navigation, so we might not need a restart button, 
-          but keeping it for UI stability if needed. */}
     </div>
   );
 };

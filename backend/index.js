@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// —— Routers from EmotionSimulator branch ——
+// Routers from EmotionSimulator branch
 import contentsRouter from "./routes/contents.js";
 import uploadLocalRouter from "./routes/upload1.js";       
 import uploadRouter from "./routes/upload.js";             
@@ -19,23 +19,23 @@ import childrenRoutes from "./routes/children.js";
 import childRoutinesRouter from "./routes/childRoutines.js";
 import scenariosRoutes from "./routes/scenarios.js";
 
-// —— Routers from test-branch1 ——
+//Routers from test-branch1
 import BlogsRoutes from "./routes/BlogsRoute.js";
 import NurseryVideos from "./routes/NurseryRoute.js";
 
-// —— Routers from Speech Therapy tool ——
+//Routers from Speech Therapy tool
 import speechAttemptsRouter from "./routes/AttemptRoute.js";
 import cardRoutes from "./routes/SpeechTherapyRoute.js";
 
-// —— Routine Builder ——
+//Routine Builder
 import { Activity } from "./models/Activity.js";
 import { defaultActivities } from "./data/defaultActivities.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
-// —— Games (Friend's Routes) ——
+//Games (Friend's Routes)
 import gameRouter from "./routes/GameRoutes.js"; 
 
-// 👇👇👇 YOUR NEW SCORE ROUTES 👇👇👇
+// interactive game routers
 import scoreRoutes from "./routes/scoreRoutes.js"; 
 
 // —— Routine Builder Imports ——
@@ -81,8 +81,6 @@ app.use("/models", express.static(path.join(__dirname, "models")));
 app.get("/health", (_req, res) => res.json({ ok: true }));
 app.get("/", (_req, res) => res.send("LittleStars backend is running"));
 
-// —— MOUNT ROUTES ————————————————
-
 // Emotion Simulator
 app.use("/api/contents", contentsRouter);
 app.use("/api/emotion/attempts", emotionAttemptsRouter);
@@ -110,10 +108,10 @@ app.use("/api/speech/attempts", speechAttemptsRouter);
 app.use("/api/activities", activityRoutes);
 app.use("/api/routines", routineRoutes);
 
-// Games (Friend's Code)
+// Games
 app.use("/game", gameRouter); 
 
-// 👇👇👇 YOUR NEW SCORE ROUTE (This was missing!) 👇👇👇
+// Interactive Games
 app.use("/api/scores", scoreRoutes);
 
 // —— Error handlers ——
@@ -123,7 +121,7 @@ app.use(errorHandler);
 // —— DB + server start ——
 try {
   await mongoose.connect(MONGO_URL);
-  console.log("✅ MongoDB connected");
+  console.log("MongoDB connected");
 
   // Seed default activities if empty
   const count = await Activity.countDocuments();
@@ -133,9 +131,9 @@ try {
   }
 
   app.listen(PORT, () => {
-    console.log(`✅ API listening on http://localhost:${PORT}`);
+    console.log(`API listening on http://localhost:${PORT}`);
   });
 } catch (err) {
-  console.error("❌ MongoDB connection failed:", err?.message || err);
+  console.error("MongoDB connection failed:", err?.message || err);
   process.exit(1);
 }
