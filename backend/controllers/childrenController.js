@@ -140,10 +140,42 @@ export const createChild = async (req, res, next) => {
 
 export const listForMentor = async (req, res, next) => {
   try {
-    const children = await Child.find({ mentorIds: toObjectId(req.user.sub) })
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 10));
+    const search = (req.query.search || "").trim();
+    const skip = (page - 1) * limit;
+
+    // Build search filter
+    const filter = {};
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    // Get total count for pagination
+    const total = await Child.countDocuments(filter);
+    const totalPages = Math.ceil(total / limit);
+
+    // Fetch paginated children
+    const children = await Child.find(filter)
       .sort({ createdAt: -1 })
-      .populate({ path: "account", select: "username theme lastLoginAt updatedAt" });
-    res.json(children.map(childToResponse));
+      .skip(skip)
+      .limit(limit)
+      .populate({ path: "account", select: "username theme lastLoginAt updatedAt" })
+      .populate({ path: "parentId", select: "name email" });
+
+    res.json({
+      children: children.map(childToResponse),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      },
+    });
   } catch (error) {
     next(error);
   }

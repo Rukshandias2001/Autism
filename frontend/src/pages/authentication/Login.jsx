@@ -30,6 +30,9 @@ export default function Login() {
       // Save user session
       loginAs(user);
       localStorage.setItem("user", JSON.stringify(user));
+      console.log("-----------------------------")
+      console.log(user)
+      console.log("-----------------------------")
 
       // Clear child session
       try {

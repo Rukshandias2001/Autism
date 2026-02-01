@@ -36,6 +36,12 @@ export default function ChildAuth() {
         username: response.username,
         theme: response.theme
       }));
+      console.log("========================")
+      console.log(response)
+      console.log("========================")
+      // after login/select child etc.
+      localStorage.setItem("currentChild", JSON.stringify({ _id: response.child.id }));
+
 
       navigate("/child/dashboard");
     } catch (err) {

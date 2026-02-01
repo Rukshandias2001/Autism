@@ -110,7 +110,10 @@ export default function EmotionPractice() {
   useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("currentChild") || "null");
-      if (!stored || !stored.parentId || stored.parentId !== myId) {
+      console.log("----------------------------")
+      console.log(stored)
+      console.log("----------------------------")
+      if (!childId) {
         localStorage.removeItem("currentChild");
         setChildId(null);
       }
@@ -120,22 +123,22 @@ export default function EmotionPractice() {
     }
   }, [myId]);
 
-  useEffect(() => {
-    if (childId || !myId) return;
-    (async () => {
-      try {
-        const u = JSON.parse(localStorage.getItem("user") || "{}");
-        const suggested = (u?.email || "").split("@")[0] || "My";
-        const doc = await ChildrenAPI.default({ name: `${suggested}'s child` });
-        if (doc?._id) {
-          localStorage.setItem("currentChild", JSON.stringify(doc));
-          setChildId(doc._id);
-        }
-      } catch (e) {
-        console.error("ChildrenAPI.default failed:", e);
-      }
-    })();
-  }, [childId, myId]);
+  // useEffect(() => {
+  //   if (!childId || !myId) return;
+  //   (async () => {
+  //     try {
+  //       const u = JSON.parse(localStorage.getItem("user") || "{}");
+  //       const suggested = (u?.email || "").split("@")[0] || "My";
+  //       const doc = await ChildrenAPI.default({ name: `${suggested}'s child` });
+  //       if (childId) {
+  //         localStorage.setItem("currentChild", JSON.stringify(doc));
+  //         setChildId(doc._id);
+  //       }
+  //     } catch (e) {
+  //       console.error("ChildrenAPI.default failed:", e);
+  //     }
+  //   })();
+  // }, [childId, myId]);
 
   const isObjectId = (s) => typeof s === "string" && /^[a-f0-9]{24}$/i.test(s);
 
@@ -393,7 +396,7 @@ export default function EmotionPractice() {
 
   // Guard: require a child profile first
   if (!childId) {
-    return <div style={{ padding: 20 }}>Preparing your child profile…</div>;
+    return <div style={{ padding: 20 }}>Please login through child credentials! …</div>;
   }
 
   return (

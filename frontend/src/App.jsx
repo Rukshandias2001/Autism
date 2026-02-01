@@ -1,7 +1,7 @@
 
 // src/App.jsx
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 // Shared
 import NavBar from "./components/NavBar";
@@ -27,8 +27,10 @@ import Signup from "./pages/authentication/SignUp";
 import ContentManager from "./pages/emotionSimulator/ContentManager";
 import ContentGrid from "./pages/emotionSimulator/ContentGrid";
 import RequireAuth from "./auth/RequireAuth";
+import { AuthProvider, useAuth } from "./auth/AuthContext";
 import MentorDashboard from "./pages/mentor/MentorDashboard";
 import ReportsIndex from "./pages/mentor/ReportsIndex";
+import ChildReport from "./pages/mentor/ChildReport";
 import MentorChildProgress from "./pages/mentor/MentorChildProgress";
 import ScenariosPage from "./pages/mentor/ScenariosPage";
 
@@ -90,8 +92,24 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <NavBar />
-      <Routes>
+      <AuthProvider>
+        {/* Inner component uses router hooks to decide whether to show NavBar */}
+        <InnerRoutes />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+  
+  function InnerRoutes() {
+    const location = useLocation();
+    const hideNav = location.pathname === "/login" || location.pathname === "/signup";
+    const { user } = useAuth();
+    // If user not logged in, restrict access to only login/signup pages
+    const isAuthPage = hideNav;
+    if (!user && !isAuthPage) return <Navigate to="/login" replace />;
+    return (
+      <>
+        {!hideNav && <NavBar />}
+        <Routes>
         {/* Public */}
         <Route path="/" element={<HomeHero />} />
         <Route path="/login" element={<Login />} />
@@ -115,6 +133,7 @@ export default function App() {
         <Route path="/mentor" element={<MentorDashboard />}>
           <Route index element={<Navigate to="reports" replace />} />
           <Route path="reports" element={<ReportsIndex />} />
+          <Route path="reports/:childId" element={<ChildReport />} />
           <Route path="progress/:childId" element={<MentorChildProgress />} />
           <Route path="scenarios" element={<ScenariosPage />} />
           <Route path="content" element={<ContentManager />} />
@@ -131,6 +150,7 @@ export default function App() {
           <Route path="/mentor" element={<MentorDashboard />}>
             <Route index element={<Navigate to="reports" replace />} />
             <Route path="reports" element={<ReportsIndex />} />
+            <Route path="reports/:childId" element={<ChildReport />} />
             <Route path="progress/:childId" element={<MentorChildProgress />} />
             <Route path="scenarios" element={<ScenariosPage />} />
             <Route path="content" element={<ContentManager />} />
@@ -165,7 +185,7 @@ export default function App() {
         <Route path="/fruits" element={<FruitsLearn  />} />
 
         {/* Routine Navigation */}
-        <Route path="/routines" element={<RoutineNavigation />} />
+        <Route path="/accounts" element={<RoutineNavigation />} />
 
         {/* Routine Builder */}
         <Route path="/routine" element={<RoutineHome />} />
@@ -184,9 +204,10 @@ export default function App() {
         {/* Example */}
         <Route path="/example" element={<Example />} />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
-  );
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </>
+    );
+  }
 }

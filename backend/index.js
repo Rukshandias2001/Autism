@@ -48,17 +48,24 @@ const allowList = new Set([
   "http://127.0.0.1:5173",
   "http://localhost:5174",
   "http://127.0.0.1:5174",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
   "http://localhost:3001",
   "http://127.0.0.1:3001",
-
 ]);
 app.use(
   cors({
     origin(origin, cb) {
-      if (!origin || allowList.has(origin)) return cb(null, true);
+      // Allow requests with no origin (mobile apps, curl, Postman, etc.)
+      if (!origin) return cb(null, true);
+      // Allow all localhost origins in development
+      if (origin.includes("localhost") || origin.includes("127.0.0.1")) {
+        return cb(null, true);
+      }
+      if (allowList.has(origin)) return cb(null, true);
       return cb(new Error(`CORS blocked for origin: ${origin}`));
     },
-    credentials: false,
+    credentials: true,
   })
 );
 
@@ -101,6 +108,10 @@ app.use("/api/learn", NurseryVideos);
 // Speech Therapy
 app.use("/api/cards", cardRoutes);
 app.use("/api/speech/attempts", speechAttemptsRouter);
+
+// Reports
+import reportsRouter from "./routes/reports.js";
+app.use("/api/reports", reportsRouter);
 
 // Routine Builder
 import activityRoutes from "./routes/activityRoutes.js";
