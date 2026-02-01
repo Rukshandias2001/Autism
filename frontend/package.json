@@ -11,6 +11,7 @@
     "start": "vite"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-react": "^0.17.13",
     "@splinetool/react-spline": "^4.1.0",
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",

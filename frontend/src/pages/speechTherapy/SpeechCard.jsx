@@ -1,8 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { getVoice } from "../../Utils/voiceHelper";
 import "../../styles/speechTherapyStyles/SpeechCard.css";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
+
+  console.log("---------------------------------------")
+  console.log(imageUrl)
+  console.log("---------------------------------------")
+
   const [recognizedText, setRecognizedText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isVoiceReady, setIsVoiceReady] = useState(false);
@@ -152,7 +158,7 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
       };
 
       try {
-        const res = await fetch("http://localhost:5000/api/speech/attempts", { // Send attempt data to backend
+        const res = await fetch("http://localhost:5050/api/speech/attempts", { // Send attempt data to backend
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(attemptData), // Convert data to JSON
@@ -180,7 +186,12 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
           <div className="speech-therapy-card-content">
             <h2 className="speech-therapy-card-title">{title}</h2>
             <div className="speech-therapy-image-container">
-              <img src={imageUrl} alt={title} className="speech-therapy-image" />
+              {/* <img src={imageUrl} alt={title} className="speech-therapy-image" /> */}
+              <DotLottieReact
+                  src={imageUrl}
+                  loop
+                  autoplay
+                />
             </div>
 
             <div className="speech-therapy-controls"> {/* Buttons container */}

@@ -26,6 +26,7 @@ import NurseryVideos from "./routes/NurseryRoute.js";
 // —— Routers from Speech Therapy tool ——
 import speechAttemptsRouter from "./routes/AttemptRoute.js";
 import cardRoutes from "./routes/SpeechTherapyRoute.js";
+import speechCardRoutes from "./routes/speechCardRoutes.js";
 
 // —— Routine Builder ——
 import { Activity } from "./models/Activity.js";
@@ -34,6 +35,9 @@ import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 //Games
 import gameRouter from "./routes/GameRoutes.js"; //import game routes
+
+
+
 
 dotenv.config();
 
@@ -99,14 +103,19 @@ app.use("/api/blogs", BlogsRoutes);
 app.use("/api/learn", NurseryVideos);
 
 // Speech Therapy
+
 app.use("/api/cards", cardRoutes);
 app.use("/api/speech/attempts", speechAttemptsRouter);
+
+// NEW (for Mentor Speech CRUD used by your React API file)
+app.use("/api/speech-cards", speechCardRoutes);
 
 // Routine Builder
 import activityRoutes from "./routes/activityRoutes.js";
 import routineRoutes from "./routes/routineRoutes.js";
 app.use("/api/activities", activityRoutes);
 app.use("/api/routines", routineRoutes);
+
 
 //Games
 app.use("/game", gameRouter); 

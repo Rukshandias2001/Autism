@@ -24,6 +24,9 @@ export const createApp = () => {
   app.use("/api/activities", activityRoutes);
   app.use("/api/routines", routineRoutes);
 
+
+  
+
   app.use(notFound);
   app.use(errorHandler);
 

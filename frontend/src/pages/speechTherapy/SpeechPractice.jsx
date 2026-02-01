@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-
+import MediaPreview from "../../pages/speechTherapy/MediaPreview";
 function normalize(s) {
   return (s || "")
     .toLowerCase()
@@ -78,59 +78,120 @@ export default function SpeechPractice({ cards, categories }) {
   if (!cards.length) return <div className="st-muted">Add some cards first, then preview practice here.</div>;
 
   return (
-    <div>
-      <div className="st-panel-title">
-        <span>Practice Preview</span>
+    <div className="sp-wrap">
+      <div className="sp-head">
+        <div>
+          <h3 className="sp-title">Practice Preview</h3>
+          <p className="sp-sub">Listen, speak, and get instant feedback.</p>
+        </div>
+  
+        <div className="sp-meta">
+          <div className="sp-chip">
+            {filtered.length ? `${idx + 1} / ${filtered.length}` : "0 / 0"}
+          </div>
+        </div>
       </div>
-
-      <div className="st-row">
-        <div className="st-field">
+  
+      <div className="sp-controls">
+        <div className="sp-field">
           <label>Category</label>
           <select
+            className="sp-input"
             value={category}
-            onChange={(e) => { setCategory(e.target.value); setIdx(0); setResult(null); setLastHeard(""); }}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              setIdx(0);
+              setResult(null);
+              setLastHeard("");
+            }}
           >
-            {(categories?.length ? categories : ["family"]).map(c => (
-              <option key={c} value={c}>{c}</option>
+            {(categories?.length ? categories : ["family"]).map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
             ))}
           </select>
         </div>
-
-        <div className="st-field">
-          <label>Card</label>
-          <div className="st-muted">{filtered.length ? `${idx + 1} / ${filtered.length}` : "0 / 0"}</div>
+  
+        <div className="sp-field">
+          <label>Status</label>
+          <div className="sp-status">
+            {listening ? (
+              <span className="sp-live">🎤 Listening…</span>
+            ) : (
+              <span className="sp-muted">Ready</span>
+            )}
+          </div>
         </div>
       </div>
-
+  
       {!current ? (
-        <div className="st-muted">No cards inside this category yet.</div>
+        <div className="sp-empty">
+          <div className="sp-empty-icon">📚</div>
+          <div className="sp-empty-title">No cards in this category</div>
+          <div className="sp-empty-sub">Add a few cards first, then practice here.</div>
+        </div>
       ) : (
-        <div className="st-practice">
-          <div className="st-practice-card">
-            <img src={current.image} alt={current.title} />
-          </div>
+        <div className="sp-stage">
+          <div className="sp-card">
+          <div className="sp-card-media">
+  <MediaPreview
+    src={current.image}
+    alt={current.title}
+    className="sp-media"
+  />
+</div>
 
-          <div className="st-practice-controls">
-            <div className="st-muted">Expected word:</div>
-            <div className="st-big">{current.title}</div>
-
-            <div className="st-btnrow">
-              <button className="st-mini" onClick={prev}>◀ Prev</button>
-              <button className="st-mini" onClick={next}>Next ▶</button>
-              <button className="st-mini" onClick={playAudio}>🔊 Play Audio</button>
-              <button className="st-primary" onClick={startListening} disabled={listening}>
-                {listening ? "Listening..." : "🎤 Speak"}
-              </button>
-            </div>
-
-            <div className="st-feedback">
-              {lastHeard ? <div><b>You said:</b> {lastHeard}</div> : null}
-              {result === true ? <div className="ok">✅ Correct!</div> : null}
-              {result === false ? <div className="bad">❌ Try again (say exactly: {current.title})</div> : null}
+  
+            <div className="sp-card-body">
+              <div className="sp-expected">Expected word</div>
+              <div className="sp-word">{current.title}</div>
+  
+              <div className="sp-actions">
+                <button type="button" className="sp-btn ghost" onClick={prev}>
+                  ◀ Prev
+                </button>
+                <button type="button" className="sp-btn ghost" onClick={next}>
+                  Next ▶
+                </button>
+                <button type="button" className="sp-btn" onClick={playAudio}>
+                  🔊 Play Audio
+                </button>
+                <button
+                  type="button"
+                  className="sp-btn primary"
+                  onClick={startListening}
+                  disabled={listening}
+                >
+                  {listening ? "Listening..." : "🎤 Speak"}
+                </button>
+              </div>
+  
+              <div className="sp-feedback">
+                {lastHeard ? (
+                  <div className="sp-heard">
+                    <span className="sp-heard-label">You said:</span>
+                    <span className="sp-heard-text">{lastHeard}</span>
+                  </div>
+                ) : (
+                  <div className="sp-muted">Press “Speak” and say the word clearly.</div>
+                )}
+  
+                {result === true ? (
+                  <div className="sp-result ok">✅ Correct! Nice job 🎉</div>
+                ) : null}
+  
+                {result === false ? (
+                  <div className="sp-result bad">
+                    ❌ Try again (say exactly: <b>{current.title}</b>)
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
       )}
     </div>
   );
+  
 }

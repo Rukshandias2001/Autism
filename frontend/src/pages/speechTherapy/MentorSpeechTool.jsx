@@ -42,28 +42,33 @@ export default function MentorSpeechTool() {
   }, [cards]);
 
   return (
-    <div className="st-wrap">
-      <div className="st-header">
-        <div>
-          <h2 className="st-title">Speech Therapy Tool</h2>
-          <p className="st-sub">Mentors add cards by category (family, vehicles, food…) and students practice speaking.</p>
-        </div>
+    <div className="ms-wrap">
+    <div className="ms-header">
+  <div>
+    <h2 className="ms-title">Speech Therapy Tool</h2>
+    <p className="ms-sub">
+      Mentors add cards by category and students practice speaking with instant feedback.
+    </p>
+  </div>
 
-        <div className="st-tabs">
-          <button
-            className={`st-tab ${activeTab === "manage" ? "is-active" : ""}`}
-            onClick={() => setActiveTab("manage")}
-          >
-            Manage Cards
-          </button>
-          <button
-            className={`st-tab ${activeTab === "practice" ? "is-active" : ""}`}
-            onClick={() => setActiveTab("practice")}
-          >
-            Practice Preview
-          </button>
-        </div>
-      </div>
+  <div className="ms-tabs">
+    <button
+      className={`ms-tab ${activeTab === "manage" ? "active" : ""}`}
+      onClick={() => setActiveTab("manage")}
+      type="button"
+    >
+      Manage Cards
+    </button>
+    <button
+      className={`ms-tab ${activeTab === "practice" ? "active" : ""}`}
+      onClick={() => setActiveTab("practice")}
+      type="button"
+    >
+      Practice Preview
+    </button>
+  </div>
+</div>
+
 
       {activeTab === "manage" && (
         <div className="st-grid">

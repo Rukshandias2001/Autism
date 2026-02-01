@@ -1,15 +1,8 @@
 import axios from "axios";
 
-// change baseURL if needed
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5050",
 });
-
-// Assumed endpoints (adjust to yours):
-// GET    /api/speech-cards
-// POST   /api/speech-cards        (multipart form-data)
-// PUT    /api/speech-cards/:id    (multipart form-data optional)
-// DELETE /api/speech-cards/:id
 
 export async function fetchSpeechCards() {
   const res = await api.get("/api/speech-cards");
@@ -17,16 +10,17 @@ export async function fetchSpeechCards() {
 }
 
 export async function createSpeechCard(formData) {
-  const res = await api.post("/api/speech-cards", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  // ✅ DO NOT set Content-Type manually (axios will add boundary automatically)
+  console.log("--------------------------------------")
+  console.log(formData)
+  console.log("--------------------------------------")
+  const res = await api.post("/api/speech-cards", formData);
   return res.data;
 }
 
 export async function updateSpeechCard(id, formData) {
-  const res = await api.put(`/api/speech-cards/${id}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  // ✅ DO NOT set Content-Type manually
+  const res = await api.put(`/api/speech-cards/${id}`, formData);
   return res.data;
 }
 
