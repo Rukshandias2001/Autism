@@ -128,11 +128,7 @@ left: 85%;
     z-index: 999;          
   pointer-events: auto;   
 }
-.nurseryD-bp-back:hover {
-  background-color: #ffc229;
-  box-shadow: #ff6314 0 -6px 8px inset;
-  transform: scale(1.125);
-}
+
 .nurseryD-bp-back:active {
   transform: scale(1.025);
 }

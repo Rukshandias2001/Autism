@@ -42,6 +42,7 @@ import scoreRoutes from "./routes/scoreRoutes.js";
 // —— Routine Builder Imports ——
 import activityRoutes from "./routes/activityRoutes.js";
 import routineRoutes from "./routes/routineRoutes.js";
+import usersRouter from "./routes/UsersRoute.js";
 
 dotenv.config();
 
@@ -126,6 +127,8 @@ app.use("/api/reports", reportsRouter);
 // Routine Builder
 app.use("/api/activities", activityRoutes);
 app.use("/api/routines", routineRoutes);
+// Users (profile, password change)
+app.use("/api/users", usersRouter);
 
 
 //Games

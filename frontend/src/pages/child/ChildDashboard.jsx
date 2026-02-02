@@ -41,8 +41,11 @@ export default function ChildDashboard() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("childAuth");
-    navigate("/child/login");
+    try { localStorage.removeItem("childAuth"); } catch {}
+    try { localStorage.removeItem("user"); } catch {}
+    // notify other listeners to update auth state
+    window.dispatchEvent(new CustomEvent('authChange', { detail: null }));
+    navigate("/login", { replace: true });
   };
 
   const startRoutine = (routine) => {

@@ -3,9 +3,11 @@ import Scenario from "../models/Scenario.js";
 const asyncH = fn => (req,res,next)=>Promise.resolve(fn(req,res,next)).catch(next);
 
 export async function listScenarios(req, res) {
-  const { emotion } = req.query;
+  const { emotion, emotionName } = req.query;
   const q = {};
-  if (emotion) q.emotionName = emotion;
+  // Accept either ?emotion= or ?emotionName= from the frontend
+  const em = emotionName || emotion;
+  if (em) q.emotionName = em;
   // ✅ no createdBy filter here
   const items = await Scenario.find(q).sort({ createdAt: -1 });
   res.json(items);
