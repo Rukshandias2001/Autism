@@ -8,6 +8,7 @@ import gsap from "gsap";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/grid";
 import "../../styles/emotionSimulatorStyles/content-showcase.css";
 
 // (optional) circle textures per emotion. You can swap to your own images or set to null.
@@ -38,8 +39,40 @@ export default function ContentGrid() {
   const [items, setItems] = useState([]);
   const [featured, setFeatured] = useState(null);
 
+  // responsive swiper state: current slidesPerView, grid rows and whether loop is safe
+  const [slidesPerViewState, setSlidesPerViewState] = useState(3);
+  const [gridRows, setGridRows] = useState(1);
+  const [loopEnabled, setLoopEnabled] = useState(false);
+
   const pageRef = useRef(null);
   const circleRef = useRef(null);
+
+  // compute grid & loop safety based on viewport size and items count
+  useEffect(() => {
+    function compute() {
+      const w = typeof window !== "undefined" ? window.innerWidth : 1024;
+      let spv = 3, rows = 1;
+      if (w < 480) {
+        spv = 1; rows = 2;
+      } else if (w < 768) {
+        spv = 2; rows = 2;
+      } else if (w < 1024) {
+        spv = 3; rows = 1;
+      } else if (w < 1280) {
+        spv = 4; rows = 1;
+      } else {
+        spv = 5; rows = 1;
+      }
+      setSlidesPerViewState(spv);
+      setGridRows(rows);
+      // enable loop only when single-row and we have more slides than visible
+      const enough = Array.isArray(items) ? items.length > spv : false;
+      setLoopEnabled(rows === 1 && enough);
+    }
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, [items]);
 
   // load active content for the emotion
   useEffect(() => {
@@ -262,12 +295,12 @@ useEffect(() => {
         <Swiper
           modules={[Navigation, Grid]}
           navigation
-          loop
-          grid={{ rows: 1, fill: 'row' }}
-          slidesPerView={3}
+          loop={loopEnabled}
+          grid={{ rows: gridRows, fill: 'row' }}
+          slidesPerView={slidesPerViewState}
           spaceBetween={24}
           breakpoints={{
-            0:   { slidesPerView: 2, grid: { rows: 2 }, spaceBetween: 12 },
+            0:   { slidesPerView: 1, grid: { rows: 2 }, spaceBetween: 12 },
             480: { slidesPerView: 2, grid: { rows: 2 }, spaceBetween: 12 },
             768: { slidesPerView: 3, grid: { rows: 1 }, spaceBetween: 20 },
             1024: { slidesPerView: 4, grid: { rows: 1 }, spaceBetween: 24 },

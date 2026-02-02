@@ -293,6 +293,11 @@ padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: auto;
+}
+
+.showcase-swiper .swiper-wrapper {
+  align-items: stretch;
 }
 
 
