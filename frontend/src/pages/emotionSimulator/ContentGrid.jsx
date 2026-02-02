@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ContentsAPI } from "../../api/http";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Grid } from "swiper/modules";
 import gsap from "gsap";
 
 import "swiper/css";
@@ -210,7 +210,7 @@ useEffect(() => {
   </div>
 
       <header className="showcase-topbar">
-        <button className="backBtn" onClick={() => navigate(`/lesson/${emotion}/activity`)}>← Back</button>. 
+        <button className="backBtn" onClick={() => navigate(`/lesson/${emotion}/activity`)}>← Back</button>
         <h1 className="showcase-title">{title}</h1>
           <button className="nextBtn" onClick={() => navigate(`/practice/${emotion}`)}>Next →</button>
         <div />
@@ -246,9 +246,6 @@ useEffect(() => {
                 {featured.videoUrl && !isYouTube(featured.videoUrl) && (
                   <video className="mp4" controls src={featured.videoUrl} />
                 )}
-                {featured.lottieUrl && (
-                  <iframe className="lottie" title="animation" src={featured.lottieUrl} />
-                )}
                 {!featured.videoUrl && !featured.lottieUrl && (
                   <div className="empty">This item has no video/animation.</div>
                 )}
@@ -263,16 +260,18 @@ useEffect(() => {
       {/* Bottom: swiper */}
       <section className="showcase-swiper">
         <Swiper
-          modules={[Navigation]}
+          modules={[Navigation, Grid]}
           navigation
           loop
+          grid={{ rows: 1, fill: 'row' }}
           slidesPerView={3}
           spaceBetween={24}
           breakpoints={{
-            480:  { slidesPerView: 2 },
-            768:  { slidesPerView: 3 },
-            1024: { slidesPerView: 4 },
-            1280: { slidesPerView: 5 },
+            0:   { slidesPerView: 2, grid: { rows: 2 }, spaceBetween: 12 },
+            480: { slidesPerView: 2, grid: { rows: 2 }, spaceBetween: 12 },
+            768: { slidesPerView: 3, grid: { rows: 1 }, spaceBetween: 20 },
+            1024: { slidesPerView: 4, grid: { rows: 1 }, spaceBetween: 24 },
+            1280: { slidesPerView: 5, grid: { rows: 1 }, spaceBetween: 24 },
           }}
         >
           {items.map((it) => (
