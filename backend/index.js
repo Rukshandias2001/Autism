@@ -64,6 +64,11 @@ const allowList = new Set([
   "http://127.0.0.1:3001",
 ]);
 
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
   
@@ -111,9 +116,6 @@ app.use(
     credentials: true,
   })
 );
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

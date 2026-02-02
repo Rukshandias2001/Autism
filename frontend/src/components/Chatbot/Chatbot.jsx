@@ -36,7 +36,6 @@ const Chatbot = () => {
 
   return (
     <div className="chatbot-wrapper">
-      {/* 1. The Floating Bubble */}
       <button className="chat-toggle" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? '✖' : '💬'}
       </button>
