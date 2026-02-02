@@ -85,15 +85,15 @@ export default function EmotionPractice() {
   const { emotion: routeEmotion = "happy" } = useParams(); // e.g. /practice/happy
   const myId = getMyUserId();
 
-  // ---------- scenarios (DB with fallback) ----------
+  // ---------- scenarios (DB only — show empty if mentor hasn't added any) ----------
   const [dbScenarios, setDbScenarios] = useState([]);
   useEffect(() => {
     setDbScenarios([]);
     ScenariosAPI.list(routeEmotion).then(setDbScenarios).catch(() => {});
   }, [routeEmotion]);
 
-  const fallback = SCENARIOS_BY_EMOTION[routeEmotion] ?? [];
-  const scenarios = dbScenarios.length ? dbScenarios : fallback;
+  // Do NOT fall back to built-in scenarios — if mentor hasn't added, show empty message
+  const scenarios = dbScenarios;
   const [scenarioIdx, setScenarioIdx] = useState(0);
   useEffect(() => setScenarioIdx(0), [routeEmotion, dbScenarios.length]);
   const scenario = scenarios[scenarioIdx] ?? { text: "", imageUrl: "", img: "" };
@@ -497,7 +497,9 @@ export default function EmotionPractice() {
           ) : (
             <div className="scenario-placeholder">No scenario</div>
           )}
-          <div className="scenario-text">{scenario?.text}</div>
+          <div className="scenario-text">
+            {scenarios.length === 0 ? `No mentor scenarios found for ${routeEmotion}.` : scenario?.text}
+          </div>
         </div>
 
         <div className="rail-group">
