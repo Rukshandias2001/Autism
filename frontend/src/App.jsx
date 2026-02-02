@@ -187,8 +187,10 @@ export default function App() {
         <Route path="/animals" element={<AnimalsLearn  />} />
         <Route path="/fruits" element={<FruitsLearn  />} />
 
-        {/* Routine Navigation */}
-        <Route path="/accounts" element={<RoutineNavigation />} />
+        {/* Routine Navigation (parents only) */}
+        <Route element={<RequireAuth roles={["parent"]} />}>
+          <Route path="/accounts" element={<RoutineNavigation />} />
+        </Route>
 
         {/* Routine Builder */}
         <Route path="/routine" element={<RoutineHome />} />

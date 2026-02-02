@@ -13,9 +13,15 @@ export default function ChildAuth() {
   useEffect(() => {
     try {
       const parent = JSON.parse(localStorage.getItem("user") || "null");
+      // if no parent, redirect to parent login
       if (!parent) {
-        // redirect to parent login
         navigate("/login", { replace: true });
+        return;
+      }
+      // if logged-in user is a mentor, send them to home (don't log them out)
+      if (parent.role === "mentor") {
+        navigate("/", { replace: true });
+        return;
       }
     } catch (e) {
       navigate("/login", { replace: true });
