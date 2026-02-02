@@ -66,6 +66,7 @@ import ChildRegistration from "./pages/parent/ChildRegistration";
 import RoutineNavigation from "./pages/RoutineNavigation";
 
 import Example from "./Example";
+import Profile from "./pages/authentication/Profile";
 import NumbersLearn from "./pages/virtualNursery/learn/NumbersLearn.jsx";
 import ShapesLearn from "./pages/virtualNursery/learn/ShapesLearn.jsx";
 import ColoursLearn from "./pages/virtualNursery/learn/ColoursLearn.jsx";
@@ -73,10 +74,7 @@ import AnimalsLearn from "./pages/virtualNursery/learn/AnimalsLearn.jsx";
 import FruitsLearn from "./pages/virtualNursery/learn/FruitsLearn.jsx";
 
 
-function Profile() {
-  return <div style={{ padding: 20 }}>👤 Profile (stub)</div>;
 
-}
 
 export default function App() {
   useEffect(() => {
