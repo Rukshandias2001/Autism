@@ -72,6 +72,9 @@ import ColoursLearn from "./pages/virtualNursery/learn/ColoursLearn.jsx";
 import AnimalsLearn from "./pages/virtualNursery/learn/AnimalsLearn.jsx";
 import FruitsLearn from "./pages/virtualNursery/learn/FruitsLearn.jsx";
 
+//chatbot
+import Chatbot from './components/Chatbot/Chatbot';
+
 // Simple stubs
 function Routine() {
   return <div style={{ padding: 20 }}>📅 Routine Builder (stub)</div>;
@@ -96,6 +99,7 @@ export default function App() {
       <AuthProvider>
         {/* Inner component uses router hooks to decide whether to show NavBar */}
         <InnerRoutes />
+        <Chatbot />
       </AuthProvider>
     </BrowserRouter>
   );
