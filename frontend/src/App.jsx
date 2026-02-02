@@ -72,13 +72,7 @@ import ColoursLearn from "./pages/virtualNursery/learn/ColoursLearn.jsx";
 import AnimalsLearn from "./pages/virtualNursery/learn/AnimalsLearn.jsx";
 import FruitsLearn from "./pages/virtualNursery/learn/FruitsLearn.jsx";
 
-// Simple stubs
-function Routine() {
-  return <div style={{ padding: 20 }}>📅 Routine Builder (stub)</div>;
-}
-function Games() {
-  return <div style={{ padding: 20 }}>🎮 Interactive Games (stub)</div>;
-}
+
 function Profile() {
   return <div style={{ padding: 20 }}>👤 Profile (stub)</div>;
 
