@@ -14,7 +14,9 @@ import {
 
 import { ChildrenAPI } from '../../api/http';
 
-import { detectOverlaps, hhmmToMinutes, minutesToHHmm, sortByStartTime } from '../../utils/time';
+// import { detectOverlaps, hhmmToMinutes, minutesToHHmm, sortByStartTime } from '../../utils/time';
+
+import { detectOverlaps, hhmmToMinutes, minutesToHHmm, sortByStartTime } from '../../utils/Time';
 
 const generateId = () =>
   globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `step-${Math.random().toString(16).slice(2)}`;
