@@ -20,17 +20,43 @@
   justify-content: center;
   align-items: center;
 }
+
+/* Layout children so text and image sit side-by-side on wide screens,
+   but stack vertically on narrow screens. */
+.hero-blog-content,
+.hero-blog-image {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+.hero-blog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem 4rem;
+  align-items: flex-start;
+}
+
+.hero-blog-image {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.hero-blog-image img { max-width: 100%; height: auto; display: block; }
 .hero-blog-content h1 {
-  font-size: 5rem;
+  font-size: clamp(2.2rem, 6vw, 5rem);
   color: white;
-  text-align: center;
+  text-align: left;
 
   font-family: "Luckiest Guy";
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 .hero-blog-content p {
-  text-align: center;
-  font-size: 1.3rem;
+  text-align: left;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
   color: white;
   font-family: "Poppins", serif; /* pick which font */
   font-weight: 400px;
@@ -38,8 +64,8 @@
 }
 .cta {
   width: 259px;
-  margin-left: 150px;
-  margin-bottom: 150px;
+  margin-left: 0;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   padding: 10px 45px;
@@ -53,6 +79,21 @@
   transform: skewX(-15deg);
   cursor: pointer;
   margin-top: 20px;
+}
+
+/* Mobile / narrow screens */
+@media (max-width: 900px) {
+  .hero-blog-section {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding: 2.5rem 1rem;
+  }
+  .hero-blog-content { align-items: center; text-align: center; padding: 0 1rem; }
+  .hero-blog-content h1 { text-align: center; }
+  .cta { transform: none; padding: 10px 24px; width: auto; }
+  .hand-image { display: none; }
+  .hero-blog-image img { width: min(86vw, 520px); }
 }
 
 .cta:hover {

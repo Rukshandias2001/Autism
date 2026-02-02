@@ -62,7 +62,8 @@ function useAuthSafe() {
 }
 
 export default function NavBar() {
-  const { user, logout } = useAuthSafe();
+  const { user, logout, setUser } = useAuthSafe();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -87,7 +88,10 @@ export default function NavBar() {
     return () => document.removeEventListener("click", onDocClick);
   }, []);
 
-  const initial = user?.email?.[0]?.toUpperCase() || "🙂";
+  // If a child is logged in (childAuth in localStorage), prefer showing child's name
+  let childAuth = null;
+  try { childAuth = JSON.parse(localStorage.getItem("childAuth") || "null"); } catch { childAuth = null; }
+  const initial = (childAuth?.child?.name?.[0]?.toUpperCase()) || user?.email?.[0]?.toUpperCase() || "🙂";
 
   return (
     <header className="ls-nav">
@@ -152,17 +156,35 @@ export default function NavBar() {
                 aria-haspopup="true"
                 aria-expanded={profileOpen}
                 onClick={() => setProfileOpen((v) => !v)}
-                title={user.email}
+                title={childAuth?.child?.name || user?.email}
               >
                 {initial}
               </button>
               <div className="ls-profile-menu" role="menu">
                 <div className="ls-profile-info">
-                  <div className="ls-email">{user.email}</div>
-                  <div className="ls-role">{user.role}</div>
+                  <div className="ls-email">{childAuth?.child?.name || user?.email}</div>
+                  <div className="ls-role">{childAuth ? "child" : user?.role}</div>
                 </div>
                 <Link className="ls-item" role="menuitem" to="/profile">Profile</Link>
-                <button className="ls-item danger" role="menuitem" onClick={logout}>
+                <button
+                  className="ls-item danger"
+                  role="menuitem"
+                  onClick={() => {
+                    // If child session exists, clear both child and parent sessions and go to child login
+                    if (childAuth) {
+                      try { localStorage.removeItem("childAuth"); } catch {}
+                      try { localStorage.removeItem("user"); } catch {}
+                      // notify other listeners in-app/tabs
+                      window.dispatchEvent(new CustomEvent('authChange', { detail: null }));
+                      setUser && setUser(null);
+                      // After child logout, go to parent login page
+                      navigate("/login", { replace: true });
+                      return;
+                    }
+                    // default: regular logout for parent/user
+                    logout();
+                  }}
+                >
                   Logout
                 </button>
               </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
@@ -78,12 +79,21 @@ export default function HomeHero() {
             Discover a magical world of learning and play!
           </p>
           <div className="ls-hero-actions">
-            <button
-              className="ls-cta"
-              onClick={() => navigate('/accounts')}
-            >
-              Accounts
-            </button>
+            {(() => {
+              try {
+                const { user } = useAuth();
+                // hide Accounts button for mentors
+                if (user && user.role === "mentor") return null;
+              } catch (e) {}
+              return (
+                <button
+                  className="ls-cta"
+                  onClick={() => navigate('/accounts')}
+                >
+                  Accounts
+                </button>
+              );
+            })()}
           </div>
           {/* Optional: cute floating elements like planets or icons */}
           {/* <div className="ls-floating-icons">

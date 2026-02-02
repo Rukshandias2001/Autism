@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChildAuthAPI } from "../../api/http";
 import "../../styles/child/child-auth.css";
@@ -8,6 +8,25 @@ export default function ChildAuth() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Prevent access to child login unless a parent is logged in
+  useEffect(() => {
+    try {
+      const parent = JSON.parse(localStorage.getItem("user") || "null");
+      // if no parent, redirect to parent login
+      if (!parent) {
+        navigate("/login", { replace: true });
+        return;
+      }
+      // if logged-in user is a mentor, send them to home (don't log them out)
+      if (parent.role === "mentor") {
+        navigate("/", { replace: true });
+        return;
+      }
+    } catch (e) {
+      navigate("/login", { replace: true });
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

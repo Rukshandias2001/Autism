@@ -66,6 +66,7 @@ import ChildRegistration from "./pages/parent/ChildRegistration";
 import RoutineNavigation from "./pages/RoutineNavigation";
 
 import Example from "./Example";
+import Profile from "./pages/authentication/Profile";
 import NumbersLearn from "./pages/virtualNursery/learn/NumbersLearn.jsx";
 import ShapesLearn from "./pages/virtualNursery/learn/ShapesLearn.jsx";
 import ColoursLearn from "./pages/virtualNursery/learn/ColoursLearn.jsx";
@@ -73,17 +74,8 @@ import AnimalsLearn from "./pages/virtualNursery/learn/AnimalsLearn.jsx";
 import FruitsLearn from "./pages/virtualNursery/learn/FruitsLearn.jsx";
 import MentorSpeechTool from "./pages/speechTherapy/MentorSpeechTool.jsx";
 
-// Simple stubs
-function Routine() {
-  return <div style={{ padding: 20 }}>📅 Routine Builder (stub)</div>;
-}
-function Games() {
-  return <div style={{ padding: 20 }}>🎮 Interactive Games (stub)</div>;
-}
-function Profile() {
-  return <div style={{ padding: 20 }}>👤 Profile (stub)</div>;
 
-}
+
 
 export default function App() {
   useEffect(() => {
@@ -189,8 +181,10 @@ export default function App() {
         <Route path="/animals" element={<AnimalsLearn  />} />
         <Route path="/fruits" element={<FruitsLearn  />} />
 
-        {/* Routine Navigation */}
-        <Route path="/accounts" element={<RoutineNavigation />} />
+        {/* Routine Navigation (parents only) */}
+        <Route element={<RequireAuth roles={["parent"]} />}>
+          <Route path="/accounts" element={<RoutineNavigation />} />
+        </Route>
 
         {/* Routine Builder */}
         <Route path="/routine" element={<RoutineHome />} />

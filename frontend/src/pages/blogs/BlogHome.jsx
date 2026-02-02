@@ -131,7 +131,6 @@ export default function BlogHome() {
 
         <div className="hero-blog-image">
           <img src={heroImg} alt="" />
-          <img src={hand} alt="" className="hand-image" />
         </div>
       </div>
       <div

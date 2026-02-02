@@ -1,0 +1,88 @@
+
+/* Profile page styles (moved from inline in Profile.jsx) */
+.profile-page {
+	max-width: 960px;
+	margin: 36px auto;
+    min-height: 100vh;
+}
+
+.profile-card {
+	padding: 22px;
+}
+
+.profile-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+}
+
+.profile-title h2,
+.profile-title h1 {
+	margin: 0;
+}
+
+.profile-subtitle {
+	color: #51608f;
+	font-size: 14px;
+}
+
+.profile-meta {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.profile-form {
+	margin-top: 18px;
+	display: grid;
+	gap: 12px;
+}
+
+.profile-field {
+	display: grid;
+	gap: 8px;
+}
+
+.profile-field-label {
+	font-weight: 600;
+}
+
+.profile-input {
+	padding: 10px 12px;
+	border-radius: 8px;
+	border: 1px solid rgba(27, 57, 150, 0.08);
+	font-size: 1rem;
+}
+
+.profile-actions {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	margin-top: 6px;
+}
+
+.profile-btn-primary {
+	background: #306bff;
+	color: #fff;
+}
+
+.profile-error {
+	color: #e53935;
+	font-weight: 600;
+}
+
+.profile-success {
+	color: #1b5e20;
+	font-weight: 600;
+}
+
+@media (max-width: 540px) {
+	.profile-page {
+		margin: 18px;
+	}
+	.profile-card {
+		padding: 16px;
+	}
+}
+
