@@ -42,13 +42,16 @@ import scoreRoutes from "./routes/scoreRoutes.js";
 import activityRoutes from "./routes/activityRoutes.js";
 import routineRoutes from "./routes/routineRoutes.js";
 
+
+//chatbot
+import { GoogleGenerativeAI } from '@google/generative-ai';
 dotenv.config();
 
 const app = express();
 const { MONGODB_URI, PORT: PORT_ENV } = process.env;
 const PORT = PORT_ENV ?? 5050;
 const MONGO_URL = MONGODB_URI || "mongodb://localhost:27017/littlestars";
-
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // —— CORS
 const allowList = new Set([
   "http://localhost:5173",
@@ -60,6 +63,39 @@ const allowList = new Set([
   "http://localhost:3001",
   "http://127.0.0.1:3001",
 ]);
+
+app.post('/api/chat', async (req, res) => {
+  const { message } = req.body;
+  
+  // Define your website structure here
+  const systemInstruction = `
+    You are the "Little Stars" Assistant. Your goal is to help parents and clinicians navigate our platform for ASD support.
+    
+    NAVIGATIONAL LINKS:
+    - Main Dashboard: /
+    - Emotion Simulator: /api/contents (where children practice recognizing emotions)
+    - Speech Therapy Tools: /api/cards
+    - Progress Reports: /api/reports
+    - Routine Builder: /api/routines
+    - Educational Blogs: /api/blogs
+    - Nursery Videos: /api/learn
+    - Fun Games: /game
+
+    TONE & RULES:
+    1. Be empathetic, patient, and supportive (target audience: parents of children with ASD).
+    2. If a user asks "where can I see my child's progress?", tell them to visit the Reports section at /api/reports.
+    3. If they want to play or learn, suggest the Games (/game) or Nursery Videos (/api/learn).
+    4. Keep answers concise.
+  `;
+
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-flash",
+    systemInstruction 
+  });
+
+  const result = await model.generateContent(message);
+  res.json({ text: result.response.text() });
+});
 app.use(
   cors({
     origin(origin, cb) {
