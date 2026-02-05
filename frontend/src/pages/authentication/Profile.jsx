@@ -141,4 +141,3 @@ export default function Profile() {
     </div>
   );
 }
-import "../../styles/authenticationStyles/Profile.css";
