@@ -108,13 +108,12 @@ export default function HomeHero() {
         </div>
       </div>
       {/* Adventures Heading with Animation */}
-      <section className="center-section">
+      {/* <section className="center-section">
       <div className="adventure-header-wrap">
         <h2 className="star-slider-title">More Adventures Await</h2>
       </div>
       <div className="adventure-section">
         <div className="adventure-animation">
-         {/* <img src={b4} alt="Planet" className="floating-icon"/> */}
           <Lottie
             animationData={adventureAnim}
             loop={true}
@@ -125,16 +124,13 @@ export default function HomeHero() {
               right: "20%",
             }}
           />
-           {/* <img src={b4} alt="Planet" className="floating-icon" /> */}
         </div>
-        {/* <img src={b3} alt="Planet" className="floating-icon" /> */}
-        {/* 🌟 Learning Carousel */}
+   
         <section
           className="star-slider-wrap"
           aria-label="Featured Learning Games"
         >
           <div className="star-slider-frame">
-            {/* 👾 Monster peeking */}
 
             <img
               src={monster}
@@ -148,7 +144,6 @@ export default function HomeHero() {
               className="monster-peek monster-right"
             />
 
-            {/* Swiper */}
             <div className="star-slider-container">
               <Swiper
                 effect="coverflow"
@@ -191,9 +186,8 @@ export default function HomeHero() {
           </div>
         </section>
       </div>
-      </section>
-      {/* Features grid / game launcher */}
-      <section
+      </section> */}
+      {/* <section
         id="features"
         className="ls-features"
         aria-label="Learning worlds"
@@ -205,7 +199,7 @@ export default function HomeHero() {
           </p>
         </header>
         <FeatureSelect bgImage={forest} />
-      </section>
+      </section> */}
     </main>
   );
 }
