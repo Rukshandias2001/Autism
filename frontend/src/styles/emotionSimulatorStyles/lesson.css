@@ -12,6 +12,7 @@
   background:
     radial-gradient(1200px 500px at 10% 0%, #f7e7ff 0, #fff 50%),
     radial-gradient(1200px 500px at 90% 0%, #e7faff 0, #fff 50%);
+    min-height: 95.5vh;
 }
 
 .hl-h1{
