@@ -52,7 +52,6 @@ const { MONGODB_URI, PORT: PORT_ENV } = process.env;
 const PORT = PORT_ENV ?? 5050;
 const MONGO_URL = MONGODB_URI || "mongodb://localhost:27017/littlestars";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // —— CORS
 const allowList = new Set([
   "http://localhost:5173",
