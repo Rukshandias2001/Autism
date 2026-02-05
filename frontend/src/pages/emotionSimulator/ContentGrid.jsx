@@ -263,7 +263,7 @@ useEffect(() => {
 
         {/* Center: circle viewer */}
         <div className="viewer">
-          <div className="circle" ref={circleRef} />
+     
           <div className="viewer-inner">
             {featured ? (
               <>
