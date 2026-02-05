@@ -8,7 +8,7 @@ import NavBar from "./components/NavBar";
 import HomeHero from "./pages/Home";
 
 // Utils
-import { initVoices } from "./Utils/voiceHelper";
+import { initVoices } from "./utils/voiceHelper";
 
 // Speech Therapy
 import CategoryPage from "./pages/speechTherapy/CategoryPage";

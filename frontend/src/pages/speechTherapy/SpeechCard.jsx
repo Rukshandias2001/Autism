@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { getVoice } from "../../Utils/voiceHelper";
+import { getVoice } from "../../utils/voiceHelper";
 import "../../styles/speechTherapyStyles/SpeechCard.css";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
