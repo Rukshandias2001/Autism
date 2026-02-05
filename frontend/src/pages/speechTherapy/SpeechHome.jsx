@@ -9,7 +9,7 @@ const SpeechHome = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5050/api/cards/categories/list"); // Fetch all categories
+        const res = await fetch("https://express-api-440581871543.us-central1.run.app/api/cards/categories/list"); // Fetch all categories
         const json = await res.json();
         if (json.success) {
           setCategories(json.data); // Set categories to state

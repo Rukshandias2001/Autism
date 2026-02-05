@@ -9,12 +9,10 @@ const app = express();
  
 
 
-
-const PORT = process.env.PORT || 5000;  //logicl or operator
+// const PORT = process.env.PORT || 5000;  //logicl or operator
 
 app.use(cors());
 app.use(bodyParser.json()); //get json data using body parser
-
 
 const URL = process.env.MONGODB_URI; // database connection string
  
@@ -41,8 +39,11 @@ import gameRouter from "./routes/GameRoutes.js"; //import game routes
 
 app.use("/game", gameRouter);  //use game routes in the app 
 
+// Cloud Run provides the port via process.env.PORT
+const PORT = process.env.PORT || 8080; 
 
-//listen the port if connection success
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port no ${PORT}`);
 });
+
+

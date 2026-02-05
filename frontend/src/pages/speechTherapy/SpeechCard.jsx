@@ -156,7 +156,7 @@ const SpeechCard = ({ title, imageUrl, childId, category }) => {
       };
 
       try {
-        const res = await fetch("http://localhost:5050/api/speech/attempts", { // Send attempt data to backend
+        const res = await fetch("https://express-api-440581871543.us-central1.run.app/api/speech/attempts", { // Send attempt data to backend
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(attemptData), // Convert data to JSON
