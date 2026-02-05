@@ -44,6 +44,7 @@ import routineRoutes from "./routes/routineRoutes.js";
 
 //chatbot
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import chatRouter from "./routes/chatRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -81,40 +82,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.post('/api/chat', async (req, res) => {
-  try {
-    const { message } = req.body;
-    
-    // Use the model name seen in your Playground screenshot
-    const model = genAI.getGenerativeModel(
-      { model: "gemini-3-flash-preview" ,
-        systemInstruction: `
-        You are the official assistant for the "Little Stars" web application. 
-        Your goal is to help parents and caregivers of children with autism.
-        
-        Website Context:
-        - We offer an Emotion Simulator to help kids recognize feelings.
-        - We have a Speech Therapy tool and Nursery videos for learning.
-        - We provide a Routine Builder to help children manage daily tasks.
-        - We have social scenarios for social decision-making.
-        - The user is currently on the website.
-        
-        Guidelines:
-        - Be empathetic, supportive, and clear.
-        - If a user asks about features, mention the Emotion Simulator, Speech Therapy, or Routine Builder.
-        - If you don't know something specific about a user's account, ask them to check their dashboard.
-      `,
-      }
-    );
-    const result = await model.generateContent(message);
-    const response = await result.response;
-    res.json({ text: response.text() });
-    
-  } catch (error) {
-    console.error("GEMINI ERROR:", error);
-    res.status(500).json({ error: "Assistant connection failed. Please ensure your new API key is active." });
-  }
-});
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsDir = path.resolve(process.cwd(), "uploads");
@@ -159,6 +127,9 @@ app.use("/api/routines", routineRoutes);
 app.use("/game", gameRouter); 
 
 app.use("/api/scores", scoreRoutes);
+
+//chatbot
+app.use("/api/chat", chatRouter);
 
 // —— Error handlers (keep last) ——
 app.use(notFound);
