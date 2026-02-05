@@ -22,13 +22,13 @@ const ANIMALS = [
 // 2) Optional: load real animal images (Vite glob) from src/assets/animals/*.png|webp|svg|jpg
 const IMAGES = import.meta.glob(
   "/src/assets/animals/*.{png,webp,svg,jpg,jpeg}",
-  { eager: true, as: "url" }
+   { eager: true,  query: '?url', import: 'default'  }
 );
 
 // 3) Optional: load real animal sounds from src/assets/animals/sounds/*.mp3
 const SOUNDS = import.meta.glob(
   "/src/assets/audios/animals/*.mp3",
-  { eager: true, as: "url" }
+   { eager: true,  query: '?url', import: 'default'  }
 );
 
 const CONFETTI_DEFAULTS = {
