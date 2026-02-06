@@ -3,6 +3,8 @@
   color: #0b1b3f;
   background: linear-gradient(180deg, #f5f7ff 0%, #eef2ff 100%);
   line-height: 1.5;
+  /* Global navbar height for consistent viewport calculations */
+  --nav-height: clamp(52px, 8vw, 64px);
 }
 
 * {
@@ -31,7 +33,7 @@ button:disabled {
 }
 
 .dashboard-shell {
-  min-height: 100vh;
+  min-height: calc(100dvh - var(--nav-height));
   display: flex;
   flex-direction: column;
   gap: 32px;

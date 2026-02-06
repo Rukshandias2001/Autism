@@ -1,6 +1,6 @@
 /* Layout & background */
 .ss-wrap {
-  min-height: 100vh;
+  min-height: calc(100dvh - var(--nav-height));
   padding: 1.2rem 1rem 2rem;
   display: flex;
   flex-direction: column;

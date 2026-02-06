@@ -1,6 +1,6 @@
 .nurseryD-learning-path {
   position: relative;
-  min-height: 91vh;
+  min-height: calc(100dvh - var(--nav-height));
   height: auto;
   background-image: url(../../assets/nbg2.png);
   background-size: cover;

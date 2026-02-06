@@ -30,7 +30,7 @@ button:disabled {
 }
 
 .routine-dashboard-shell {
-  min-height: 100vh;
+  min-height: calc(100dvh - var(--nav-height));
   display: flex;
   flex-direction: column;
   gap: 32px;

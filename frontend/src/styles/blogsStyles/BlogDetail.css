@@ -15,7 +15,7 @@
 }
 
 .nm-wrap {
-  min-height: 100vh;
+  min-height: calc(100dvh - var(--nav-height));
   padding: 24px;
   background: radial-gradient(
       1200px 600px at 20% 0%,

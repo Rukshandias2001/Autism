@@ -37,7 +37,7 @@
 
 /* ---------- Page Shell ---------- */
 .md-wrap {
-  min-height: 100vh;
+  min-height: calc(100dvh - var(--nav-height));
   background: var(--cloud);
   display: flex;
   flex-direction: column;

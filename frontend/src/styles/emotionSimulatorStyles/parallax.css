@@ -512,7 +512,7 @@ body {
 /* Page wrapper */
 .em-main {
   position: relative;
-  height: 91vh;
+  height: calc(100dvh - var(--nav-height));
   overflow: hidden;
   background: linear-gradient(90deg,
       rgba(42, 123, 155, 1) 0%,

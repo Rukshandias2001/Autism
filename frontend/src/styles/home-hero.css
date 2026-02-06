@@ -37,7 +37,7 @@
 /* SKY */
 .ls-sky {
   position: relative;
-  min-height: 86vh;
+  min-height: calc(100dvh - var(--nav-height));
   display: grid;
   place-items: center;
   padding: 28px 16px 120px;
@@ -458,7 +458,7 @@
 
 .ls-hero-main {
   /* account for sticky header so hero fills remaining viewport without causing extra scroll */
-  min-height: 91vh;
+  min-height: calc(100dvh - var(--nav-height));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -563,7 +563,7 @@ align-items: center;
 
 .center-section {
   margin: 0;
-  min-height: 100vh;
+  min-height: calc(100dvh - var(--nav-height));
 }
 
 

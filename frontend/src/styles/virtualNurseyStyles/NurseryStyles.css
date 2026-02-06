@@ -4,7 +4,7 @@
 display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 91vh;
+  min-height: calc(100dvh - var(--nav-height));
 }
 .nursery-container {
   display: flex;
