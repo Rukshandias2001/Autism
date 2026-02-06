@@ -45,8 +45,125 @@ export default function AlphabetLearn({ topic: topicProp }) {
   const { topic: topicURL } = useParams();
   const topic = (topicProp || topicURL || "alphabets").toLowerCase();
 
-  
+  const [videos, setVideos] = useState([]);
+  const [currentId, setCurrentId] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
+  const [form, setForm] = useState({
+    title: "",
+    url: "",
+    thumbnail: "",
+  });
+
+  const visible = videos.slice(0, MAX_VIDEOS);
+  const canAddMore = videos.length < MAX_VIDEOS;
+
+  // Load videos
+  useEffect(() => {
+    let alive = true;
+    setLoading(true);
+
+    axios
+      .get(`http://localhost:5050/api/learn/${topic}/videos`)
+      .then((res) => {
+        if (!alive) return;
+        const arr = Array.isArray(res.data) ? res.data : [];
+        const trimmed = arr.slice(0, MAX_VIDEOS);
+        setVideos(trimmed);
+        setCurrentId(getId(trimmed[0]));
+      })
+      .catch(() => {
+        if (!alive) return;
+        setVideos([]);
+        setCurrentId("");
+        setToast("Couldn’t load from server.");
+      })
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [topic]);
+
+  // Ensure currentId always points to something in `videos`
+  useEffect(() => {
+    if (!videos.length) {
+      if (currentId) setCurrentId("");
+      return;
+    }
+    if (!videos.some((v) => getId(v) === currentId)) {
+      setCurrentId(getId(videos[0]));
+    }
+  }, [videos, currentId]);
+
+  function openAdd() {
+    if (!canAddMore) {
+      setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
+      return;
+    }
+    setShowForm(true);
+  }
+
+  function closeAdd() {
+    setShowForm(false);
+    setForm({ title: "", url: "", thumbnail: "" });
+  }
+
+  async function onAdd(e) {
+    e?.preventDefault?.();
+
+    if (!canAddMore) {
+      setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
+      return;
+    }
+
+    if (!form.title || !form.url) {
+      setToast("Title and URL are required.");
+      return;
+    }
+
+    const normalizedUrl = normalizeYouTubeUrl(form.url);
+
+    if (!isYouTubeOrVimeo(normalizedUrl)) {
+      setToast("Please enter a valid YouTube or Vimeo link.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `http://localhost:5050/api/learn/${topic}/videos`,
+        {
+          title: form.title,
+          url: normalizedUrl,
+          thumbnail: form.thumbnail || undefined,
+          uploadedBy: user?._id || undefined,
+        }
+      );
+
+      const saved = res.data; // single object
+      setVideos((prev) => {
+        const next = [...prev, saved].slice(0, MAX_VIDEOS);
+        if (!prev.length) setCurrentId(getId(saved));
+        return next;
+      });
+      setToast("Video added ✅");
+    } catch (err) {
+      const msg =
+        err?.response?.data?.error ||
+        (err?.message?.includes("Network Error")
+          ? "Network error while adding."
+          : "Couldn’t add video.");
+      setToast(msg);
+    } finally {
+      closeAdd();
+    }
+  }
+
+  const current = videos.find((v) => getId(v) === currentId) || videos[0] || null;
   async function onDelete(id) {
     if (!isMentor || !id) return;
     try {

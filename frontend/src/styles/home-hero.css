@@ -34,40 +34,6 @@
     background-color: #e0fded;
 }
 
-/* SKY */
-.ls-sky {
-  position: relative;
-  min-height: calc(100dvh - var(--nav-height));
-  display: grid;
-  place-items: center;
-  padding: 28px 16px 120px;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: linear-gradient(
-    180deg,
-    var(--sky1),
-    var(--sky2)
-  ); /* fallback if image fails */
-}
-.ls-sky::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-      120% 70% at 50% 0%,
-      rgba(255, 255, 255, 0.55),
-      rgba(255, 255, 255, 0) 55%
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0) 65%,
-      rgba(255, 255, 255, 0.28) 100%
-    );
-  pointer-events: none;
-  z-index: 1;
-}
 
 /* keep content above overlay */
 .ls-signRig,
@@ -458,13 +424,12 @@
 
 .ls-hero-main {
   /* account for sticky header so hero fills remaining viewport without causing extra scroll */
-  min-height: calc(100dvh - var(--nav-height));
+    min-height: calc(99.9dvh - var(--nav-height));
   display: flex;
   align-items: center;
   justify-content: center;
   background-size: cover;
   background-position: center;
-  padding: 0 16px;
   position: relative;
   overflow: hidden;
 }
@@ -560,10 +525,4 @@ align-items: center;
   justify-content: center;
   align-items: center;
 }
-
-.center-section {
-  margin: 0;
-  min-height: calc(100dvh - var(--nav-height));
-}
-
 
