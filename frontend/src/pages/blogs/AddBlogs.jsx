@@ -88,7 +88,7 @@ export default function AddBlogs() {
     fd.append("content", content);
     if (imageFile) fd.append("imageFile", imageFile);
     try {
-      const res = await axios.post("https://autism-git-deploy-rukshans-projects-53598c29.vercel.app/api/blogs", fd);
+      const res = await axios.post("https://express-api-440581871543.us-central1.run.app/api/blogs", fd);
       // success
       if (imagePreview) URL.revokeObjectURL(imagePreview);
       setTitle("");

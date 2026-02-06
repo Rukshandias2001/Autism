@@ -57,7 +57,7 @@ export default function BlogHome() {
       try {
         setLoading(true);
         setErr("");
-        const res = await fetch("https://autism-git-deploy-rukshans-projects-53598c29.vercel.app/api/blogs");
+        const res = await fetch("https://express-api-440581871543.us-central1.run.app/api/blogs");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const payload = await res.json();
 
