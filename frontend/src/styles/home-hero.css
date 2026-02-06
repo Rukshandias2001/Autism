@@ -458,7 +458,7 @@
 
 .ls-hero-main {
   /* account for sticky header so hero fills remaining viewport without causing extra scroll */
-  min-height: 95.5vh;
+  min-height: 91vh;
   display: flex;
   align-items: center;
   justify-content: center;

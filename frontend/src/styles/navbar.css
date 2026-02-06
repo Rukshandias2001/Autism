@@ -1,119 +1,426 @@
-/* src/components/nav.css */
-:root{
-  --nav-bg:#ffffff;
-  --nav-border:#e7eef5;
-  --ink:#0f2a3b;
-  --muted:#5d7688;
-  --brand:#0b6fc2;
-  --brand-cta:#0f7cc7;
-  --surface:#f7fbff;
-  --shadow:rgba(0,0,0,.08);
+/* src/styles/navbar.css — fully responsive */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.ls-nav{
-  position:sticky; top:0; z-index:40;
-  background:var(--nav-bg);
-  height: 4.5vh;
-  border-bottom:1px solid var(--nav-border);
-  box-shadow: 0 4px 18px var(--shadow);
-}
-.ls-nav-inner{
-  max-width:1100px; margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between;
-  gap:12px; padding:0 16px;
-  height:100%;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  color:var(--ink);
-}
-
-/* Brand & burger */
-.ls-left{ display:flex; align-items:center; gap:10px; }
-.ls-brand{
-  font-weight:800; letter-spacing:.2px; text-decoration:none; color:var(--brand);
-  font-size:18px;
-}
-.ls-burger{
-  display:none; flex-direction:column; gap:4px; padding:8px; border:0; background:transparent; cursor:pointer;
-}
-.ls-burger span{
-  width:22px; height:2px; background:#7b93a4; display:block; border-radius:2px;
+:root {
+  --nav-bg: #ffffff;
+  --nav-border: #e7eef5;
+  --ink: #0f2a3b;
+  --muted: #5d7688;
+  --brand: #0b6fc2;
+  --brand-cta: #0f7cc7;
+  --surface: #f7fbff;
+  --shadow: rgba(0, 0, 0, 0.08);
+  --nav-height: clamp(52px, 8vw, 64px);
+  --nav-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --radius: 10px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Links */
-.ls-links{
-  display:flex; align-items:center; gap:14px;
-}
-.ls-link{
-  padding:8px 10px; border-radius:10px; color:var(--muted); text-decoration:none; font-weight:600;
-}
-.ls-link.active, .ls-link:hover{
-  color:var(--ink); background:var(--surface);
+/* ── Top bar ─────────────────────────────────── */
+.ls-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  box-shadow: 0 2px 12px var(--shadow);
 }
 
-/* Dropdown */
-.ls-dropdown{ position:relative; }
-.ls-dropbtn{
-  display:flex; align-items:center; gap:6px;
-  padding:8px 10px; border-radius:10px; border:0; background:transparent; cursor:pointer;
-  color:var(--muted); font-weight:700;
+.ls-nav-inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 3vw, 24px);
+  font-family: var(--nav-font);
+  color: var(--ink);
+  font-size: clamp(13px, 1.6vw, 15px);
 }
-.ls-dropbtn:hover{ background:var(--surface); color:var(--ink); }
-.ls-dropbtn svg{ width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; }
-.ls-menu{
-  position:absolute; top:115%; left:0; min-width:220px;
-  background:#fff; border:1px solid var(--nav-border); border-radius:12px;
-  box-shadow: 0 16px 30px var(--shadow); padding:6px; display:none;
-}
-.ls-dropdown.open .ls-menu{ display:block; }
-.ls-item{
-  display:block; width:100%; text-align:left;
-  padding:10px 12px; border-radius:8px; cursor:pointer;
-  background:transparent; border:0; color:var(--ink); text-decoration:none;
-}
-.ls-item:hover{ background:var(--surface); }
 
-/* Auth area */
-.ls-auth{ display:flex; align-items:center; gap:10px; }
-.ls-auth-cta{ display:flex; align-items:center; gap:10px; }
-.ls-login{
-  padding:8px 12px; border-radius:10px; text-decoration:none; font-weight:700; color:var(--brand);
-  background:transparent; border:1px solid transparent;
+/* ── Brand & burger ──────────────────────────── */
+.ls-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
-.ls-login:hover{ background:var(--surface); }
-.ls-signup{
-  padding:8px 12px; border-radius:10px; text-decoration:none; font-weight:800; color:#fff;
+
+.ls-brand {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  color: var(--brand);
+  font-size: clamp(16px, 2.2vw, 20px);
+  white-space: nowrap;
+}
+
+/* Hamburger button */
+.ls-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: background var(--transition);
+}
+.ls-burger:hover {
+  background: var(--surface);
+}
+
+.ls-burger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #7b93a4;
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+  transform-origin: center;
+}
+
+/* Animated X when open */
+.ls-burger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.ls-burger.open span:nth-child(2) {
+  opacity: 0;
+}
+.ls-burger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Nav links ───────────────────────────────── */
+.ls-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 1.2vw, 14px);
+}
+
+.ls-link {
+  padding: 8px clamp(8px, 1vw, 12px);
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color var(--transition), background var(--transition);
+}
+.ls-link.active,
+.ls-link:hover {
+  color: var(--ink);
+  background: var(--surface);
+}
+
+/* ── Dropdown ────────────────────────────────── */
+.ls-dropdown {
+  position: relative;
+}
+
+.ls-dropbtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px clamp(8px, 1vw, 12px);
+  border-radius: var(--radius);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: inherit;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: color var(--transition), background var(--transition);
+}
+.ls-dropbtn:hover {
+  background: var(--surface);
+  color: var(--ink);
+}
+.ls-dropbtn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  transition: transform var(--transition);
+}
+.ls-dropdown.open .ls-dropbtn svg {
+  transform: rotate(180deg);
+}
+
+.ls-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid var(--nav-border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px var(--shadow);
+  padding: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+}
+.ls-dropdown.open .ls-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ls-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: inherit;
+  font-family: inherit;
+  transition: background var(--transition);
+}
+.ls-item:hover {
+  background: var(--surface);
+}
+
+/* ── Auth area ───────────────────────────────── */
+.ls-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.ls-auth-cta {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1vw, 10px);
+}
+
+.ls-login {
+  padding: 8px clamp(10px, 1.2vw, 14px);
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--brand);
+  background: transparent;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: background var(--transition);
+}
+.ls-login:hover {
+  background: var(--surface);
+}
+
+.ls-signup {
+  padding: 8px clamp(10px, 1.2vw, 14px);
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 800;
+  color: #fff;
   background: var(--brand-cta);
+  white-space: nowrap;
+  transition: filter var(--transition);
 }
-.ls-signup:hover{ filter:brightness(1.05); }
+.ls-signup:hover {
+  filter: brightness(1.08);
+}
 
-/* Profile */
-.ls-profile{ position:relative; }
-.ls-avatar{
-  width:36px; height:36px; border-radius:50%; border:0; cursor:pointer;
-  background: #e8f2fb; color:#0a4f88; font-weight:800;
-  display:grid; place-items:center;
+/* ── Profile ─────────────────────────────────── */
+.ls-profile {
+  position: relative;
 }
-.ls-profile-menu{
-  position:absolute; right:0; top:120%;
-  background:#fff; border:1px solid var(--nav-border); border-radius:12px; min-width:220px;
-  box-shadow: 0 16px 30px var(--shadow); padding:6px; display:none;
-}
-.ls-profile.open .ls-profile-menu{ display:block; }
-.ls-profile-info{ padding:8px 12px; border-bottom:1px solid var(--nav-border); margin-bottom:4px; }
-.ls-email{ font-weight:700; font-size:14px; }
-.ls-role{ color:var(--muted); font-size:12px; }
-.ls-item.danger{ color:#b3201a; }
-.ls-item.danger:hover{ background:#fdecec; }
 
-/* Mobile */
-@media (max-width: 860px){
-  .ls-burger{ display:flex; }
-  .ls-links{
-    position:absolute; left:0; right:0; top:60px; background:#fff;
-    border-top:1px solid var(--nav-border);
-    padding:10px 16px 12px;
-    flex-direction:column; align-items:flex-start; gap:8px; display:none;
+.ls-avatar {
+  width: clamp(32px, 5vw, 38px);
+  height: clamp(32px, 5vw, 38px);
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  background: #e8f2fb;
+  color: #0a4f88;
+  font-weight: 800;
+  font-size: clamp(13px, 1.6vw, 15px);
+  display: grid;
+  place-items: center;
+  transition: box-shadow var(--transition);
+}
+.ls-avatar:hover {
+  box-shadow: 0 0 0 3px var(--surface);
+}
+
+.ls-profile-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: #fff;
+  border: 1px solid var(--nav-border);
+  border-radius: 12px;
+  min-width: 220px;
+  box-shadow: 0 12px 32px var(--shadow);
+  padding: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+}
+.ls-profile.open .ls-profile-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ls-profile-info {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--nav-border);
+  margin-bottom: 4px;
+}
+.ls-email {
+  font-weight: 700;
+  font-size: clamp(13px, 1.4vw, 14px);
+  word-break: break-all;
+}
+.ls-role {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.ls-item.danger {
+  color: #b3201a;
+}
+.ls-item.danger:hover {
+  background: #fdecec;
+}
+
+/* ── Overlay (mobile backdrop) ───────────────── */
+.ls-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.ls-overlay.visible {
+  display: block;
+  opacity: 1;
+}
+
+/* ── Responsive: tablet (≤ 860px) ────────────── */
+@media (max-width: 860px) {
+  .ls-burger {
+    display: flex;
   }
-  .ls-links.open{ display:flex; }
-  .ls-dropdown .ls-menu{ position:relative; top:0; box-shadow:none; border:0; padding:0; }
+
+  .ls-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(300px, 80vw);
+    height: 100dvh;
+    background: var(--nav-bg);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 72px 16px 24px;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform var(--transition);
+    box-shadow: 4px 0 24px var(--shadow);
+    z-index: 1001;
+  }
+  .ls-links.open {
+    transform: translateX(0);
+  }
+
+  .ls-link {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+
+  .ls-dropdown {
+    width: 100%;
+  }
+  .ls-dropbtn {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    justify-content: space-between;
+  }
+
+  .ls-menu {
+    position: static;
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+    padding: 0 0 0 12px;
+    opacity: 1;
+    visibility: hidden;
+    transform: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition), visibility var(--transition);
+  }
+  .ls-dropdown.open .ls-menu {
+    visibility: visible;
+    max-height: 400px;
+  }
+
+  .ls-item {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+/* ── Responsive: small phone (≤ 480px) ───────── */
+@media (max-width: 480px) {
+  :root {
+    --nav-height: 50px;
+  }
+
+  .ls-brand {
+    font-size: 15px;
+  }
+
+  .ls-auth-cta {
+    gap: 4px;
+  }
+  .ls-login {
+    padding: 6px 8px;
+    font-size: 13px;
+  }
+  .ls-signup {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .ls-avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .ls-profile-menu {
+    min-width: 180px;
+    right: -8px;
+  }
 }
