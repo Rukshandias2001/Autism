@@ -330,22 +330,7 @@ export default function ParallaxMagic() {
 
   return (
     <div className="em-main">
-      <div className="em-hero-container">
-        {/* LEFT PANEL */}
-        <aside className="em-side em-left-panel">
-          <div className="em-left-card">
-            <h3>Emotion stimulator</h3>
-            <p>
-              The Emotion Stimulator helps children recognize emotions. Pick a
-              puddle to jump and see how feelings change in the scene.
-            </p>
-            <div className="em-emotion1">
-              <img src={emotion} className="em-emotion" />
-            </div>
-          </div>
-
-        </aside>
-        {/* Right Panel */}
+      
         <div
           className={`em-hero${idle ? " em-autopan" : ""}`}
           onMouseMove={handleMove}
@@ -464,50 +449,11 @@ export default function ParallaxMagic() {
               />
             </div>
 
-            {/* Butterflies */}
-            {/* <img src={b1} className="em-butterfly em-b10" alt="" />
-          <img src={b2} className="em-butterfly em-b20" alt="" />
-          <img src={b1} className="em-butterfly em-b30" alt="" /> */}
           </div>
 
         </div>
 
 
-
-        {/* RIGHT HERO STACK + BUBBLE */}
-        {/* <aside className="em-side em-right-stack">
-        <div
-          className={`em-speech-cloud ${mood !== "neutral" ? "em-hide" : ""}`}
-        >
-          select emotion
-        </div>
-
-      </aside> */}
-      </div>
-
-
-      <div className="image-content">
-        <div className="em-gate">
-          <img src={bg} alt="" className="em-gate-bg" />
-        </div>
-        {/* Road inside the scene */}
-        <img
-          src={road}
-          alt=""
-          className="em-road em-road-inner"
-          aria-hidden="true"
-        />
-
-        <div className="em-gate">
-          <img src={bg} alt="" className="em-gate-bg em-heroes-pack" />
-        </div>
-      </div>
-      {/* Optional: tiny auto-nav toast */}
-      {eta != null && (
-        <div className="em-autonav">
-          Starting {mood} lesson in {eta}s…
-        </div>
-      )}
     </div>
   );
 }
