@@ -103,7 +103,7 @@ export default function BlogDetail() {
       try {
         setLoading(true);
         setErr("");
-        const res = await fetch(`http://localhost:5050/api/blogs/${id}`);
+        const res = await fetch(`https://autism-git-deploy-rukshans-projects-53598c29.vercel.app/api/blogs/${id}`);
         if (!res.ok) throw new Error(`Error: ${res.status}`);
         const data = await res.json();
         if (alive) setBlog(data);
@@ -121,7 +121,7 @@ export default function BlogDetail() {
   const imgSrc = useMemo(() => {
     const cover = blog?.coverImageUrl || blog?.imageUrl || "";
     if (!cover) return "";
-    return cover.startsWith("http") ? cover : `http://localhost:5050${cover}`;
+    return cover.startsWith("http") ? cover : `https://autism-git-deploy-rukshans-projects-53598c29.vercel.app${cover}`;
   }, [blog]);
 
   // tiny helpers to make the right-side blurb + 3 mini cards
@@ -173,7 +173,7 @@ export default function BlogDetail() {
   const handleDelete = async () => {
     if (!window.confirm(`Delete “${blog?.title}”? This can’t be undone.`))
       return;
-    const res = await fetch(`http://localhost:5050/api/blogs/${id}`, {
+    const res = await fetch(`https://autism-git-deploy-rukshans-projects-53598c29.vercel.app/api/blogs/${id}`, {
       method: "DELETE",
     });
     if (!res.ok) {
