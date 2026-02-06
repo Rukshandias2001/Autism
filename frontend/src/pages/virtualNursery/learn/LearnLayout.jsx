@@ -1,5 +1,5 @@
 import React from "react";
-import "./layoutStyles.css";
+import "../../../styles/virtualNurseyStyles/layoutStyles.css";
 
 export default function LearnLayout({ title, image, imageAlt, children }) {
   return (

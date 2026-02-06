@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../../../auth/AuthContext";
 import "../../../styles/virtualNurseyStyles/ColoursLearn.css";
 import LearnLayout from "./LearnLayout";
-import "./layoutStyles.css";
+import "../../../styles/virtualNurseyStyles/layoutStyles.css";
 import { useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import colours from "../../../assets/colours1.png"
