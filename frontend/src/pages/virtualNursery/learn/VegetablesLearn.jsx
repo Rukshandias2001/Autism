@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../../auth/AuthContext";
-import "../../../styles/virtualNurseyStyles/VegetablesLearn.css";
 import LearnLayout from "./LearnLayout";
 import "../../../styles/virtualNurseyStyles/layoutStyles.css";
 import { useParams } from "react-router-dom";
