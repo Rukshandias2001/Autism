@@ -1,0 +1,45 @@
+/* Shared layout styles for learn pages */
+.al-page{
+  display:flex;
+  gap:24px;
+  padding:20px;
+  align-items:flex-start;
+}
+.nurseryD-learn-bp-back{
+  position:fixed;
+  left:16px;
+  top:16px;
+  background:transparent;
+  border:0;
+  font-size:16px;
+  cursor:pointer;
+}
+.al-chart{
+  width:280px;
+  background:#fff;
+  border-radius:8px;
+  padding:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+.al-chart-title{
+  font-weight:700;
+  margin-bottom:8px;
+}
+.al-image-container{display:flex;justify-content:center}
+.al-image{max-width:100%;height:auto;border-radius:6px}
+.al-main{flex:1;min-width:0}
+.al-toast{position:relative;padding:8px 12px;background:#111;color:#fff;border-radius:6px;margin-bottom:12px}
+.al-player-card{margin-bottom:16px}
+.al-empty{padding:48px;text-align:center;color:#666}
+.al-player{background:#000;border-radius:6px;overflow:hidden}
+.al-player-meta{margin-top:8px}
+.al-title{margin:0;font-size:18px}
+.al-rail{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.al-thumb{width:120px;height:90px;background:#f6f6f6;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px}
+.al-add{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.al-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.4)}
+.al-modal-card{background:#fff;padding:18px;border-radius:8px;min-width:320px}
+.al-form-row{margin-bottom:12px}
+.al-form-actions{display:flex;gap:8px;justify-content:flex-end}
+.al-btn{padding:8px 12px;border-radius:6px;background:#1f8ef1;color:#fff;border:0}
+.al-btn.ghost{background:transparent;border:1px solid #ddd;color:#333}
