@@ -124,14 +124,7 @@ export default function App() {
         <Route path="/lesson/:emotion/content" element={<ContentGrid />} />
         <Route path="/contents" element={<ContentManager />} />
 
-        <Route path="/mentor" element={<MentorDashboard />}>
-          <Route index element={<Navigate to="reports" replace />} />
-          <Route path="reports" element={<ReportsIndex />} />
-          <Route path="reports/:childId" element={<ChildReport />} />
-          <Route path="progress/:childId" element={<MentorChildProgress />} />
-          <Route path="scenarios" element={<ScenariosPage />} />
-          <Route path="content" element={<ContentManager />} />
-        </Route>
+        {/* Mentor routes guarded further below */}
 
         {/* Practice (guarded) */}
         <Route element={<RequireAuth roles={["parent", "mentor"]} />}>
@@ -139,8 +132,7 @@ export default function App() {
         </Route>
 
         {/* Mentor-only area */}
-        <Route element={<RequireAuth />}>
-          {/* <Route element={<RequireAuth roles={["mentor"]} />}> */}
+        <Route element={<RequireAuth roles={["mentor"]} />}>
           <Route path="/mentor" element={<MentorDashboard />}>
             <Route index element={<Navigate to="reports" replace />} />
             <Route path="reports" element={<ReportsIndex />} />
@@ -148,7 +140,7 @@ export default function App() {
             <Route path="progress/:childId" element={<MentorChildProgress />} />
             <Route path="scenarios" element={<ScenariosPage />} />
             <Route path="content" element={<ContentManager />} />
-            <Route path="/mentor/speech" element={<MentorSpeechTool/>} />
+            <Route path="speech" element={<MentorSpeechTool/>} />
           </Route>
         </Route>
 
