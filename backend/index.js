@@ -61,6 +61,7 @@ const allowList = new Set([
   "http://127.0.0.1:3000",
   "http://localhost:3001",
   "http://127.0.0.1:3001",
+  "https://autism-git-deploy-rukshans-projects-53598c29.vercel.app",
 ]);
 app.use(
   cors({
