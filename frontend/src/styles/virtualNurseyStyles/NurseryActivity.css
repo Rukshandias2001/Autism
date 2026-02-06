@@ -8,7 +8,7 @@
 }
 
 .nursery-activity-page {
-  min-height: calc(100dvh - var(--nav-height));
+  min-height: calc(99.9dvh - var(--nav-height));
   display: grid;
   place-items: center;
   padding: 24px;

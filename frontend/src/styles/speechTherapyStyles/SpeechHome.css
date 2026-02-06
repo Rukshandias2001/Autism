@@ -13,7 +13,7 @@ body {
 .home-container {
   text-align: center;
   padding: 2rem;
-  min-height: calc(100dvh - var(--nav-height));
+  min-height: calc(99.9dvh - var(--nav-height));
   display: flex;
   flex-direction: column;
 }

@@ -1,6 +1,6 @@
 /* Layout */
 .nursery-bp-wrap {
-  min-height: calc(100dvh - var(--nav-height));
+  min-height: calc(99.9dvh - var(--nav-height));
   padding: 24px;
   text-align: center;
 
@@ -299,7 +299,7 @@
 .nursery-review-screen {
   text-align: center;
   padding: 24px;
-  min-height: calc(100dvh - var(--nav-height));
+  min-height: calc(99.9dvh - var(--nav-height));
   background-image: url(../../assets/nbg7.png);
   background-size: cover;
   color: #000000;

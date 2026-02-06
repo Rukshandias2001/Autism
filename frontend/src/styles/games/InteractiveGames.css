@@ -2,7 +2,7 @@
 .game-wrapper {
   display: flex;
   flex-direction: row;
-  min-height: calc(100dvh - var(--nav-height));
+  min-height: calc(99.9dvh - var(--nav-height));
   padding: 20px;
   gap: 20px;
   font-family: sans-serif;

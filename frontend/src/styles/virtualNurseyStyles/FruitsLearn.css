@@ -1,5 +1,5 @@
 .al-page {
-  min-height: calc(100dvh - var(--nav-height));
+  min-height: calc(99.9dvh - var(--nav-height));
   background: radial-gradient(circle at -8.9% 51.2%, rgb(248, 149, 221) 0%, rgb(250, 112, 227) 15.9%, rgb(252, 211, 253) 15.9%, rgb(223, 156, 231) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%);
   display: grid;
   grid-template-columns: 320px 1fr; /* chart sidebar + main */

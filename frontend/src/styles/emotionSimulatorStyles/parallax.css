@@ -471,7 +471,7 @@ body {
    padding: clamp(20px, 4vw, 50px);
   --scene-min-height: 80dvh;
   position: relative;
-  height: calc(100dvh - var(--nav-height));
+  height: calc(99.9dvh - var(--nav-height));
   overflow: hidden;
   background: linear-gradient(90deg,
       rgba(42, 123, 155, 1) 0%,
