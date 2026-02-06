@@ -468,11 +468,9 @@ body {
 
 /* Page wrapper */
 .em-main {
-   padding: clamp(20px, 4vw, 50px);
-  --scene-min-height: 80dvh;
+   padding: 2dvh;
   position: relative;
-  height: calc(99.9dvh - var(--nav-height));
-  overflow: hidden;
+  min-height: calc(99.9dvh - var(--nav-height));
   background: linear-gradient(90deg,
       rgba(42, 123, 155, 1) 0%,
       rgba(87, 199, 133, 1) 50%,
