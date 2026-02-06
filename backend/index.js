@@ -92,7 +92,7 @@ app.use("/models", express.static(path.join(__dirname, "models")));
 
 // —— Health & root ——
 app.get("/health", (_req, res) => res.json({ ok: true }));
-app.get("/", (_req, res) => res.send("LittleStars backend is running"));
+// Note: root (`/`) is served by the frontend static files when available.
 
 // —— API routes (mount each ONCE) ————————————————
 // Emotion Simulator
@@ -135,6 +135,22 @@ app.use("/api/users", usersRouter);
 app.use("/game", gameRouter); 
 
 app.use("/api/scores", scoreRoutes);
+
+// —— Serve frontend build (if present) ——
+// The Dockerfile will copy the Vite `dist` into `backend/public`.
+const clientBuildPath = path.join(__dirname, "public");
+app.use(express.static(clientBuildPath));
+
+// Safe catch-all for client-side routing: only for non-API GET requests
+app.use((req, res, next) => {
+  if (req.method !== "GET") return next();
+  const ignored = ["/api", "/game", "/uploads", "/models"];
+  if (ignored.some((p) => req.path.startsWith(p))) return next();
+  const indexFile = path.join(clientBuildPath, "index.html");
+  res.sendFile(indexFile, (err) => {
+    if (err) next();
+  });
+});
 
 // —— Error handlers (keep last) ——
 app.use(notFound);
