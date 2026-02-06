@@ -90,21 +90,25 @@ background: radial-gradient(circle at -8.9% 51.2%, rgb(248, 149, 221) 0%, rgb(25
 /* Thumbnails rail */
 .al-rail {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  /* responsive: let rails wrap and give each thumb a reasonable min width */
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
 }
 .al-thumb {
   background: #fff;
   border: 0;
   border-radius: 16px;
-  padding: 8px;
-  text-align: left;
+  padding: 12px;
+  text-align: center;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
-  display: grid;
-  grid-template-rows: auto 36px;
-  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 160px;
+  min-height: fit-content;
 }
 .al-thumb:hover {
   transform: translateY(-2px);
@@ -130,7 +134,13 @@ background: radial-gradient(circle at -8.9% 51.2%, rgb(248, 149, 221) 0%, rgb(25
   font-size: 0.95rem;
   color: #3b2f22;
   font-weight: 600;
-  padding: 0 4px 6px;
+  padding: 8px 6px 4px;
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-word;
+  text-overflow: clip;
+  overflow: visible;
+  text-align: center;
 }
 
 /* Admin form */
@@ -217,7 +227,7 @@ background: radial-gradient(circle at -8.9% 51.2%, rgb(248, 149, 221) 0%, rgb(25
 .al-thumb-btn {
   all: unset;
   display: grid;
-  grid-template-rows: auto 36px;
+  grid-template-rows: auto minmax(56px, auto);
   gap: 6px;
   cursor: pointer;
 }
