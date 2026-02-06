@@ -3,7 +3,7 @@ import "../../../styles/virtualNurseyStyles/layoutStyles.css";
 
 export default function LearnLayout({ title, image, imageAlt, children }) {
   return (
-    <div className="al-page"  style={{paddingTop: "7dvh"}}>
+    <div className="al-page">
       <button
         className="nurseryD-learn-bp-back"
         onClick={() => window.history.back()}
