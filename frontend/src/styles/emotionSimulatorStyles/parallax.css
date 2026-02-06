@@ -479,6 +479,24 @@ body {
       rgba(237, 221, 83, 1) 100%);
 }
 
+/* Page title */
+.em-title {
+  margin: 0 auto 16px;
+  text-align: center;
+  font-size: clamp(18px, 4.5vw, 36px);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.4px;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 380px) {
+  .em-title { font-size: clamp(16px, 6.5vw, 22px); margin-bottom: 10px; }
+}
+
 /* Sides */
 .em-side {
   position: absolute;

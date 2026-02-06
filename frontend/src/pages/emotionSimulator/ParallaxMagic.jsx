@@ -330,6 +330,7 @@ export default function ParallaxMagic() {
 
   return (
     <div className="em-main">
+      <h1 className="em-title">Emotional Simulator</h1>
       
         <div
           className={`em-hero${idle ? " em-autopan" : ""}`}
