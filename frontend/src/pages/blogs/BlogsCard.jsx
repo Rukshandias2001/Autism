@@ -13,7 +13,7 @@ export default function BlogsCard({ blog, onDelete }) {
   const imgSrc = cover
     ? cover.startsWith("http")
       ? cover
-      : `http://localhost:5050${cover}`
+      : `"https://express-api-440581871543.us-central1.run.app${cover}`
     : "";
   // Delete Blogs
   const handleDelete = async () => {
@@ -21,7 +21,7 @@ export default function BlogsCard({ blog, onDelete }) {
       return;
     try {
       setBusy(true);
-      const res = await fetch(`http://localhost:5050/api/blogs/${blog._id}`, {
+      const res = await fetch(`"https://express-api-440581871543.us-central1.run.app/${blog._id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");
