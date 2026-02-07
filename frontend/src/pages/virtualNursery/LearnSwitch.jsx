@@ -2,8 +2,8 @@ import { lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/virtualNurseyStyles/LearnSwitch.css";
 
-const AlphabetLearn = lazy(() =>
-  import("../virtualNursery/learn/AlphabetLearn")
+const NewAlphabetLearn = lazy(() =>
+  import("../virtualNursery/learn/NewAlphabetLearn")
 );
 const NumbersLearn = lazy(() =>
   import("../virtualNursery/learn/NumbersLearn")
@@ -26,7 +26,7 @@ const VegetablesLearn = lazy(() =>
 
 
 const registry = {
-  alphabets: AlphabetLearn,
+  alphabets: NewAlphabetLearn,
   numbers: NumbersLearn,
   shapes: ShapesLearn,
   colors: ColorsLearn,

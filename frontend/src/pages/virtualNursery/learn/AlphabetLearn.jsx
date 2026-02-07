@@ -37,7 +37,7 @@ function normalizeYouTubeUrl(url) {
   return url;
 }
 
-export default function AlphabetLearn({ topic: topicProp }) {
+export default function NewAlphabetLearn({ topic: topicProp }) {
   const { user } = useAuth();
   const isMentor = user?.role?.toLowerCase() === "mentor";
 

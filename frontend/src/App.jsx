@@ -45,7 +45,7 @@ import NurseryDashboard from "./pages/virtualNursery/NurseryDashboard";
 import NurseryActivity from "./pages/virtualNursery/NurseryActivity";
 import NurseryLearnActivity from "./pages/virtualNursery/LearnSwitch";
 import ActivitySwitch from "./pages/virtualNursery/ActivitySwitch";
-import AlphabetLearn from "./pages/virtualNursery/learn/AlphabetLearn"
+import NewAlphabetLearn from "./pages/virtualNursery/learn/NewAlphabetLearn"
 
 //RoutineBuilder
 import RoutineHome from "./pages/routineBuilder/RoutineHome";
@@ -166,7 +166,7 @@ export default function App() {
           />
         </Route>
             
-        <Route path="/alphabets" element={<AlphabetLearn  />} />
+        <Route path="/alphabets" element={<NewAlphabetLearn  />} />
         <Route path="/numbers" element={<NumbersLearn  />} />
         <Route path="/shapes" element={<ShapesLearn  />} />
         <Route path="/colors" element={<ColoursLearn />} />
