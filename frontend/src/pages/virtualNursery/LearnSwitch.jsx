@@ -12,6 +12,7 @@ import coloursImg from "../../assets/colours1.png";
 import animalsImg from "../../assets/animals1.png";
 import fruitsImg from "../../assets/fruits1.png";
 import alphabetsImg from "../../assets/alphabet1.png";
+import vegetablesImg from "../../assets/vegetables1.png";
 
 function Loading() {
   return (
@@ -43,6 +44,7 @@ export default function LearnSwitch() {
     animals: { title: "Animals", image: animalsImg, defaultTopic: "animals" },
     fruits: { title: "Fruits", image: fruitsImg, defaultTopic: "fruits" },
     alphabets: { title: "Alphabets", image: alphabetsImg, defaultTopic: "alphabets" },
+    vegetables: { title: "Vegetables", image: vegetablesImg, defaultTopic: "vegetables" },
   };
 
   const isReusablePage = !!pageConfig[category];
