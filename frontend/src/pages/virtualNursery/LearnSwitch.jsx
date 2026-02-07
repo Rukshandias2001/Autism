@@ -5,44 +5,26 @@ import "../../styles/virtualNurseyStyles/LearnSwitch.css";
 const NewAlphabetLearn = lazy(() =>
   import("../virtualNursery/learn/NewAlphabetLearn")
 );
-const NumbersLearn = lazy(() =>
-  import("../virtualNursery/learn/NumbersLearn")
-);
-const ShapesLearn = lazy(() =>
-  import("../virtualNursery/learn/ShapesLearn")
-);
-const ColorsLearn = lazy(() =>
-  import("../virtualNursery/learn/ColoursLearn")
-);
-const AnimalsLearn = lazy(() =>
-  import("../virtualNursery/learn/AnimalsLearn")
-);
-const FruitsLearn = lazy(() =>
-  import("../virtualNursery/learn/FruitsLearn")
-);
 const VegetablesLearn = lazy(() =>
   import("../virtualNursery/learn/VegetablesLearn")
 );
 
+// Use the single reusable LearnPage for common topics
+const LearnPage = lazy(() => import("../virtualNursery/learn/LearnPage"));
 
-const registry = {
-  alphabets: NewAlphabetLearn,
-  numbers: NumbersLearn,
-  shapes: ShapesLearn,
-  colors: ColorsLearn,
-  animals: AnimalsLearn,
-  fruits: FruitsLearn,
-  vegetables: VegetablesLearn,
-};
+// images for LearnPage variants
+import numbersImg from "../../assets/numbers1.png";
+import shapesImg from "../../assets/shapes1.png";
+import coloursImg from "../../assets/colours1.png";
+import animalsImg from "../../assets/animals1.png";
+import fruitsImg from "../../assets/fruits1.png";
 
 function Loading() {
   return (
-    <>
-      <div className="learn-loading">
-        <div className="spinner"></div>
-        <h1>Loading...</h1>
-      </div>
-    </>
+    <div className="learn-loading">
+      <div className="spinner"></div>
+      <h1>Loading...</h1>
+    </div>
   );
 }
 
@@ -59,14 +41,32 @@ function NotFound() {
 
 export default function LearnSwitch() {
   const { category } = useParams();
-  const LearnActivity = registry[category];
 
-  if(!LearnActivity){
-   <NotFound/>
-  }
-  return(
-    <Suspense fallback={<Loading/>}>
-      <LearnActivity category={category}/>
+  const pageConfig = {
+    numbers: { title: "Numbers", image: numbersImg, defaultTopic: "numbers" },
+    shapes: { title: "Shapes", image: shapesImg, defaultTopic: "shapes" },
+    colors: { title: "Colours", image: coloursImg, defaultTopic: "colours" },
+    animals: { title: "Animals", image: animalsImg, defaultTopic: "animals" },
+    fruits: { title: "Fruits", image: fruitsImg, defaultTopic: "fruits" },
+  };
+
+  const isReusablePage = !!pageConfig[category];
+
+  return (
+    <Suspense fallback={<Loading />}>
+      {isReusablePage ? (
+        <LearnPage
+          title={pageConfig[category].title}
+          image={pageConfig[category].image}
+          defaultTopic={pageConfig[category].defaultTopic}
+        />
+      ) : category === "alphabets" ? (
+        <NewAlphabetLearn category={category} />
+      ) : category === "vegetables" ? (
+        <VegetablesLearn category={category} />
+      ) : (
+        <NotFound />
+      )}
     </Suspense>
-  )
+  );
 }
