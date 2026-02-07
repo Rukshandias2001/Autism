@@ -6,16 +6,16 @@ const FEATURES = [
   { id:"emotion",  title:"Emotion Simulator", emoji:"😊", chip:"Feelings & Faces",  bg:"var(--grad-emotion)" },
   { id:"speech",   title:"Speech Therapy Tool", emoji:"🗣️", chip:"Pronounce & Practice", bg:"var(--grad-speech)" },
   { id:"nursery",  title:"Virtual Nursery", emoji:"🌼", chip:"Playful Lessons", bg:"var(--grad-nursery)" },
-  { id:"routine",  title:"Routine Builder", emoji:"📅", chip:"Daily Habits", bg:"var(--grad-routine)" },
-  { id:"games",    title:"Interactive Games", emoji:"🎮", chip:"Learn by Playing", bg:"var(--grad-games)" },
+  { id:"routine",  title:"Routine Builder", emoji:"📅", chip:"Daily Habits", bg:"var(--grad-routine)", comingSoon: true },
+  { id:"games",    title:"Interactive Games", emoji:"🎮", chip:"Learn by Playing", bg:"var(--grad-games)", comingSoon: true },
 ];
 
 function FeatureCard({ item, onOpen, children }) {
   return (
-    <div className="md-feature" style={{ background:item.bg }}>
+    <div className={`md-feature ${item.comingSoon ? 'md-feature--locked' : ''}`} style={{ background:item.bg }} role={item.comingSoon ? 'group' : undefined} aria-disabled={item.comingSoon ? true : undefined}>
       <div className="md-feature-top">
         <span className="md-feature-emoji" aria-hidden>{item.emoji}</span>
-        <span className="md-feature-chip">{item.chip}</span>
+        <span className="md-feature-chip">{item.comingSoon ? "🔒 Coming soon" : item.chip}</span>
       </div>
       <div className="md-feature-title">{item.title}</div>
 
@@ -23,12 +23,18 @@ function FeatureCard({ item, onOpen, children }) {
         <div className="md-quick-actions">{children}</div>
       ) : (
         <div className="md-feature-footer">
-          <button className="md-linkbtn" onClick={onOpen}>
-            Open
-            <svg className="md-feature-arrow" viewBox="0 0 24 24" width="20" height="20" aria-hidden>
-              <path d="M8 5l8 7-8 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          {item.comingSoon ? (
+            <button className="md-linkbtn md-linkbtn--disabled" disabled aria-disabled>
+              🔒 Coming soon
+            </button>
+          ) : (
+            <button className="md-linkbtn" onClick={onOpen}>
+              Open
+              <svg className="md-feature-arrow" viewBox="0 0 24 24" width="20" height="20" aria-hidden>
+                <path d="M8 5l8 7-8 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          )}
         </div>
       )}
 
@@ -94,22 +100,22 @@ export default function MentorDashboard() {
                   <div className="md-quick-col">
                     {/* <button onClick={() => nav("/alphabets")} className="md-linkbtn">Alphabet Learn ▸</button> */}
                     
-                  <button onClick={() => nav("/alphabets")} className="md-linkbtn">Nursery ▸ Alphabet</button>
-                  <button onClick={()=>nav("/numbers")} className="md-linkbtn">Nursery ▸ Numbers</button>
-                  <button onClick={()=>nav("/shapes")} className="md-linkbtn">Nursery ▸ Shapes</button>
-                  <button onClick={()=>nav("/colors")} className="md-linkbtn">Nursery ▸ Colors</button>
-                  <button onClick={()=>nav("/animals")} className="md-linkbtn">Nursery ▸ Animals</button>
-                  <button onClick={()=>nav("/fruits")} className="md-linkbtn">Nursery ▸ Fruits</button>
-                  <button onClick={()=>nav("/vegetables")} className="md-linkbtn">Nursery ▸ Vegetables</button>
+                  <button onClick={() => nav("/nursery/alphabets/learn")} className="md-linkbtn">Nursery ▸ Alphabet</button>
+                  <button onClick={()=>nav("/nursery/numbers/learn")} className="md-linkbtn">Nursery ▸ Numbers</button>
+                  <button onClick={()=>nav("/nursery/shapes/learn")} className="md-linkbtn">Nursery ▸ Shapes</button>
+                  <button onClick={()=>nav("/nursery/colors/learn")} className="md-linkbtn">Nursery ▸ Colors</button>
+                  <button onClick={()=>nav("/nursery/animals/learn")} className="md-linkbtn">Nursery ▸ Animals</button>
+                  <button onClick={()=>nav("/nursery/fruits/learn")} className="md-linkbtn">Nursery ▸ Fruits</button>
+                  <button onClick={()=>nav("/nursery/vegetables/learn")} className="md-linkbtn">Nursery ▸ Vegetables</button>
                   
                   </div>
                 </FeatureCard>
 
                 {/* Routine */}
-                <FeatureCard item={FEATURES[3]} onOpen={() => nav("/mentor/routine")} />
+                <FeatureCard item={FEATURES[3]} />
 
                 {/* Games */}
-                <FeatureCard item={FEATURES[4]} onOpen={() => nav("/mentor/games")} />
+                <FeatureCard item={FEATURES[4]} />
               </div>
             </section>
 

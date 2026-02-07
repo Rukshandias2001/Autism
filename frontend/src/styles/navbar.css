@@ -200,6 +200,23 @@
   background: var(--surface);
 }
 
+/* Locked / unavailable state (greyed + padlock) */
+.ls-item.locked {
+  color: var(--muted);
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.ls-item.locked:hover {
+  background: transparent;
+}
+.ls-item.locked svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
 /* ── Auth area ───────────────────────────────── */
 .ls-auth {
   display: flex;
