@@ -67,11 +67,6 @@ import RoutineNavigation from "./pages/RoutineNavigation";
 import Example from "./Example";
 import Profile from "./pages/authentication/Profile";
 import LearnPage from "./pages/virtualNursery/LearnPage.jsx";
-import animalsImg from "./assets/animals1.png";
-import fruitsImg from "./assets/fruits1.png";
-import coloursImg from "./assets/colours1.png";
-import numbersImg from "./assets/numbers1.png";
-import shapesImg from "./assets/shapes1.png";
 import MentorSpeechTool from "./pages/speechTherapy/MentorSpeechTool.jsx";
 
 
@@ -165,18 +160,6 @@ export default function App() {
             element={<ActivitySwitch />}
           />
         </Route>
-            
-        {/* <Route path="/alphabets" element={<NewAlphabetLearn  />} />
-        <Route path="/numbers" element={<NumbersLearn  />} />
-        <Route path="/shapes" element={<ShapesLearn  />} />
-        <Route path="/colors" element={<ColoursLearn />} />
-        <Route path="/animals" element={<AnimalsLearn  />} />
-        <Route path="/fruits" element={<FruitsLearn  />} /> */}
-        <Route path="/numbers" element={<LearnPage title="Numbers" image={numbersImg} defaultTopic="numbers" />} />
-+        <Route path="/shapes" element={<LearnPage title="Shapes" image={shapesImg} defaultTopic="shapes" />} />
-+        <Route path="/colors" element={<LearnPage title="Colours" image={coloursImg} defaultTopic="colours" />} />
-+        <Route path="/animals" element={<LearnPage title="Animals" image={animalsImg} defaultTopic="animals" />} />
-+        <Route path="/fruits" element={<LearnPage title="Fruits" image={fruitsImg} defaultTopic="fruits" />} />
 
         {/* Routine Navigation (parents only) */}
         <Route element={<RequireAuth roles={["parent"]} />}>
