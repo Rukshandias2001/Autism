@@ -2,13 +2,6 @@ import { lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/virtualNurseyStyles/LearnSwitch.css";
 
-const NewAlphabetLearn = lazy(() =>
-  import("../virtualNursery/learn/NewAlphabetLearn")
-);
-const VegetablesLearn = lazy(() =>
-  import("../virtualNursery/learn/VegetablesLearn")
-);
-
 // Use the single reusable LearnPage for common topics
 const LearnPage = lazy(() => import("../virtualNursery/learn/LearnPage"));
 
@@ -60,10 +53,6 @@ export default function LearnSwitch() {
           image={pageConfig[category].image}
           defaultTopic={pageConfig[category].defaultTopic}
         />
-      ) : category === "alphabets" ? (
-        <NewAlphabetLearn category={category} />
-      ) : category === "vegetables" ? (
-        <VegetablesLearn category={category} />
       ) : (
         <NotFound />
       )}
