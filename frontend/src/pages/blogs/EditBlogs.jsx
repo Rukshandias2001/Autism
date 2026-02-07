@@ -49,7 +49,7 @@ export default function EditBlog() {
           const full =
             cover.startsWith("http")
               ? cover
-              : `http://localhost:5050${cover}`;
+              : `https://express-api-440581871543.us-central1.run.app0${cover}`;
           setImagePreview(full);
         } else {
           setImagePreview(null);
@@ -119,7 +119,7 @@ export default function EditBlog() {
     if (imageFile) fd.append("imageFile", imageFile);
 
     try {
-      await axios.put(`http://localhost:5050/api/blogs/${id}`, fd, {
+      await axios.put(`https://express-api-440581871543.us-central1.run.app/api/blogs/${id}`, fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

@@ -21,7 +21,7 @@ const AdminGames = () => {
     Game_URL: ''
   });
 
-  const API_BASE = 'http://localhost:5050';
+  const API_BASE = 'hhttps://express-api-440581871543.us-central1.run.app';
 
   const fetchGames = async () => {
     setLoading(true);

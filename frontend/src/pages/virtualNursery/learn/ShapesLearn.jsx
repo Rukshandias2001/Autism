@@ -78,7 +78,7 @@ export default function ShapesLearn({ topic: topicProp }) {
     setLoading(true);
 
     axios
-      .get(`http://localhost:5050/api/learn/${topic}/videos`)
+      .get(`https://express-api-440581871543.us-central1.run.app/api/learn/${topic}/videos`)
       .then((res) => {
         if (!alive) return;
         const arr = Array.isArray(res.data) ? res.data : [];
@@ -149,7 +149,7 @@ export default function ShapesLearn({ topic: topicProp }) {
 
     try {
       const res = await axios.post(
-        `http://localhost:5050/api/learn/${topic}/videos`,
+        `https://express-api-440581871543.us-central1.run.app/api/learn/${topic}/videos`,
         {
           title: form.title,
           url: normalizedUrl,
@@ -186,7 +186,7 @@ export default function ShapesLearn({ topic: topicProp }) {
     if (!id) return;
     try {
       await axios.delete(
-        `http://localhost:5050/api/learn/${topic}/videos/${id}`
+        `https://express-api-440581871543.us-central1.run.app/api/learn/${topic}/videos/${id}`
       );
       setVideos((prev) => {
         const next = prev.filter((v) => getId(v) !== id);
@@ -358,7 +358,7 @@ export default function ShapesLearn({ topic: topicProp }) {
                       data.append("thumb", file);
                       try {
                         const res = await axios.post(
-                          "http://localhost:5050/api/learn/upload/thumbnail",
+                          "https://express-api-440581871543.us-central1.run.app/api/learn/upload/thumbnail",
                           data,
                           { headers: { "Content-Type": "multipart/form-data" } }
                         );

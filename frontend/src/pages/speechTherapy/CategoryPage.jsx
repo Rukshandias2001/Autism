@@ -56,7 +56,7 @@ const CategoryPage = () => {
   useEffect(() => { // Fetch cards for the given category in the background
     const fetchCards = async () => {
       try {
-        const res = await fetch(`http://localhost:5050/api/cards/${category}`); // Fetch cards by category
+        const res = await fetch(`https://express-api-440581871543.us-central1.run.app/api/cards/${category}`); // Fetch cards by category
         const json = await res.json();
         if (json.success) {
           setCards(json.data); // Set fetched cards to state
