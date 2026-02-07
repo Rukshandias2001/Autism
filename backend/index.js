@@ -61,6 +61,7 @@ const allowList = new Set([
   "http://127.0.0.1:3000",
   "http://localhost:3001",
   "http://127.0.0.1:3001",
+  "https://react-frontend-234974518351.us-central1.run.app/login"
 ]);
 app.use(
   cors({
