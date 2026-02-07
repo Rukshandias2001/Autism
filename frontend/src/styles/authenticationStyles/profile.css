@@ -2,7 +2,7 @@
 /* Profile page styles (moved from inline in Profile.jsx) */
 .profile-page {
 	max-width: 960px;
-	margin: 36px auto;
+	margin: 0 auto;
     min-height: calc(99.9dvh - var(--nav-height));
 }
 
