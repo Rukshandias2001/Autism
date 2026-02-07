@@ -12,16 +12,19 @@ export default function LearnLayout({ title, image, imageAlt, children }) {
         back
       </button>
 
-      <aside className="al-chart">
-        <div className="al-chart-title">{title}</div>
-        <div className="al-image-container">
-          {image ? (
-            <img src={image} alt={imageAlt || title} className="al-image" />
-          ) : null}
+    
+        <div className="al-content-wrapper">
+          <div className="al-main-content">{children}</div>
+          <aside className="al-chart">
+            <div className="al-chart-title">{title}</div>
+            <div className="al-image-container">
+              {image ? (
+                <img src={image} alt={imageAlt || title} className="al-image" />
+              ) : null}
+            </div>
+          </aside>
         </div>
-      </aside>
-
-      <main className="al-main">{children}</main>
+  
     </div>
   );
 }

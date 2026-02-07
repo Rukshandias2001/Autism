@@ -45,9 +45,8 @@
 .new-al-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 32px;
-  width: 80%;
+  width: 100%;
 }
 
 /* ===== Video Player Section ===== */
@@ -637,6 +636,12 @@
 }
 
 /* ===== Responsive Design ===== */
+@media (max-width: 1200px) {
+  .new-al-thumbnails-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .new-al-content {
     gap: 24px;
