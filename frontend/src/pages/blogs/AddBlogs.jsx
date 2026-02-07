@@ -88,7 +88,7 @@ export default function AddBlogs() {
     fd.append("content", content);
     if (imageFile) fd.append("imageFile", imageFile);
     try {
-      const res = await axios.post("http://localhost:5050/api/blogs", fd);
+      const res = await axios.post("https://express-api-440581871543.us-central1.run.app/api/blogs", fd);
       // success
       if (imagePreview) URL.revokeObjectURL(imagePreview);
       setTitle("");

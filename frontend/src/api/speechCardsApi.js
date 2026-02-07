@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5050",
+  baseURL: import.meta.env.VITE_API_URL || "https://express-api-440581871543.us-central1.run.app",
 });
 
 export async function fetchSpeechCards() {

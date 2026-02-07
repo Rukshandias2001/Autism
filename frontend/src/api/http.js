@@ -1,4 +1,4 @@
-export const API_BASE = "http://localhost:5050".replace(/\/+$/, ""); // ← add this
+export const API_BASE = "https://express-api-440581871543.us-central1.run.app".replace(/\/+$/, ""); // ← add this
 const API = API_BASE;
 
 function isFormData(v) {

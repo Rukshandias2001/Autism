@@ -30,7 +30,7 @@ export default function EditBlog() {
         setLoading(true);
         setErrors([]);
 
-        const res = await fetch(`http://localhost:5050/api/blogs/${id}`);
+        const res = await fetch(`https://express-api-440581871543.us-central1.run.app/api/blogs/${id}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const b = await res.json();
         if (!alive) return;
