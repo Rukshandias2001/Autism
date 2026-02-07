@@ -66,7 +66,7 @@ import RoutineNavigation from "./pages/RoutineNavigation";
 
 import Example from "./Example";
 import Profile from "./pages/authentication/Profile";
-import LearnPage from "./pages/virtualNursery/learn/LearnPage.jsx";
+import LearnPage from "./pages/virtualNursery/LearnPage.jsx";
 import animalsImg from "./assets/animals1.png";
 import fruitsImg from "./assets/fruits1.png";
 import coloursImg from "./assets/colours1.png";

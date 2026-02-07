@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import "../../styles/virtualNurseyStyles/LearnSwitch.css";
 
 // Use the single reusable LearnPage for common topics
-const LearnPage = lazy(() => import("../virtualNursery/learn/LearnPage"));
+const LearnPage = lazy(() => import("./LearnPage"));
 
 // images for LearnPage variants
 import numbersImg from "../../assets/numbers1.png";
