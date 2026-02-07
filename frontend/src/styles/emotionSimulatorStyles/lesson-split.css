@@ -6,7 +6,7 @@
 
 .split-wrap {
   --gap: 20px;
-  min-height: 91vh;
+  min-height: calc(99.9dvh - var(--nav-height));
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--gap);

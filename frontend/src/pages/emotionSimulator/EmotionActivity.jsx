@@ -182,7 +182,7 @@ export default function EmotionActivity() {
           pack.bgRight ? { "--side-url": `url(${pack.bgRight})` } : undefined
         }
       >
-        <MonsterBuddy mode={monsterMode} />
+        {/* <MonsterBuddy mode={monsterMode} /> */}
         <h3 className="question">Drag good choices into the basket</h3>
 
         {/* CARDS GRID */}
@@ -287,18 +287,17 @@ function faceEmoji(label) {
 }
 
 /* --- Animated Monster Buddy (float, blink, wave, cheer) --- */
-function MonsterBuddy({ mode = "idle" }) {
-  // mode: "idle" | "wave" | "yay"
-  return (
-    <div className={`monster ${mode}`}>
-      <div className="monster-body">
-        <div className="eye left" />
-        <div className="eye right" />
-        <div className="mouth" />
-      </div>
-      <div className="arm left" />
-      <div className="arm right" />
-      <div className="shadow" />
-    </div>
-  );
-}
+// function MonsterBuddy({ mode = "idle" }) {
+//   return (
+//     <div className={`monster ${mode}`}>
+//       <div className="monster-body">
+//         <div className="eye left" />
+//         <div className="eye right" />
+//         <div className="mouth" />
+//       </div>
+//       <div className="arm left" />
+//       <div className="arm right" />
+//       <div className="shadow" />
+//     </div>
+//   );
+// }

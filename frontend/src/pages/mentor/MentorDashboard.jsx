@@ -46,9 +46,9 @@ export default function MentorDashboard() {
 
   return (
     <div className="md-wrap">
-      <header className="md-topbar">
+      {/* <header className="md-topbar">
         <div className="md-brand">Mentor</div>
-      </header>
+      </header> */}
 
       <main className="md-main md-main--fullscreen">
         {isMentorRoot ? (

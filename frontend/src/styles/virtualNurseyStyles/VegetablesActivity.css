@@ -1,5 +1,5 @@
 .veg-wrap {
-  min-height: 100vh;
+  min-height: calc(99.9dvh - var(--nav-height));
   text-align: center;
   background: linear-gradient(120deg, #c8e6c9, #b3e5fc);
   background-size: 300% 300%;

@@ -1,5 +1,5 @@
 .fruit-wrap {
-  min-height: 100vh;
+  min-height: calc(99.9dvh - var(--nav-height));
   text-align: center;
   background: linear-gradient(120deg, #fbc2eb, #a6c1ee);
   background-size: 300% 300%;

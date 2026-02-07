@@ -1,6 +1,6 @@
 /* Routine Timer Styles */
 .routine-timer-container {
-  min-height: 100vh;
+  min-height: calc(99.9dvh - var(--nav-height));
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
   color: white;

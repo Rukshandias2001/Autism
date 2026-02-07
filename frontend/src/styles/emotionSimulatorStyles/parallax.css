@@ -3,86 +3,20 @@ body {
   padding: 0;
 }
 
-.em-hero {
-  width: 100%;
 
-  min-height: 100%;
 
-  .image-content {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 12px;
-    pointer-events: none;
-    z-index: 8;
-    display: block;
-    overflow: visible;
-  }
-}
-
-/* Gate positioning - bottom left and right */
-.image-content .em-gate {
-  position: absolute;
-  bottom: 12px;
-  width: clamp(120px, 18vw, 220px);
-  pointer-events: none;
-}
-
-.image-content .em-gate:first-child {
-  left: 4%;
-}
-
-.image-content .em-gate:last-child {
-  right: 4%;
-  transform: scaleX(-1);
-}
-
-/* Gate image sizing override */
-.em-gate-bg {
-  width: clamp(120px, 18vw, 220px);
-  margin-bottom: 0;
-  display: block;
-  pointer-events: none;
-}
-
-/* Road centered at bottom middle */
-.em-road {
-  position: absolute;
-  pointer-events: none;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 8px;
-  z-index: 9;
-}
-
-.em-road-inner {
-  left: 50%;
-  bottom: 8px;
-  transform: translateX(-50%) scale(0.95);
-  width: clamp(280px, 50vw, 420px);
-  z-index: 9;
-  opacity: 0.98;
-  -webkit-mask-image: linear-gradient(to bottom,
-      transparent 0%,
-      #000 8%,
-      #000 92%,
-      transparent 100%);
-  mask-image: linear-gradient(to bottom,
-      transparent 0%,
-      #782a2a 8%,
-      #000 92%,
-      transparent 100%);
-}
 
 .em-scene {
   position: relative;
-  min-height: 80vh;
+  min-height: var(--scene-min-height, 80dvh);
   height: auto;
   max-height: 1400px;
   border-radius: 24px;
   overflow: hidden;
-  width: 100%;
+  width: 90vw;
+  max-width: 1400px;
+  margin: auto;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,6 +24,58 @@ body {
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.15);
 
   z-index: 1;
+}
+
+/* Standalone / fallback responsive adjustments for .em-scene
+   These ensure the scene centers and scales correctly when not
+   wrapped by the usual `.em-main` / `.em-hero` containers. */
+@media (max-width: 1024px) {
+  .em-scene {
+    max-width: 96vw;
+    margin: auto;
+    border-radius: 20px;
+    min-height: min(550px, 65dvh);
+  }
+}
+
+@media (max-width: 780px) {
+  .em-scene {
+    max-width: 98vw;
+    margin: 12px auto;
+    border-radius: 16px;
+    min-height: min(480px, 55dvh);
+  }
+}
+
+@media (max-width: 600px) {
+  .em-scene {
+    width: 100vw;
+    max-width: 100vw;
+    margin: auto;
+    border-radius: 12px;
+    min-height: calc(100dvh - var(--nav-height, 0px));
+    max-height: calc(100dvh - var(--nav-height, 0px));
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 380px) {
+  .em-scene {
+    min-height: min(350px, 45dvh);
+    border-radius: 10px;
+    margin: auto;
+  }
+}
+
+/* Extra large screens: let the scene breathe more */
+@media (min-width: 1400px) {
+  .em-scene {
+    width: 75vw;
+    max-width: 1600px;
+    margin: auto;
+    min-height: min(80dvh, 1000px);
+    border-radius: 28px;
+  }
 }
 
 /* Background */
@@ -283,36 +269,7 @@ body {
   }
 }
 
-/* Butterflies */
-.em-butterfly {
-  position: absolute;
-  width: 60px;
-  pointer-events: none;
-  opacity: 0.9;
-  animation: em-float 9s ease-in-out infinite;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
-  z-index: 5;
-}
 
-.em-b10 {
-  left: 10%;
-  top: 25%;
-  animation-duration: 10s;
-}
-
-.em-b20 {
-  left: 70%;
-  top: 25%;
-  animation-duration: 12s;
-  animation-delay: 1.2s;
-}
-
-.em-b30 {
-  left: 35%;
-  top: 15%;
-  animation-duration: 11s;
-  animation-delay: 0.6s;
-}
 
 @keyframes em-float {
   0% {
@@ -511,13 +468,31 @@ body {
 
 /* Page wrapper */
 .em-main {
+   padding: 2dvh;
   position: relative;
-  height: 91vh;
-  overflow: hidden;
+  min-height: calc(99.9dvh - var(--nav-height));
   background: linear-gradient(90deg,
       rgba(42, 123, 155, 1) 0%,
       rgba(87, 199, 133, 1) 50%,
       rgba(237, 221, 83, 1) 100%);
+}
+
+/* Page title */
+.em-title {
+  margin: 0 auto 16px;
+  text-align: center;
+  font-size: clamp(18px, 4.5vw, 36px);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.4px;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 380px) {
+  .em-title { font-size: clamp(16px, 6.5vw, 22px); margin-bottom: 10px; }
 }
 
 /* Sides */
@@ -624,7 +599,7 @@ body {
 
 /* Responsive - Tablet */
 @media (max-width: 1024px) {
-  
+  .em-main { --scene-min-height: min(550px, 65dvh); }
   .em-left-panel {
     left: clamp(8px, 2vw, 16px);
     top: clamp(20px, 5vh, 60px);
@@ -638,7 +613,7 @@ body {
 
   .em-scene {
     width: 100%;
-    height: min(550px, 65vh);
+    height: min(550px, 65dvh);
   }
 
   .em-speech-cloud {
@@ -656,6 +631,7 @@ body {
 
 /* Responsive - Small Tablet / Large Phone */
 @media (max-width: 780px) {
+  .em-main { --scene-min-height: min(480px, 55dvh); }
   .em-left-panel {
     left: 8px;
     top: 8px;
@@ -670,7 +646,7 @@ body {
 
   .em-scene {
     width: 100%;
-    height: min(480px, 55vh);
+    height: min(480px, 55dvh);
     border-radius: 16px;
   }
 
@@ -711,6 +687,7 @@ body {
 
 /* Responsive - Mobile */
 @media (max-width: 600px) {
+  .em-main { --scene-min-height: min(400px, 50dvh); }
   .em-main {
     height: 100dvh;
     min-height: 100svh;
@@ -759,7 +736,7 @@ body {
 
   .em-scene {
     width: 98vw;
-    height: min(400px, 50vh);
+    height: min(400px, 50dvh);
     border-radius: 12px;
     margin: 0;
   }
@@ -821,8 +798,9 @@ body {
 
 /* Responsive - Very Small Mobile */
 @media (max-width: 380px) {
+  .em-main { --scene-min-height: min(350px, 45dvh); }
   .em-scene {
-    height: min(350px, 45vh);
+    height: min(350px, 45dvh);
   }
 
   .em-left-panel {
@@ -859,6 +837,7 @@ body {
 
 /* Landscape Mobile */
 @media (max-height: 500px) and (orientation: landscape) {
+  .em-main { --scene-min-height: min(350px, 90dvh); }
   .em-main {
     height: 100vh;
     overflow-y: auto;
@@ -870,7 +849,7 @@ body {
 
   .em-scene {
     width: min(600px, 85vw);
-    height: min(350px, 90vh);
+    height: min(350px, 90dvh);
   }
 
   .em-left-panel {
@@ -914,7 +893,7 @@ body {
   gap: clamp(20px, 4vw, 50px);
   width: 100%;
   box-sizing: border-box;
-  padding: clamp(20px, 4vw, 50px);
+ 
 }
 
 /* When inside .em-hero-container make left panel flow in the row */
@@ -930,12 +909,6 @@ body {
   flex-shrink: 0;
 }
 
-/* Let the hero take the remaining space */
-.em-hero-container .em-hero {
-  flex: 1 1 auto;
-  width: auto;
-  min-width: 300px;
-}
 
 /* Responsive: stack vertically on small screens */
 @media (max-width: 900px) {
@@ -961,72 +934,4 @@ body {
   }
 }
 
-
-.em-gate {
-  margin-top: -5px;
-}
-
-.em-gate-bg {
-  width: 400px;
-  margin-bottom: -40px;
-
-}
-
-.em-road {
-  position: absolute;
-  pointer-events: none;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
-}
-
-/* .em-road-outer {
-  left: 50%;
-  bottom: -20%;
-  transform: translateX(-50%) scale(1);
-  width: 430px;
-  z-index: 10;
-} */
-.em-road-inner {
-  left: 50%;
-  bottom: -200px;
-  transform: translateX(-50%) scale(0.95);
-  width: 650px;
-  z-index: 1;
-  opacity: 0.98;
-  -webkit-mask-image: linear-gradient(to bottom,
-      transparent 0%,
-      #000 8%,
-      #000 92%,
-      transparent 100%);
-  mask-image: linear-gradient(to bottom,
-      transparent 0%,
-      #782a2a 8%,
-      #000 92%,
-      transparent 100%);
-}
-
-
-.em-autonav {
-  position: fixed;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 12px;
-  font-weight: 600;
-  z-index: 9999;
-}
-/* Hide the road on all screens by default; only show on very large screens */
-.em-road,
-.em-road-inner {
-  display: none ;
-}
-
-@media (min-width: 1025px) {
-  .em-road,
-  .em-road-inner {
-    display: block !important;
-  }
-}
 

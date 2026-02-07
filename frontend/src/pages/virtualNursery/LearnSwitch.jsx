@@ -2,47 +2,24 @@ import { lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/virtualNurseyStyles/LearnSwitch.css";
 
-const AlphabetLearn = lazy(() =>
-  import("../virtualNursery/learn/AlphabetLearn")
-);
-const NumbersLearn = lazy(() =>
-  import("../virtualNursery/learn/NumbersLearn")
-);
-const ShapesLearn = lazy(() =>
-  import("../virtualNursery/learn/ShapesLearn")
-);
-const ColorsLearn = lazy(() =>
-  import("../virtualNursery/learn/ColoursLearn")
-);
-const AnimalsLearn = lazy(() =>
-  import("../virtualNursery/learn/AnimalsLearn")
-);
-const FruitsLearn = lazy(() =>
-  import("../virtualNursery/learn/FruitsLearn")
-);
-const VegetablesLearn = lazy(() =>
-  import("../virtualNursery/learn/VegetablesLearn")
-);
+// Use the single reusable LearnPage for common topics
+const LearnPage = lazy(() => import("./LearnPage"));
 
-
-const registry = {
-  alphabets: AlphabetLearn,
-  numbers: NumbersLearn,
-  shapes: ShapesLearn,
-  colors: ColorsLearn,
-  animals: AnimalsLearn,
-  fruits: FruitsLearn,
-  vegetables: VegetablesLearn,
-};
+// images for LearnPage variants
+import numbersImg from "../../assets/numbers1.png";
+import shapesImg from "../../assets/shapes1.png";
+import coloursImg from "../../assets/colours1.png";
+import animalsImg from "../../assets/animals1.png";
+import fruitsImg from "../../assets/fruits1.png";
+import alphabetsImg from "../../assets/alphabet1.png";
+import vegetablesImg from "../../assets/vegetables1.png";
 
 function Loading() {
   return (
-    <>
-      <div className="learn-loading">
-        <div className="spinner"></div>
-        <h1>Loading...</h1>
-      </div>
-    </>
+    <div className="learn-loading">
+      <div className="spinner"></div>
+      <h1>Loading...</h1>
+    </div>
   );
 }
 
@@ -59,14 +36,30 @@ function NotFound() {
 
 export default function LearnSwitch() {
   const { category } = useParams();
-  const LearnActivity = registry[category];
 
-  if(!LearnActivity){
-   <NotFound/>
-  }
-  return(
-    <Suspense fallback={<Loading/>}>
-      <LearnActivity category={category}/>
+  const pageConfig = {
+    numbers: { title: "Numbers", image: numbersImg, defaultTopic: "numbers" },
+    shapes: { title: "Shapes", image: shapesImg, defaultTopic: "shapes" },
+    colors: { title: "Colours", image: coloursImg, defaultTopic: "colours" },
+    animals: { title: "Animals", image: animalsImg, defaultTopic: "animals" },
+    fruits: { title: "Fruits", image: fruitsImg, defaultTopic: "fruits" },
+    alphabets: { title: "Alphabets", image: alphabetsImg, defaultTopic: "alphabets" },
+    vegetables: { title: "Vegetables", image: vegetablesImg, defaultTopic: "vegetables" },
+  };
+
+  const isReusablePage = !!pageConfig[category];
+
+  return (
+    <Suspense fallback={<Loading />}>
+      {isReusablePage ? (
+        <LearnPage
+          title={pageConfig[category].title}
+          image={pageConfig[category].image}
+          defaultTopic={pageConfig[category].defaultTopic}
+        />
+      ) : (
+        <NotFound />
+      )}
     </Suspense>
-  )
+  );
 }

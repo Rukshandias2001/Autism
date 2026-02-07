@@ -45,7 +45,6 @@ import NurseryDashboard from "./pages/virtualNursery/NurseryDashboard";
 import NurseryActivity from "./pages/virtualNursery/NurseryActivity";
 import NurseryLearnActivity from "./pages/virtualNursery/LearnSwitch";
 import ActivitySwitch from "./pages/virtualNursery/ActivitySwitch";
-import AlphabetLearn from "./pages/virtualNursery/learn/AlphabetLearn"
 
 //RoutineBuilder
 import RoutineHome from "./pages/routineBuilder/RoutineHome";
@@ -67,11 +66,7 @@ import RoutineNavigation from "./pages/RoutineNavigation";
 
 import Example from "./Example";
 import Profile from "./pages/authentication/Profile";
-import NumbersLearn from "./pages/virtualNursery/learn/NumbersLearn.jsx";
-import ShapesLearn from "./pages/virtualNursery/learn/ShapesLearn.jsx";
-import ColoursLearn from "./pages/virtualNursery/learn/ColoursLearn.jsx";
-import AnimalsLearn from "./pages/virtualNursery/learn/AnimalsLearn.jsx";
-import FruitsLearn from "./pages/virtualNursery/learn/FruitsLearn.jsx";
+import LearnPage from "./pages/virtualNursery/LearnPage.jsx";
 import MentorSpeechTool from "./pages/speechTherapy/MentorSpeechTool.jsx";
 
 
@@ -165,13 +160,6 @@ export default function App() {
             element={<ActivitySwitch />}
           />
         </Route>
-            
-        <Route path="/alphabets" element={<AlphabetLearn  />} />
-        <Route path="/numbers" element={<NumbersLearn  />} />
-        <Route path="/shapes" element={<ShapesLearn  />} />
-        <Route path="/colors" element={<ColoursLearn />} />
-        <Route path="/animals" element={<AnimalsLearn  />} />
-        <Route path="/fruits" element={<FruitsLearn  />} />
 
         {/* Routine Navigation (parents only) */}
         <Route element={<RequireAuth roles={["parent"]} />}>

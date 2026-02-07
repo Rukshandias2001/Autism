@@ -66,7 +66,7 @@
 }
 
 .showcase-page {
-  min-height: 91vh;
+  min-height: calc(99.9dvh - var(--nav-height));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
