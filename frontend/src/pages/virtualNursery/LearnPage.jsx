@@ -88,6 +88,10 @@ export default function LearnPage({
   }, [videos, currentId]);
 
   function openAdd() {
+    if (!isMentor) {
+      setToast("Only mentors can add videos.");
+      return;
+    }
     if (!canAddMore) {
       setToast(`You can add up to ${MAX_VIDEOS} videos only.`);
       return;
@@ -314,7 +318,7 @@ export default function LearnPage({
                   );
                 })}
 
-                {videos.length < MAX_VIDEOS && (
+                {isMentor && videos.length < MAX_VIDEOS && (
                   <button
                     className="new-al-thumbnail-card new-al-add-card"
                     onClick={openAdd}
