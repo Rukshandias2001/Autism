@@ -395,8 +395,29 @@ export default function EmotionPractice() {
   );
 
   // Guard: require a child profile first
+  function handleLogout() {
+    try {
+      localStorage.removeItem("user");
+      localStorage.removeItem("currentChild");
+    } catch (e) {
+      // ignore
+    }
+    // redirect to login page
+    window.location.href = "/login";
+  }
+
   if (!childId) {
-    return <div style={{ padding: 20 }}>Please login through child credentials! …</div>;
+    return (
+      <div style={{ padding: 24, textAlign: "center", minHeight: "calc(99.9dvh - var(--nav-height))" }}>
+        <h2>This page is for children only</h2>
+        <p>Please sign in using a child account to access this activity.</p>
+        <div style={{ marginTop: 16 }}>
+          <button className="wood-btn primary" onClick={handleLogout}>
+            Logout and go to login
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
