@@ -15,7 +15,7 @@ export default function RoutineNavigation() {
           <p className="tagline">Building Better Routines for Happy Families</p>
         </header>
 
-        <div className="navigation-cards">
+          <div className="navigation-cards">
           <div className="navigation-card parent-card">
             <div className="card-icon">👨‍👩‍👧‍👦</div>
             <h2>For Parents</h2>
@@ -27,11 +27,13 @@ export default function RoutineNavigation() {
               <span>✓ Monitor progress</span>
             </div>
             <div className="card-actions">
-              <button 
-                className="primary-btn"
-                onClick={() => navigate("/routine")}
+              <button
+                className="primary-btn coming-soon"
+                disabled
+                title="Coming Soon"
+                onClick={(e) => e.preventDefault()}
               >
-                Routine Builder
+                <span className="lock-icon">🔒</span> Routine Builder
               </button>
               <button 
                 className="secondary-btn"

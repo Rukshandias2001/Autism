@@ -359,3 +359,27 @@
     font-size: 15px;
   }
 }
+
+/* Coming Soon / Disabled button styling */
+.primary-btn.coming-soon {
+  background: #e6e6e6;
+  color: #6b6b6b;
+  border: 1px solid #d0d0d0;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.primary-btn.coming-soon:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.primary-btn.coming-soon .lock-icon {
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.primary-btn.coming-soon[disabled] {
+  pointer-events: none;
+}
