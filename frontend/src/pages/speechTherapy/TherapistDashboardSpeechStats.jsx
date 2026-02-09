@@ -23,7 +23,7 @@ const TherapistDashboardSpeechStats = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5050/api/cards/categories/list"); // endpoint from your Speech routes
+        const res = await fetch("https://express-api-440581871543.us-central1.run.app/api/cards/categories/list"); // endpoint from your Speech routes
         const json = await res.json();
         if (json.success) setCategories(json.data);
       } catch (err) {
@@ -37,7 +37,7 @@ const TherapistDashboardSpeechStats = () => {
   const fetchStats = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5050/api/speech/attempts/stats/therapist?period=${selectedPeriod}&category=${selectedCategory.toLowerCase()}`
+        `https://express-api-440581871543.us-central1.run.app/api/speech/attempts/stats/therapist?period=${selectedPeriod}&category=${selectedCategory.toLowerCase()}`
       ); // Endpoint handled by getTherapistStatsByCategory
       const json = await res.json();
       if (json.success) setStats(json.data);

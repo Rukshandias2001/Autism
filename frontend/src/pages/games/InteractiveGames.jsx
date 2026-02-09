@@ -143,7 +143,7 @@ export default function InteractiveGames() {
         return;
       }
 
-      const response = await fetch('http://localhost:5050/api/scores/submit', {
+      const response = await fetch('https://express-api-440581871543.us-central1.run.app/api/scores/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

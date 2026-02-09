@@ -30,7 +30,7 @@ export default function EditBlog() {
         setLoading(true);
         setErrors([]);
 
-        const res = await fetch(`http://localhost:5050/api/blogs/${id}`);
+        const res = await fetch(`https://express-api-440581871543.us-central1.run.app/api/blogs/${id}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const b = await res.json();
         if (!alive) return;
@@ -49,7 +49,7 @@ export default function EditBlog() {
           const full =
             cover.startsWith("http")
               ? cover
-              : `http://localhost:5050${cover}`;
+              : `https://express-api-440581871543.us-central1.run.app${cover}`;
           setImagePreview(full);
         } else {
           setImagePreview(null);
@@ -119,7 +119,7 @@ export default function EditBlog() {
     if (imageFile) fd.append("imageFile", imageFile);
 
     try {
-      await axios.put(`http://localhost:5050/api/blogs/${id}`, fd, {
+      await axios.put(`https://express-api-440581871543.us-central1.run.app/api/blogs/${id}`, fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
