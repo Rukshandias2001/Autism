@@ -590,15 +590,12 @@ body {
 
 /* Responsive - Mobile */
 @media (max-width: 600px) {
-  .em-main { --scene-min-height: min(400px, 50dvh); }
-  .em-main {
-    height: 100dvh;
+ 
+  /* .em-main {
+    
     min-height: 100svh;
-  }
+  } */
 
-  .em-hero {
-    height: 100dvh;
-  }
 
   .em-left-panel {
 
