@@ -197,9 +197,18 @@ export default function NavBar() {
                 <Link className="ls-item" role="menuitem" to="/speech-home" onClick={closeMobile}>
                   Speech Therapy Tool
                 </Link>
-                <Link className="ls-item" role="menuitem" to="/routine" onClick={closeMobile}>
+                {/* Routine Builder is locked */}
+                <button
+                  className="ls-item locked"
+                  role="menuitem"
+                  disabled
+                  title="Routine Builder is currently locked"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M17 8V7a5 5 0 0 0-10 0v1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-2zm-8 0V7a3 3 0 0 1 6 0v1H9z" />
+                  </svg>
                   Routine Builder
-                </Link>
+                </button>
                 <Link className="ls-item" role="menuitem" to="/games" onClick={closeMobile}>
                   Interactive Games
                 </Link>

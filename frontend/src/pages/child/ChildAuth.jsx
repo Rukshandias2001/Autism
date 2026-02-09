@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChildAuthAPI } from "../../api/http";
+import { ChildAuthAPI } from "../../api/http"; // Ensure this path matches your project structure
 import "../../styles/child/child-auth.css";
 
 export default function ChildAuth() {
@@ -9,16 +9,14 @@ export default function ChildAuth() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Prevent access to child login unless a parent is logged in
+  // Protect route: Ensure parent is logged in
   useEffect(() => {
     try {
       const parent = JSON.parse(localStorage.getItem("user") || "null");
-      // if no parent, redirect to parent login
       if (!parent) {
         navigate("/login", { replace: true });
         return;
       }
-      // if logged-in user is a mentor, send them to home (don't log them out)
       if (parent.role === "mentor") {
         navigate("/", { replace: true });
         return;
@@ -30,7 +28,7 @@ export default function ChildAuth() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
     if (error) setError("");
   };
 
@@ -45,23 +43,18 @@ export default function ChildAuth() {
     try {
       const response = await ChildAuthAPI.login({
         username: form.username.trim(),
-        pin: form.pin.trim()
+        pin: form.pin.trim(),
       });
 
-      // Store child auth data
+      // Store auth data
       localStorage.setItem("childAuth", JSON.stringify({
         token: response.token,
         child: response.child,
         username: response.username,
-        theme: response.theme
+        theme: response.theme,
       }));
-      console.log("========================")
-      console.log(response)
-      console.log("========================")
-      // after login/select child etc.
       localStorage.setItem("currentChild", JSON.stringify({ _id: response.child.id }));
-
-
+      
       navigate("/child/dashboard");
     } catch (err) {
       setError(err.message || "Login failed. Please try again!");
@@ -70,18 +63,29 @@ export default function ChildAuth() {
     }
   };
 
+  // PIN Pad Logic
   const handlePinInput = (digit) => {
     if (form.pin.length < 6) {
-      setForm(prev => ({ ...prev, pin: prev.pin + digit }));
+      setForm((prev) => ({ ...prev, pin: prev.pin + digit }));
+      if (error) setError("");
     }
   };
 
   const handlePinBackspace = () => {
-    setForm(prev => ({ ...prev, pin: prev.pin.slice(0, -1) }));
+    setForm((prev) => ({ ...prev, pin: prev.pin.slice(0, -1) }));
   };
 
   return (
     <div className="child-auth-container">
+      {/* Background Animated Stars */}
+      <div className="floating-stars">
+        <div className="star star-1">⭐</div>
+        <div className="star star-2">🌟</div>
+        <div className="star star-3">✨</div>
+        <div className="star star-4">⭐</div>
+        <div className="star star-5">🌟</div>
+      </div>
+
       <div className="child-auth-card">
         <div className="child-auth-header">
           <div className="star-icon">⭐</div>
@@ -90,51 +94,54 @@ export default function ChildAuth() {
         </div>
 
         <form onSubmit={handleSubmit} className="child-auth-form">
+          {/* Username Input */}
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
               type="text"
               id="username"
               name="username"
+              className="child-input"
+              placeholder="Enter your username"
               value={form.username}
               onChange={handleChange}
-              placeholder="Enter your username"
-              className="child-input"
-              autoComplete="username"
+              disabled={loading}
+              autoComplete="off"
             />
           </div>
 
+          {/* PIN Display */}
           <div className="form-group">
-            <label htmlFor="pin">PIN</label>
+            <label>PIN</label>
             <div className="pin-display">
-              {Array.from({ length: 6 }, (_, i) => (
+              {[...Array(6)].map((_, i) => (
                 <div
                   key={i}
-                  className={`pin-dot ${i < form.pin.length ? 'filled' : ''}`}
-                >
-                  {i < form.pin.length ? '●' : '○'}
-                </div>
+                  className={`pin-dot ${i < form.pin.length ? "filled" : ""}`}
+                />
               ))}
             </div>
           </div>
 
+          {/* Numeric Keypad */}
           <div className="pin-keypad">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(digit => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
               <button
-                key={digit}
                 type="button"
+                key={num}
                 className="pin-key"
-                onClick={() => handlePinInput(digit.toString())}
-                disabled={form.pin.length >= 6}
+                onClick={() => handlePinInput(num)}
+                disabled={loading || form.pin.length >= 6}
               >
-                {digit}
+                {num}
               </button>
             ))}
+            <div className="pin-key-spacer"></div> {/* Empty slot for alignment */}
             <button
               type="button"
               className="pin-key"
-              onClick={() => handlePinInput('0')}
-              disabled={form.pin.length >= 6}
+              onClick={() => handlePinInput(0)}
+              disabled={loading || form.pin.length >= 6}
             >
               0
             </button>
@@ -142,7 +149,7 @@ export default function ChildAuth() {
               type="button"
               className="pin-key backspace-key"
               onClick={handlePinBackspace}
-              disabled={form.pin.length === 0}
+              disabled={loading || form.pin.length === 0}
             >
               ⌫
             </button>
@@ -150,33 +157,17 @@ export default function ChildAuth() {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button
-            type="submit"
-            className="child-login-btn"
-            disabled={loading || !form.username.trim() || !form.pin.trim()}
-          >
+          <button type="submit" className="child-login-btn" disabled={loading}>
             {loading ? "Logging in..." : "Let's Go! 🚀"}
           </button>
         </form>
 
         <div className="child-auth-footer">
           <p>Ask your parent to help if you forgot your login!</p>
-          <button
-            type="button"
-            className="parent-login-link"
-            onClick={() => navigate("/")}
-          >
+          <button onClick={() => navigate("/parent-login")} className="parent-login-link">
             Parent Login
           </button>
         </div>
-      </div>
-
-      <div className="floating-stars">
-        <div className="star star-1">⭐</div>
-        <div className="star star-2">🌟</div>
-        <div className="star star-3">✨</div>
-        <div className="star star-4">⭐</div>
-        <div className="star star-5">🌟</div>
       </div>
     </div>
   );

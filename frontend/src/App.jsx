@@ -167,7 +167,7 @@ export default function App() {
         </Route>
 
         {/* Routine Builder */}
-        <Route path="/routine" element={<RoutineHome />} />
+        {/* <Route path="/routine" element={<RoutineHome />} /> */}
                <Route path="/games" element={<InteractiveGames />} />
 
         {/* Child Interface */}
