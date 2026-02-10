@@ -26,3 +26,9 @@
 - Kurukulasuriyage Dias
 - Maddewithanage Umesha
 - Omindu Semal Jayalath
+
+**Sample Login Credentials**
+
+- **Mentor**: uname: `mentor@example.com`, pwd: `Pass123`
+- **Parent**: uname: `parent@example.com`, pwd: `password123`
+- **Child**: uname: `sample_child`, pwd: `123456`
