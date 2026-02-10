@@ -11,8 +11,7 @@
 6. [Environment Variables](#environment-variables)
 7. [Useful Scripts](#useful-scripts)
 8. [Project Structure](#project-structure)
-9. [Testing & Linting](#testing--linting)
-10. [Contributing](#contributing)
+9. [Sample Credentials](#Sample-Credentials)
 11. [License & Contact](#license--contact)
 
 ---
